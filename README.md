@@ -62,23 +62,25 @@ graph LR
 ### Prerequisites
 
 - An AI coding agent that supports plugins/skills (e.g., Gemini in VS Code, Claude, or compatible IDE agents)
-- A workspace/project where you want to apply the SDDK pipeline
+- Node.js ≥ 18
 
 ### Option A: Install via npm (recommended)
 
 ```bash
-# Install globally
+# Install the CLI
 npm install -g @daniel-da-silva-alves/sddk
 
-# Install the plugin for all projects
-sddk install --global
+# Install the plugin
+sddk install
 ```
 
-Or per-project without permanent install:
+Or without permanent install:
 
 ```bash
 npx @daniel-da-silva-alves/sddk install
 ```
+
+The plugin will be installed to `~/.gemini/config/plugins/sddk/` and will be available in **all your projects**.
 
 ### Option B: Install manually
 
@@ -87,19 +89,19 @@ npx @daniel-da-silva-alves/sddk install
    git clone https://github.com/Daniel-da-Silva-Alves/Spec-Driven-Development-Kit.git
    ```
 
-2. Copy the `sddk` folder into your agent's plugin directory:
-   ```
-   # Example for Gemini in VS Code:
+2. Copy the `sddk` folder into the global plugin directory:
+   ```bash
+   # Linux/macOS:
    cp -r sddk/ ~/.gemini/config/plugins/sddk/
 
-   # Or on Windows:
+   # Windows:
    xcopy /E /I sddk %USERPROFILE%\.gemini\config\plugins\sddk
    ```
 
 3. Restart your IDE. The agent will automatically detect the 5 skills.
 
 > [!TIP]
-> You can verify the installation by asking your agent: *"What skills do you have available?"* — it should list the 5 SDDK skills.
+> You can verify the installation anytime with `sddk status`, or by asking your agent: *"What skills do you have available?"* — it should list the 5 SDDK skills.
 
 ## Usage
 
@@ -161,7 +163,7 @@ The agent becomes a **Senior Tech Lead** and decomposes the work into **phased m
 8. Polish and edge cases
 
 Each microtask includes:
-- References to specific SRS requirements (`RF-001`, `RF-002`, ...)
+- References to specific SRS requirements (`FR-001`, `FR-002`, ...)
 - References to specific SDD sections (with file links and line numbers)
 - References to project standards
 - List of files to create/modify
@@ -259,7 +261,11 @@ Spec-Driven-Development-Kit/
 ├── docs/
 │   ├── sddk.svg                                 # Project logo
 │   └── ARCHITECTURE.md                          # Architecture documentation and diagrams
-└── .github/                                     # Issue & PR templates
+├── .github/
+│   └── workflows/
+│       ├── ci.yml                               # CI validation (Node 18, 20, 22)
+│       └── publish.yml                          # Auto-publish to npm on tag push
+└── CHANGELOG.md                                 # Release history (Keep a Changelog)
 ```
 
 ## Features

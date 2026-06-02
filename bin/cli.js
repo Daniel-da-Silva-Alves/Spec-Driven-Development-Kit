@@ -4,13 +4,14 @@
  * SDDK CLI — Spec-Driven Development Kit Installer
  *
  * Installs the SDDK plugin for AI coding agents (Gemini, Claude, etc.)
- * into the appropriate plugin directory.
+ * into the global plugin directory (~/.gemini/config/plugins/sddk/).
  *
  * Usage:
- *   sddk install [--global]    Install the plugin
- *   sddk uninstall [--global]  Remove the plugin
- *   sddk --version             Show version
- *   sddk --help                Show help
+ *   sddk install               Install the plugin
+ *   sddk uninstall              Remove the plugin
+ *   sddk status                 Check installation status
+ *   sddk --version              Show version
+ *   sddk --help                 Show help
  *
  * Zero dependencies — uses only Node.js built-in modules.
  */
@@ -30,18 +31,13 @@ const VERSION = PACKAGE.version;
 const PLUGIN_SOURCE = path.join(__dirname, "..", "sddk");
 const PLUGIN_DIR_NAME = "sddk";
 
-// Target directories for plugin installation
-const GLOBAL_PLUGIN_DIR = path.join(
+// Target directory for plugin installation (global only)
+// Note: Local project plugins (.gemini/plugins/) are NOT auto-detected
+// by Gemini agents. Only the global config directory works.
+const PLUGIN_DIR = path.join(
   os.homedir(),
   ".gemini",
   "config",
-  "plugins",
-  PLUGIN_DIR_NAME
-);
-
-const LOCAL_PLUGIN_DIR = path.join(
-  process.cwd(),
-  ".gemini",
   "plugins",
   PLUGIN_DIR_NAME
 );
@@ -152,49 +148,34 @@ function showHelp() {
   log(`${color.bold}  USAGE${color.reset}`);
   log("");
   log(
-    `    ${color.cyan}sddk install${color.reset}              Install plugin in current project`
+    `    ${color.cyan}sddk install${color.reset}               Install the plugin`
   );
   log(
-    `    ${color.cyan}sddk install --global${color.reset}     Install plugin globally (all projects)`
+    `    ${color.cyan}sddk uninstall${color.reset}             Remove the plugin`
   );
   log(
-    `    ${color.cyan}sddk uninstall${color.reset}            Remove plugin from current project`
+    `    ${color.cyan}sddk status${color.reset}                Check installation status`
   );
-  log(
-    `    ${color.cyan}sddk uninstall --global${color.reset}   Remove plugin globally`
-  );
-  log(
-    `    ${color.cyan}sddk status${color.reset}               Check installation status`
-  );
-  log(`    ${color.cyan}sddk --version${color.reset}            Show version`);
-  log(`    ${color.cyan}sddk --help${color.reset}               Show this help`);
+  log(`    ${color.cyan}sddk --version${color.reset}             Show version`);
+  log(`    ${color.cyan}sddk --help${color.reset}                Show this help`);
   log("");
   log(`${color.bold}  EXAMPLES${color.reset}`);
   log("");
   log(
-    `    ${color.dim}# Install globally via npm${color.reset}`
+    `    ${color.dim}# Install via npm (recommended)${color.reset}`
   );
   log(`    ${color.white}npm install -g @daniel-da-silva-alves/sddk${color.reset}`);
-  log(`    ${color.white}sddk install --global${color.reset}`);
+  log(`    ${color.white}sddk install${color.reset}`);
   log("");
   log(
-    `    ${color.dim}# Install per-project via npx (no permanent install)${color.reset}`
+    `    ${color.dim}# Install via npx (no permanent install)${color.reset}`
   );
   log(`    ${color.white}npx @daniel-da-silva-alves/sddk install${color.reset}`);
   log("");
-  log(
-    `    ${color.dim}# Install per-project as devDependency${color.reset}`
-  );
-  log(`    ${color.white}npm install --save-dev @daniel-da-silva-alves/sddk${color.reset}`);
-  log(`    ${color.white}npx sddk install${color.reset}`);
-  log("");
-  log(`${color.bold}  PLUGIN DIRECTORIES${color.reset}`);
+  log(`${color.bold}  PLUGIN DIRECTORY${color.reset}`);
   log("");
   log(
-    `    ${color.dim}Global:${color.reset}    ~/.gemini/config/plugins/sddk/`
-  );
-  log(
-    `    ${color.dim}Per-project:${color.reset} ./.gemini/plugins/sddk/`
+    `    ${color.dim}Install path:${color.reset} ~/.gemini/config/plugins/sddk/`
   );
   log("");
   log(
@@ -207,10 +188,7 @@ function showVersion() {
   log(VERSION);
 }
 
-function install(isGlobal) {
-  const targetDir = isGlobal ? GLOBAL_PLUGIN_DIR : LOCAL_PLUGIN_DIR;
-  const modeLabel = isGlobal ? "global" : "per-project";
-
+function install() {
   log("");
   log(
     `${color.bold}${color.magenta}  SDDK${color.reset} ${color.dim}v${VERSION}${color.reset}`
@@ -230,19 +208,19 @@ function install(isGlobal) {
   }
 
   // Check if already installed
-  if (fs.existsSync(targetDir)) {
-    logInfo(`Plugin already installed at: ${color.dim}${targetDir}${color.reset}`);
+  if (fs.existsSync(PLUGIN_DIR)) {
+    logInfo(`Plugin already installed at: ${color.dim}${PLUGIN_DIR}${color.reset}`);
     logStep("Updating to latest version...");
-    removeDirRecursive(targetDir);
+    removeDirRecursive(PLUGIN_DIR);
   }
 
   // Install
-  logStep(`Installing ${color.bold}${modeLabel}${color.reset}...`);
-  logStep(`Target: ${color.dim}${targetDir}${color.reset}`);
+  logStep("Installing...");
+  logStep(`Target: ${color.dim}${PLUGIN_DIR}${color.reset}`);
 
   try {
-    copyDirRecursive(PLUGIN_SOURCE, targetDir);
-    const fileCount = countFiles(targetDir);
+    copyDirRecursive(PLUGIN_SOURCE, PLUGIN_DIR);
+    const fileCount = countFiles(PLUGIN_DIR);
 
     log("");
     logSuccess(
@@ -250,20 +228,10 @@ function install(isGlobal) {
     );
     log("");
 
-    if (isGlobal) {
-      logInfo("The plugin is now available in ALL your projects.");
-      logInfo(
-        'Restart your IDE and ask your agent: "What skills do you have?"'
-      );
-    } else {
-      logInfo("The plugin is now available in THIS project only.");
-      logInfo(
-        `Installed to: ${color.dim}${path.relative(process.cwd(), targetDir)}${color.reset}`
-      );
-      logInfo(
-        'Restart your IDE and ask your agent: "What skills do you have?"'
-      );
-    }
+    logInfo("The plugin is now available in ALL your projects.");
+    logInfo(
+      'Restart your IDE and ask your agent: "What skills do you have?"'
+    );
 
     log("");
     log(
@@ -276,29 +244,26 @@ function install(isGlobal) {
   }
 }
 
-function uninstall(isGlobal) {
-  const targetDir = isGlobal ? GLOBAL_PLUGIN_DIR : LOCAL_PLUGIN_DIR;
-  const modeLabel = isGlobal ? "global" : "per-project";
-
+function uninstall() {
   log("");
   log(
     `${color.bold}${color.magenta}  SDDK${color.reset} ${color.dim}v${VERSION}${color.reset}`
   );
   log("");
 
-  if (!fs.existsSync(targetDir)) {
+  if (!fs.existsSync(PLUGIN_DIR)) {
     logInfo(
-      `No ${modeLabel} installation found at: ${color.dim}${targetDir}${color.reset}`
+      `No installation found at: ${color.dim}${PLUGIN_DIR}${color.reset}`
     );
     log("");
     return;
   }
 
-  logStep(`Removing ${color.bold}${modeLabel}${color.reset} installation...`);
-  logStep(`Target: ${color.dim}${targetDir}${color.reset}`);
+  logStep("Removing installation...");
+  logStep(`Target: ${color.dim}${PLUGIN_DIR}${color.reset}`);
 
   try {
-    removeDirRecursive(targetDir);
+    removeDirRecursive(PLUGIN_DIR);
     log("");
     logSuccess(
       `${color.bold}SDDK plugin removed successfully!${color.reset}`
@@ -318,55 +283,33 @@ function status() {
   );
   log("");
 
-  const globalExists = fs.existsSync(GLOBAL_PLUGIN_DIR);
-  const localExists = fs.existsSync(LOCAL_PLUGIN_DIR);
+  const exists = fs.existsSync(PLUGIN_DIR);
 
   log(`${color.bold}  Installation Status${color.reset}`);
   log("");
 
-  // Global
-  if (globalExists) {
-    const fileCount = countFiles(GLOBAL_PLUGIN_DIR);
+  if (exists) {
+    const fileCount = countFiles(PLUGIN_DIR);
     logSuccess(
-      `Global:      ${color.green}installed${color.reset} (${fileCount} files)`
+      `Status: ${color.green}installed${color.reset} (${fileCount} files)`
     );
     log(
-      `             ${color.dim}${GLOBAL_PLUGIN_DIR}${color.reset}`
+      `        ${color.dim}${PLUGIN_DIR}${color.reset}`
     );
   } else {
     log(
-      `${color.dim}○${color.reset} Global:      ${color.dim}not installed${color.reset}`
+      `${color.dim}○${color.reset} Status: ${color.dim}not installed${color.reset}`
     );
     log(
-      `             ${color.dim}${GLOBAL_PLUGIN_DIR}${color.reset}`
+      `        ${color.dim}${PLUGIN_DIR}${color.reset}`
     );
   }
 
   log("");
 
-  // Local
-  if (localExists) {
-    const fileCount = countFiles(LOCAL_PLUGIN_DIR);
-    logSuccess(
-      `Per-project: ${color.green}installed${color.reset} (${fileCount} files)`
-    );
-    log(
-      `             ${color.dim}${LOCAL_PLUGIN_DIR}${color.reset}`
-    );
-  } else {
-    log(
-      `${color.dim}○${color.reset} Per-project: ${color.dim}not installed${color.reset}`
-    );
-    log(
-      `             ${color.dim}${LOCAL_PLUGIN_DIR}${color.reset}`
-    );
-  }
-
-  log("");
-
-  if (!globalExists && !localExists) {
+  if (!exists) {
     logInfo(
-      `Run ${color.cyan}sddk install${color.reset} or ${color.cyan}sddk install --global${color.reset} to get started.`
+      `Run ${color.cyan}sddk install${color.reset} to get started.`
     );
     log("");
   }
@@ -380,7 +323,6 @@ function main() {
   const args = process.argv.slice(2);
 
   // Flags
-  const hasGlobal = args.includes("--global") || args.includes("-g");
   const hasVersion = args.includes("--version") || args.includes("-v");
   const hasHelp =
     args.includes("--help") || args.includes("-h") || args.length === 0;
@@ -402,12 +344,12 @@ function main() {
   // Handle commands
   switch (command) {
     case "install":
-      install(hasGlobal);
+      install();
       break;
 
     case "uninstall":
     case "remove":
-      uninstall(hasGlobal);
+      uninstall();
       break;
 
     case "status":

@@ -1,51 +1,51 @@
-# Template de System Design Document (SDD)
+# System Design Document (SDD) Template
 
-Use este template como base para gerar o documento SDD. Adapte as seções conforme a complexidade da feature.
+Use this template as a base to generate the SDD document. Adapt sections according to the feature's complexity.
 
 ---
 
-## Estrutura do Documento
+## Document Structure
 
 ```markdown
 # System Design Document (SDD)
-## {Nome da Feature}
+## {Feature Name}
 
-**Versão**: 1.0
-**Data**: {data de criação}
-**Projeto**: {nome do projeto}
-**Feature**: {nome da feature}
-**SRS Referência**: [srs.md](./srs.md)
+**Version**: 1.0
+**Date**: {creation date}
+**Project**: {project name}
+**Feature**: {feature name}
+**SRS Reference**: [srs.md](./srs.md)
 
 ---
 
-## 1. Visão Geral Técnica
+## 1. Technical Overview
 
-### 1.1 Resumo
-Breve descrição técnica do que será implementado e como.
+### 1.1 Summary
+Brief technical description of what will be implemented and how.
 
-### 1.2 Stack Tecnológica
+### 1.2 Technology Stack
 
-| Camada | Tecnologia | Justificativa |
+| Layer | Technology | Justification |
 |:---|:---|:---|
-| Linguagem | {ex: TypeScript} | {por que esta escolha} |
-| Framework | {ex: Next.js 14} | {por que esta escolha} |
-| Banco de dados | {ex: PostgreSQL} | {por que esta escolha} |
-| ORM/Query | {ex: Prisma} | {por que esta escolha} |
-| Autenticação | {ex: NextAuth.js} | {por que esta escolha} |
-| Estilização | {ex: Tailwind CSS v4} | {por que esta escolha} |
+| Language | {e.g.: TypeScript} | {why this choice} |
+| Framework | {e.g.: Next.js 14} | {why this choice} |
+| Database | {e.g.: PostgreSQL} | {why this choice} |
+| ORM/Query | {e.g.: Prisma} | {why this choice} |
+| Authentication | {e.g.: NextAuth.js} | {why this choice} |
+| Styling | {e.g.: Tailwind CSS v4} | {why this choice} |
 
-### 1.3 Decisões Arquiteturais
+### 1.3 Architectural Decisions
 
-| Decisão | Escolha | Alternativas Consideradas | Justificativa |
+| Decision | Choice | Alternatives Considered | Justification |
 |:---|:---|:---|:---|
-| Padrão | {ex: Clean Architecture} | MVC, Hexagonal | {razão} |
-| State Management | {ex: Zustand} | Redux, Context | {razão} |
+| Pattern | {e.g.: Clean Architecture} | MVC, Hexagonal | {reason} |
+| State Management | {e.g.: Zustand} | Redux, Context | {reason} |
 
 ---
 
-## 2. Arquitetura do Sistema
+## 2. System Architecture
 
-### 2.1 Diagrama de Arquitetura
+### 2.1 Architecture Diagram
 
 ```mermaid
 graph TB
@@ -61,46 +61,46 @@ graph TB
     C --> D
 ```
 
-### 2.2 Estrutura de Diretórios
+### 2.2 Directory Structure
 
 ```
 src/
 ├── app/                    # Routes / pages
-├── components/             # Componentes reutilizáveis
+├── components/             # Reusable components
 │   ├── ui/                 # Design system (atoms)
-│   └── features/           # Componentes de feature
-├── lib/                    # Utilitários e helpers
-├── services/               # Lógica de negócio
-├── repositories/           # Acesso a dados
+│   └── features/           # Feature components
+├── lib/                    # Utilities and helpers
+├── services/               # Business logic
+├── repositories/           # Data access
 ├── types/                  # TypeScript types/interfaces
-└── config/                 # Configurações
+└── config/                 # Configurations
 ```
 
-### 2.3 Camadas e Responsabilidades
+### 2.3 Layers and Responsibilities
 
-| Camada | Responsabilidade | Exemplo |
+| Layer | Responsibility | Example |
 |:---|:---|:---|
-| **Presentation** | UI, formulários, validação visual | Componentes React |
-| **Application** | Orquestração, use cases | Services |
-| **Domain** | Regras de negócio puras | Entidades, Value Objects |
-| **Infrastructure** | Acesso a dados, APIs externas | Repositories, API clients |
+| **Presentation** | UI, forms, visual validation | React Components |
+| **Application** | Orchestration, use cases | Services |
+| **Domain** | Pure business rules | Entities, Value Objects |
+| **Infrastructure** | Data access, external APIs | Repositories, API clients |
 
 ---
 
-## 3. Modelo de Dados
+## 3. Data Model
 
-### 3.1 Entidades
+### 3.1 Entities
 
-#### {NomeEntidade}
+#### {EntityName}
 
-| Campo | Tipo | Constraints | Descrição |
+| Field | Type | Constraints | Description |
 |:---|:---|:---|:---|
-| id | UUID | PK, auto-generated | Identificador único |
-| {campo} | {tipo} | {constraints} | {descrição} |
-| created_at | DateTime | NOT NULL, default NOW | Data de criação |
-| updated_at | DateTime | NOT NULL, auto-update | Última atualização |
+| id | UUID | PK, auto-generated | Unique identifier |
+| {field} | {type} | {constraints} | {description} |
+| created_at | DateTime | NOT NULL, default NOW | Creation date |
+| updated_at | DateTime | NOT NULL, auto-update | Last update |
 
-### 3.2 Relacionamentos
+### 3.2 Relationships
 
 ```mermaid
 erDiagram
@@ -110,23 +110,23 @@ erDiagram
 
 ### 3.3 Migrations
 
-Lista de migrations necessárias em ordem:
-1. `001_create_{table}.sql` — Criar tabela principal
-2. `002_create_{table}.sql` — Criar tabelas secundárias
+List of required migrations in order:
+1. `001_create_{table}.sql` — Create main table
+2. `002_create_{table}.sql` — Create secondary tables
 
 ---
 
-## 4. Design de API
+## 4. API Design
 
 ### 4.1 Endpoints
 
 #### `POST /api/{resource}`
-- **Descrição**: {o que faz}
-- **Auth**: {requer autenticação? qual role?}
+- **Description**: {what it does}
+- **Auth**: {requires authentication? which role?}
 - **Request Body**:
   ```json
   {
-    "field": "type — descrição"
+    "field": "type — description"
   }
   ```
 - **Response 200**:
@@ -135,125 +135,125 @@ Lista de migrations necessárias em ordem:
     "data": {}
   }
   ```
-- **Errors**: 400 (validação), 401 (não autenticado), 403 (não autorizado), 500 (erro interno)
+- **Errors**: 400 (validation), 401 (unauthenticated), 403 (unauthorized), 500 (internal error)
 
-### 4.2 Validações
+### 4.2 Validations
 
-| Endpoint | Campo | Regra |
+| Endpoint | Field | Rule |
 |:---|:---|:---|
-| POST /api/{resource} | {campo} | {regra de validação} |
+| POST /api/{resource} | {field} | {validation rule} |
 
 ---
 
-## 5. Design de Interface (Frontend)
+## 5. Interface Design (Frontend)
 
-### 5.1 Componentes
+### 5.1 Components
 
-| Componente | Tipo | Descrição |
+| Component | Type | Description |
 |:---|:---|:---|
-| `{ComponentName}` | Page | {descrição} |
-| `{ComponentName}` | Feature | {descrição} |
-| `{ComponentName}` | UI/Atom | {descrição} |
+| `{ComponentName}` | Page | {description} |
+| `{ComponentName}` | Feature | {description} |
+| `{ComponentName}` | UI/Atom | {description} |
 
-### 5.2 Estado e Fluxo de Dados
+### 5.2 State and Data Flow
 
-Descrever como o estado flui entre componentes:
-- Fonte de dados
-- Estado local vs global
+Describe how state flows between components:
+- Data source
+- Local vs global state
 - Cache strategy
 
 ### 5.3 Design Tokens
 
-| Token | Valor | Uso |
+| Token | Value | Usage |
 |:---|:---|:---|
-| `--color-primary` | {valor} | {onde usar} |
-| `--spacing-md` | {valor} | {onde usar} |
+| `--color-primary` | {value} | {where to use} |
+| `--spacing-md` | {value} | {where to use} |
 
 ---
 
-## 6. Integrações
+## 6. Integrations
 
-### 6.1 APIs Externas
+### 6.1 External APIs
 
-| Serviço | Propósito | Endpoint | Auth |
+| Service | Purpose | Endpoint | Auth |
 |:---|:---|:---|:---|
-| {nome} | {para quê} | {URL base} | {tipo de auth} |
+| {name} | {what for} | {base URL} | {auth type} |
 
-### 6.2 Eventos / Webhooks
+### 6.2 Events / Webhooks
 
-| Evento | Trigger | Payload |
+| Event | Trigger | Payload |
 |:---|:---|:---|
-| {nome} | {quando dispara} | {dados enviados} |
+| {name} | {when it fires} | {data sent} |
 
 ---
 
-## 7. Tratamento de Erros
+## 7. Error Handling
 
-### 7.1 Estratégia
+### 7.1 Strategy
 
-| Camada | Estratégia | Exemplo |
+| Layer | Strategy | Example |
 |:---|:---|:---|
-| Frontend | {ex: Error Boundary + toast} | {quando usar} |
-| API | {ex: HTTP status + error body padronizado} | {formato} |
-| Service | {ex: Custom exceptions + logging} | {tipos de erro} |
+| Frontend | {e.g.: Error Boundary + toast} | {when to use} |
+| API | {e.g.: HTTP status + standardized error body} | {format} |
+| Service | {e.g.: Custom exceptions + logging} | {error types} |
 
 ### 7.2 Error Codes
 
-| Código | Mensagem | Ação do Usuário |
+| Code | Message | User Action |
 |:---|:---|:---|
-| {code} | {mensagem} | {o que fazer} |
+| {code} | {message} | {what to do} |
 
 ---
 
-## 8. Segurança
+## 8. Security
 
-### 8.1 Autenticação
-Descrever mecanismo de autenticação.
+### 8.1 Authentication
+Describe the authentication mechanism.
 
-### 8.2 Autorização
-Descrever modelo de permissões (RBAC, ABAC, etc.).
+### 8.2 Authorization
+Describe the permissions model (RBAC, ABAC, etc.).
 
-### 8.3 Proteção de Dados
-Campos sensíveis, criptografia, LGPD/GDPR.
+### 8.3 Data Protection
+Sensitive fields, encryption, LGPD/GDPR.
 
 ---
 
-## 9. Referências ao SRS
+## 9. SRS References
 
-| Seção SDD | Requisito SRS | Referência |
+| SDD Section | SRS Requirement | Reference |
 |:---|:---|:---|
-| 3. Modelo de Dados | RF-001 | [SRS#3 RF-001](./srs.md#rf-001) |
+| 3. Data Model | FR-001 | [SRS#3 FR-001](./srs.md#fr-001) |
 
 ---
 
-## 10. Fontes de Documentação Técnica
+## 10. Technical Documentation Sources
 
-### 10.1 Configuração de Fontes
+### 10.1 Source Configuration
 
-| Tecnologia | Versão | Fonte Primária | URL Oficial | MCP/Skill |
+| Technology | Version | Primary Source | Official URL | MCP/Skill |
 |:---|:---|:---|:---|:---|
-| {tecnologia} | {versão} | {URL oficial / MCP / Skill / Docs local} | {URL} | {nome do MCP ou —} |
+| {technology} | {version} | {Official URL / MCP / Skill / Local docs} | {URL} | {MCP name or —} |
 
-### 10.2 Documentação Local do Projeto
+### 10.2 Local Project Documentation
 
-| Caminho | Conteúdo |
+| Path | Content |
 |:---|:---|
-| {caminho} | {descrição do conteúdo} |
+| {path} | {content description} |
 
-### 10.3 Regra de Consulta
+### 10.3 Lookup Rule
 
-Ordem de prioridade para consulta de documentação durante o desenvolvimento:
-1. Documentação local do projeto (caminhos listados em 10.2)
-2. MCP/Skill (se listado na coluna MCP/Skill em 10.1)
-3. URL oficial (usar `read_url_content` na URL listada em 10.1)
-4. Web search (usar `search_web` com query: "{tecnologia} {versão} {tópico} site:{domínio oficial}")
+Priority order for documentation lookup during development:
+1. Local project documentation (paths listed in 10.2)
+2. MCP/Skill (if listed in the MCP/Skill column in 10.1)
+3. Official URL (use `read_url_content` on the URL listed in 10.1)
+4. Web search (use `search_web` with query: "{technology} {version} {topic} site:{official domain}")
 ```
 
-## Regras de Preenchimento
+## Filling Rules
 
-1. **Cada decisão arquitetural DEVE ter justificativa** — nunca apenas "porque sim"
-2. **Modelo de dados DEVE corresponder aos requisitos do SRS** — usar matriz de referência
-3. **Endpoints DEVEM cobrir todos os requisitos funcionais** do SRS
-4. **Componentes DEVEM ser granulares** — nunca um componente monolítico
-5. **Design tokens DEVEM ser definidos** — nunca usar valores hardcoded
-6. **Fontes de documentação DEVEM ser configuradas** para cada tecnologia da stack com versão pinada
+1. **Each architectural decision MUST have justification** — never just "because"
+2. **Data model MUST correspond to SRS requirements** — use reference matrix
+3. **Endpoints MUST cover all functional requirements** from the SRS
+4. **Components MUST be granular** — never a monolithic component
+5. **Design tokens MUST be defined** — never use hardcoded values
+6. **Documentation sources MUST be configured** for each technology in the stack with pinned version

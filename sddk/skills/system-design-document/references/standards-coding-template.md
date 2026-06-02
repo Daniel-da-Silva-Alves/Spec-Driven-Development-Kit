@@ -1,63 +1,63 @@
-# Template: Boas Práticas e Padrões de Código
+# Template: Coding Best Practices and Standards
 
-Use este template para gerar `.specs/standards/coding-standards.md`. Preencha com as respostas do onboarding.
+Use this template to generate `.specs/standards/coding-standards.md`. Fill in with the onboarding interview answers.
 
 ```markdown
-# Boas Práticas e Padrões de Código
+# Coding Best Practices and Standards
 
-**Projeto**: {nome do projeto}
-**Última atualização**: {data}
+**Project**: {project name}
+**Last updated**: {date}
 
 ---
 
-## 1. Princípios Adotados
+## 1. Adopted Principles
 
-| Princípio | O que significa NESTE projeto | Exemplo |
+| Principle | What it means IN THIS project | Example |
 |:---|:---|:---|
-| **SSOT** (Single Source of Truth) | {ex: Estado vive no banco. Cache é derivado.} | {ex: Não manter contadores em 2 tabelas} |
-| **DRY** (Don't Repeat Yourself) | {ex: Extrair quando repetir ≥ 2 vezes} | {ex: apiClient centralizado, não fetch repetido} |
-| **KISS** (Keep It Simple) | {ex: Preferir solução simples à elegante} | {ex: Usar map/filter ao invés de reduce complexo} |
-| **YAGNI** (You Aren't Gonna Need It) | {ex: Não implementar features "por garantia"} | {ex: Não criar abstração genérica para 1 uso} |
-| **SOLID** | {quais princípios do SOLID o projeto segue explicitamente} | — |
+| **SSOT** (Single Source of Truth) | {e.g.: State lives in the database. Cache is derived.} | {e.g.: Don't maintain counters in 2 tables} |
+| **DRY** (Don't Repeat Yourself) | {e.g.: Extract when repeating ≥ 2 times} | {e.g.: Centralized apiClient, not repeated fetch} |
+| **KISS** (Keep It Simple) | {e.g.: Prefer simple solution over elegant} | {e.g.: Use map/filter instead of complex reduce} |
+| **YAGNI** (You Aren't Gonna Need It) | {e.g.: Don't implement features "just in case"} | {e.g.: Don't create generic abstraction for 1 use} |
+| **SOLID** | {which SOLID principles the project explicitly follows} | — |
 
 ---
 
-## 2. Regras de Abstração
+## 2. Abstraction Rules
 
-### Quando Extrair uma Função
-- {ex: Quando o bloco é usado ≥ 2 vezes}
-- {ex: Quando o bloco tem mais de 10 linhas e pode ter nome descritivo}
-- {ex: Quando o bloco faz algo semanticamente independente}
+### When to Extract a Function
+- {e.g.: When the block is used ≥ 2 times}
+- {e.g.: When the block has more than 10 lines and can have a descriptive name}
+- {e.g.: When the block does something semantically independent}
 
-### Quando Criar um Componente
-- {ex: Quando a UI é reutilizada em ≥ 2 lugares}
-- {ex: Quando o componente tem mais de ~100 linhas}
-- {ex: Quando tem estado ou lógica própria}
+### When to Create a Component
+- {e.g.: When the UI is reused in ≥ 2 places}
+- {e.g.: When the component has more than ~100 lines}
+- {e.g.: When it has its own state or logic}
 
-### Quando Criar um Hook (React)
-- {ex: Quando lógica stateful é usada em ≥ 2 componentes}
-- {ex: Quando o componente fica mais limpo separando a lógica}
+### When to Create a Hook (React)
+- {e.g.: When stateful logic is used in ≥ 2 components}
+- {e.g.: When the component becomes cleaner by separating the logic}
 
-### Quando Criar um Service
-- {ex: Quando a lógica de negócio não pertence ao componente/controller}
-- {ex: Quando a mesma operação é usada em múltiplos endpoints/páginas}
+### When to Create a Service
+- {e.g.: When business logic doesn't belong to the component/controller}
+- {e.g.: When the same operation is used across multiple endpoints/pages}
 
 ---
 
-## 3. Tratamento de Erros
+## 3. Error Handling
 
-### Estratégia por Camada
+### Strategy by Layer
 
-| Camada | Estratégia |
+| Layer | Strategy |
 |:---|:---|
-| **Domain** | {ex: Lançar custom exceptions (DomainError, ValidationError)} |
-| **Application/Service** | {ex: Capturar domain errors, traduzir para DTOs de erro} |
-| **API/Controller** | {ex: Error handler global, mapear exceptions para HTTP status} |
-| **Frontend** | {ex: Error Boundary para crashes, toast para erros de ação} |
+| **Domain** | {e.g.: Throw custom exceptions (DomainError, ValidationError)} |
+| **Application/Service** | {e.g.: Catch domain errors, translate to error DTOs} |
+| **API/Controller** | {e.g.: Global error handler, map exceptions to HTTP status} |
+| **Frontend** | {e.g.: Error Boundary for crashes, toast for action errors} |
 
-### Custom Exceptions (se aplicável)
+### Custom Exceptions (if applicable)
 ```typescript
-// Hierarquia de erros do projeto
+// Project error hierarchy
 class AppError extends Error { code: string; statusCode: number; }
 class ValidationError extends AppError { fields: FieldError[]; }
 class NotFoundError extends AppError { }
@@ -65,50 +65,50 @@ class UnauthorizedError extends AppError { }
 class ConflictError extends AppError { }
 ```
 
-### Mensagens de Erro
-- {ex: Mensagens voltadas ao usuário, nunca stack traces}
-- {ex: Logging do erro completo no servidor, mensagem limpa no client}
-- {ex: Códigos de erro padronizados (ERROR_CODE) para o frontend mapear}
+### Error Messages
+- {e.g.: User-facing messages, never stack traces}
+- {e.g.: Full error logging on the server, clean message on the client}
+- {e.g.: Standardized error codes (ERROR_CODE) for the frontend to map}
 
 ---
 
 ## 4. Logging
 
-### Estratégia
-- **Formato**: {ex: Structured logging (JSON)}
-- **Níveis**: {ex: error, warn, info, debug}
-- **Ferramenta**: {ex: pino, winston, console estruturado}
+### Strategy
+- **Format**: {e.g.: Structured logging (JSON)}
+- **Levels**: {e.g.: error, warn, info, debug}
+- **Tool**: {e.g.: pino, winston, structured console}
 
-### O que Logar
+### What to Log
 
-| Nível | Quando usar | Exemplo |
+| Level | When to use | Example |
 |:---|:---|:---|
-| `error` | Falhas que impedem a operação | Erro de conexão DB, exception não tratada |
-| `warn` | Situações anormais mas recuperáveis | Rate limit próximo, fallback ativado |
-| `info` | Eventos de negócio importantes | Usuário criado, pagamento processado |
-| `debug` | Detalhes para debugging | Query SQL executada, payload recebido |
+| `error` | Failures that prevent the operation | DB connection error, unhandled exception |
+| `warn` | Abnormal but recoverable situations | Rate limit approaching, fallback activated |
+| `info` | Important business events | User created, payment processed |
+| `debug` | Details for debugging | SQL query executed, received payload |
 
-### O que NUNCA Logar
-- Senhas, tokens, chaves de API
-- Dados pessoais sensíveis (CPF, cartão de crédito)
-- Payloads completos de request em produção
+### What to NEVER Log
+- Passwords, tokens, API keys
+- Sensitive personal data (SSN, credit card)
+- Full request payloads in production
 
 ---
 
-## 5. Testes (se aplicável)
+## 5. Testing (if applicable)
 
-### Estratégia
-- **Tipo principal**: {ex: Testes manuais via manual-tests.md}
-- **Cobertura mínima**: {ex: N/A — foco em testes manuais}
-- **Quando automatizar**: {ex: Lógica de domínio crítica (cálculos, validações)}
+### Strategy
+- **Primary type**: {e.g.: Manual tests via manual-tests.md}
+- **Minimum coverage**: {e.g.: N/A — focus on manual tests}
+- **When to automate**: {e.g.: Critical domain logic (calculations, validations)}
 
 ---
 
 ## 6. Performance
 
-### Regras Gerais
-- {ex: Queries de listagem DEVEM ter paginação (máximo 100 por página)}
-- {ex: N+1 queries são proibidas — usar eager loading / join}
-- {ex: Imagens devem ser otimizadas (WebP, lazy loading)}
-- {ex: Bundle splitting para rotas de frontend}
+### General Rules
+- {e.g.: Listing queries MUST have pagination (maximum 100 per page)}
+- {e.g.: N+1 queries are prohibited — use eager loading / join}
+- {e.g.: Images must be optimized (WebP, lazy loading)}
+- {e.g.: Bundle splitting for frontend routes}
 ```

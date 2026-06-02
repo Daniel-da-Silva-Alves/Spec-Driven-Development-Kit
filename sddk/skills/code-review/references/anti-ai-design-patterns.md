@@ -1,69 +1,69 @@
-# Anti-Design de IA — 8 Padrões a Detectar e Rejeitar
+# Anti-AI-Design — 8 Patterns to Detect and Reject
 
-Estes são padrões que denunciam código gerado por IA sem curadoria humana. O agente DEVE detectar e corrigir todos eles durante o Code Review.
-
----
-
-## Padrão 1: Emojis em Interface
-
-### O que detectar
-Emojis usados como conteúdo textual em elementos de interface do usuário.
-
-### Onde procurar
-- Textos de botões
-- Labels de formulários
-- Headings e títulos
-- Placeholders de inputs
-- Mensagens de feedback/toast
-- Navegação (menus, breadcrumbs)
-
-### Exemplos
-
-❌ **Ruim**:
-```html
-<button>🚀 Enviar Projeto</button>
-<h1>📊 Dashboard de Vendas</h1>
-<input placeholder="🔍 Pesquisar..." />
-<span>✅ Salvo com sucesso!</span>
-```
-
-✅ **Bom**:
-```html
-<button>Enviar Projeto</button>
-<h1>Dashboard de Vendas</h1>
-<input placeholder="Pesquisar produtos, pedidos ou clientes" />
-<span>Alterações salvas</span>
-```
-
-### Exceção
-Emojis são aceitáveis em: conteúdo gerado por usuários (chat, comentários), campos de dados (não de UI), e quando o design system do projeto explicitamente os inclui.
+These are patterns that expose AI-generated code without human curation. The agent MUST detect and fix all of them during Code Review.
 
 ---
 
-## Padrão 2: CSS/Tailwind Genérico
+## Pattern 1: Emojis in Interface
 
-### O que detectar
-Estilos visuais aplicados sem coerência com um design system. Cores aleatórias, tamanhos inconsistentes, espaçamentos ad-hoc.
+### What to detect
+Emojis used as textual content in user interface elements.
 
-### Exemplos
+### Where to look
+- Button text
+- Form labels
+- Headings and titles
+- Input placeholders
+- Feedback/toast messages
+- Navigation (menus, breadcrumbs)
 
-❌ **Ruim**:
+### Examples
+
+❌ **Bad**:
+```html
+<button>🚀 Submit Project</button>
+<h1>📊 Sales Dashboard</h1>
+<input placeholder="🔍 Search..." />
+<span>✅ Saved successfully!</span>
+```
+
+✅ **Good**:
+```html
+<button>Submit Project</button>
+<h1>Sales Dashboard</h1>
+<input placeholder="Search products, orders, or customers" />
+<span>Changes saved</span>
+```
+
+### Exception
+Emojis are acceptable in: user-generated content (chat, comments), data fields (not UI), and when the project's design system explicitly includes them.
+
+---
+
+## Pattern 2: Generic CSS/Tailwind
+
+### What to detect
+Visual styles applied without coherence with a design system. Random colors, inconsistent sizes, ad-hoc spacing.
+
+### Examples
+
+❌ **Bad**:
 ```html
 <div class="bg-blue-500 text-white p-4 rounded-lg shadow-lg">
-  <h2 class="text-2xl font-bold mb-2">Título</h2>
-  <p class="text-gray-200">Descrição aqui</p>
+  <h2 class="text-2xl font-bold mb-2">Title</h2>
+  <p class="text-gray-200">Description here</p>
 </div>
 ```
 
-✅ **Bom** (com design tokens):
+✅ **Good** (with design tokens):
 ```html
 <div class="bg-surface-primary text-on-surface p-card rounded-card shadow-card">
-  <h2 class="text-heading-md font-heading mb-spacing-sm">Título</h2>
-  <p class="text-body-md text-on-surface-secondary">Descrição aqui</p>
+  <h2 class="text-heading-md font-heading mb-spacing-sm">Title</h2>
+  <p class="text-body-md text-on-surface-secondary">Description here</p>
 </div>
 ```
 
-Ou com CSS variables:
+Or with CSS variables:
 ```css
 .card {
   background: var(--color-surface-primary);
@@ -75,29 +75,29 @@ Ou com CSS variables:
 
 ---
 
-## Padrão 3: Comentários Óbvios
+## Pattern 3: Obvious Comments
 
-### O que detectar
-Comentários que reescrevem em português/inglês o que o código já diz.
+### What to detect
+Comments that restate in natural language what the code already says.
 
-### Exemplos
+### Examples
 
-❌ **Ruim**:
+❌ **Bad**:
 ```typescript
-// Importa o serviço de usuários
+// Import the users service
 import { UserService } from './user.service';
 
-// Define a variável contador como 0
+// Set the counter variable to 0
 let counter = 0;
 
-// Incrementa o contador
+// Increment the counter
 counter++;
 
-// Retorna a resposta
+// Return the response
 return response;
 ```
 
-✅ **Bom** (sem comentários — o código é autoexplicativo):
+✅ **Good** (no comments — the code is self-explanatory):
 ```typescript
 import { UserService } from './user.service';
 let counter = 0;
@@ -107,79 +107,79 @@ return response;
 
 ---
 
-## Padrão 4: Nomes Genéricos
+## Pattern 4: Generic Names
 
-### O que detectar
-Variáveis, funções e componentes com nomes que não descrevem seu conteúdo ou propósito.
+### What to detect
+Variables, functions, and components with names that don't describe their content or purpose.
 
-### Lista de Nomes Proibidos
+### Prohibited Names List
 
-| Contexto | Nomes Genéricos ❌ |
+| Context | Generic Names ❌ |
 |:---|:---|
-| Variáveis | `data`, `result`, `temp`, `item`, `obj`, `val`, `info`, `stuff` |
-| Funções | `handleClick`, `handleChange`, `handleSubmit`, `getData`, `processData`, `doStuff`, `check` |
-| Componentes | `Card`, `Modal`, `List`, `Item`, `Container`, `Wrapper` (sem qualificador) |
-| Tipos | `Props`, `Data`, `Response`, `Payload` (sem qualificador) |
+| Variables | `data`, `result`, `temp`, `item`, `obj`, `val`, `info`, `stuff` |
+| Functions | `handleClick`, `handleChange`, `handleSubmit`, `getData`, `processData`, `doStuff`, `check` |
+| Components | `Card`, `Modal`, `List`, `Item`, `Container`, `Wrapper` (without qualifier) |
+| Types | `Props`, `Data`, `Response`, `Payload` (without qualifier) |
 
 ---
 
-## Padrão 5: Componentes Monolíticos
+## Pattern 5: Monolithic Components
 
-### O que detectar
-Arquivos de componente com mais de ~150 linhas significativas que misturam múltiplas responsabilidades.
+### What to detect
+Component files with more than ~150 meaningful lines that mix multiple responsibilities.
 
-### Sinais
-- Múltiplos `useState`/`useEffect` não relacionados no mesmo componente
-- Renderização condicional extensa (múltiplos `if/else` ou ternários aninhados)
-- Lógica de negócio misturada com UI
-- Formulário, tabela e gráfico no mesmo componente
-
----
-
-## Padrão 6: Código Boilerplate Repetitivo
-
-### O que detectar
-Padrões de código idênticos ou quase idênticos repetidos em múltiplos arquivos sem abstração.
-
-### Sinais
-- Fetch/API calls repetidos sem cliente centralizado
-- Validações duplicadas entre formulários
-- Tratamento de loading/error state repetido
-- Formatações de data/moeda duplicadas
+### Signs
+- Multiple unrelated `useState`/`useEffect` in the same component
+- Extensive conditional rendering (multiple nested `if/else` or ternaries)
+- Business logic mixed with UI
+- Form, table, and chart in the same component
 
 ---
 
-## Padrão 7: UI "Tutorial de YouTube"
+## Pattern 6: Repetitive Boilerplate Code
 
-### O que detectar
-Interfaces que parecem screenshots de tutoriais genéricos — funcionais mas sem identidade visual.
+### What to detect
+Identical or near-identical code patterns repeated across multiple files without abstraction.
 
-### Sinais
-- Cards com `box-shadow` padrão do framework sem personalização
-- Gradientes genéricos (`linear-gradient(to right, blue, purple)`)
-- Cores padrão do Tailwind sem customização (`blue-500`, `gray-700`)
-- Layout grid básico sem hierarquia visual
-- Tipografia padrão do browser (sem fonte customizada)
-- Ícones genéricos de bibliotecas sem curadoria
+### Signs
+- Repeated fetch/API calls without a centralized client
+- Duplicated validations across forms
+- Repeated loading/error state handling
+- Duplicated date/currency formatting
 
 ---
 
-## Padrão 8: Textos Placeholder Genéricos
+## Pattern 7: "YouTube Tutorial" UI
 
-### O que detectar
-Textos que demonstram falta de cuidado com o conteúdo real da interface.
+### What to detect
+Interfaces that look like screenshots from generic tutorials — functional but without visual identity.
 
-### Lista de Textos Proibidos
+### Signs
+- Cards with default framework `box-shadow` without customization
+- Generic gradients (`linear-gradient(to right, blue, purple)`)
+- Default Tailwind colors without customization (`blue-500`, `gray-700`)
+- Basic grid layout without visual hierarchy
+- Default browser typography (no custom font)
+- Generic library icons without curation
 
-| Contexto | Textos Genéricos ❌ |
+---
+
+## Pattern 8: Generic Placeholder Text
+
+### What to detect
+Text that demonstrates lack of care with the actual interface content.
+
+### Prohibited Text List
+
+| Context | Generic Text ❌ |
 |:---|:---|
-| Conteúdo | "Lorem ipsum dolor sit amet" |
-| Botões | "Click here", "Submit", "Send", "OK", "Go" |
+| Content | "Lorem ipsum dolor sit amet" |
+| Buttons | "Click here", "Submit", "Send", "OK", "Go" |
 | Links | "Read more", "Learn more", "Click here" |
 | Placeholders | "Enter text here", "Type something...", "Search..." |
 | Labels | "Label", "Field", "Input" |
 | Headings | "Title", "Heading", "Section" |
 | Error msgs | "An error occurred", "Something went wrong" |
 
-### O que usar no lugar
-Textos reais e descritivos baseados no domínio da aplicação, extraídos dos requisitos funcionais do SRS.
+### What to use instead
+Real and descriptive text based on the application domain, extracted from the SRS functional requirements.

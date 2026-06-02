@@ -1,151 +1,151 @@
-# Template SRS — IEEE 830 / ISO/IEC/IEEE 29148:2018
+# SRS Template — IEEE 830 / ISO/IEC/IEEE 29148:2018
 
-Use este template como base para gerar o documento SRS. Adapte as seções conforme a complexidade da feature. Nunca remova seções — se não aplicável, marque como "N/A" com justificativa.
+Use this template as a base to generate the SRS document. Adapt sections according to the feature's complexity. Never remove sections — if not applicable, mark as "N/A" with justification.
 
 ---
 
-## Estrutura do Documento
+## Document Structure
 
 ```markdown
-# Especificação de Requisitos de Software (SRS)
-## {Nome da Feature}
+# Software Requirements Specification (SRS)
+## {Feature Name}
 
-**Versão**: 1.0
-**Data**: {data de criação}
-**Projeto**: {nome do projeto}
-**Feature**: {nome da feature}
-
----
-
-## 1. Introdução
-
-### 1.1 Propósito
-Descrever o propósito deste documento e qual feature ele especifica.
-
-### 1.2 Escopo
-Delimitação clara do que esta feature cobre e o que está FORA do escopo.
-
-### 1.3 Definições, Acrônimos e Abreviações
-Glossário de termos específicos do domínio usados neste documento.
-
-### 1.4 Referências
-Documentos externos referenciados (outros SRS, APIs, normas).
-
-### 1.5 Visão Geral do Documento
-Breve descrição da organização deste documento.
+**Version**: 1.0
+**Date**: {creation date}
+**Project**: {project name}
+**Feature**: {feature name}
 
 ---
 
-## 2. Descrição Geral
+## 1. Introduction
 
-### 2.1 Perspectiva do Produto
-Como esta feature se encaixa no sistema maior. Dependências com outros módulos/features.
+### 1.1 Purpose
+Describe the purpose of this document and which feature it specifies.
 
-### 2.2 Funções do Produto
-Resumo de alto nível das funcionalidades que a feature provê.
+### 1.2 Scope
+Clear delimitation of what this feature covers and what is OUT of scope.
 
-### 2.3 Características dos Usuários
-Personas/atores que interagem com esta feature. Nível técnico esperado.
+### 1.3 Definitions, Acronyms, and Abbreviations
+Glossary of domain-specific terms used in this document.
 
-### 2.4 Restrições
-Limitações técnicas, regulatórias ou de negócio.
+### 1.4 References
+External documents referenced (other SRS, APIs, standards).
 
-### 2.5 Premissas e Dependências
-O que está sendo assumido como verdade e depende de fatores externos.
-
----
-
-## 3. Requisitos Funcionais
-
-### RF-001: {Nome do Requisito}
-- **Descrição**: {O que o sistema deve fazer}
-- **Entrada**: {Dados de entrada esperados}
-- **Processamento**: {Lógica de negócio aplicada}
-- **Saída**: {Resultado esperado}
-- **Prioridade**: Alta | Média | Baixa
-- **Critério de Aceitação**: {Condições mensuráveis para considerar completo}
-
-### RF-002: {Nome do Requisito}
-(repetir estrutura para cada requisito funcional)
+### 1.5 Document Overview
+Brief description of how this document is organized.
 
 ---
 
-## 4. Requisitos Não-Funcionais
+## 2. General Description
+
+### 2.1 Product Perspective
+How this feature fits into the larger system. Dependencies with other modules/features.
+
+### 2.2 Product Functions
+High-level summary of the functionalities the feature provides.
+
+### 2.3 User Characteristics
+Personas/actors that interact with this feature. Expected technical level.
+
+### 2.4 Constraints
+Technical, regulatory, or business limitations.
+
+### 2.5 Assumptions and Dependencies
+What is being assumed as true and depends on external factors.
+
+---
+
+## 3. Functional Requirements
+
+### FR-001: {Requirement Name}
+- **Description**: {What the system must do}
+- **Input**: {Expected input data}
+- **Processing**: {Business logic applied}
+- **Output**: {Expected result}
+- **Priority**: High | Medium | Low
+- **Acceptance Criteria**: {Measurable conditions to consider it complete}
+
+### FR-002: {Requirement Name}
+(repeat structure for each functional requirement)
+
+---
+
+## 4. Non-Functional Requirements
 
 ### 4.1 Performance
-- Tempo de resposta esperado
-- Throughput mínimo
-- Limites de carga
+- Expected response time
+- Minimum throughput
+- Load limits
 
-### 4.2 Segurança
-- Requisitos de autenticação/autorização
-- Proteção de dados sensíveis
-- Conformidade regulatória
+### 4.2 Security
+- Authentication/authorization requirements
+- Sensitive data protection
+- Regulatory compliance
 
-### 4.3 Usabilidade
-- Padrões de acessibilidade (WCAG nível)
-- Responsividade (dispositivos alvo)
-- Idiomas suportados
+### 4.3 Usability
+- Accessibility standards (WCAG level)
+- Responsiveness (target devices)
+- Supported languages
 
-### 4.4 Confiabilidade
-- Disponibilidade esperada
-- Tolerância a falhas
-- Estratégia de recovery
+### 4.4 Reliability
+- Expected availability
+- Fault tolerance
+- Recovery strategy
 
-### 4.5 Manutenibilidade
-- Padrões de código exigidos
-- Cobertura de testes mínima
-- Documentação necessária
-
----
-
-## 5. Regras de Negócio
-
-### RN-001: {Nome da Regra}
-- **Descrição**: {Regra de negócio}
-- **Condição**: {Quando se aplica}
-- **Ação**: {O que deve acontecer}
-- **Exceções**: {Casos onde não se aplica}
+### 4.5 Maintainability
+- Required code standards
+- Minimum test coverage
+- Required documentation
 
 ---
 
-## 6. Requisitos de Interface
+## 5. Business Rules
 
-### 6.1 Interfaces de Usuário
-Descrição das telas/componentes visuais necessários.
-
-### 6.2 Interfaces de Software
-APIs, serviços externos, integrações com outros sistemas.
-
-### 6.3 Interfaces de Hardware
-Dispositivos, sensores, periféricos (se aplicável).
+### BR-001: {Rule Name}
+- **Description**: {Business rule}
+- **Condition**: {When it applies}
+- **Action**: {What must happen}
+- **Exceptions**: {Cases where it doesn't apply}
 
 ---
 
-## 7. Matriz de Rastreabilidade
+## 6. Interface Requirements
 
-| ID Requisito | Regra de Negócio | Critério de Aceitação | Prioridade |
+### 6.1 User Interfaces
+Description of required screens/visual components.
+
+### 6.2 Software Interfaces
+APIs, external services, integrations with other systems.
+
+### 6.3 Hardware Interfaces
+Devices, sensors, peripherals (if applicable).
+
+---
+
+## 7. Traceability Matrix
+
+| Requirement ID | Business Rule | Acceptance Criteria | Priority |
 |:---|:---|:---|:---|
-| RF-001 | RN-001 | CA-001 | Alta |
+| FR-001 | BR-001 | AC-001 | High |
 
 ---
 
-## 8. Apêndices
+## 8. Appendices
 
-### 8.1 Diagrama de Casos de Uso
-(se aplicável)
+### 8.1 Use Case Diagram
+(if applicable)
 
-### 8.2 Protótipos / Wireframes
-(referências a mockups, se existirem)
+### 8.2 Prototypes / Wireframes
+(references to mockups, if they exist)
 
-### 8.3 Perguntas em Aberto
-(questões não resolvidas que precisam de follow-up)
+### 8.3 Open Questions
+(unresolved questions that need follow-up)
 ```
 
-## Regras de Preenchimento
+## Filling Rules
 
-1. **Cada requisito funcional DEVE ter critério de aceitação** — sem exceção
-2. **Requisitos devem ser testáveis** — se não pode ser verificado, não é um requisito válido
-3. **Use voz ativa** — "O sistema DEVE..." e não "Seria bom se o sistema..."
-4. **Priorize com MoSCoW** — Must/Should/Could/Won't ou Alta/Média/Baixa
-5. **IDs sequenciais** — RF-001, RF-002... / RN-001, RN-002... para rastreabilidade
+1. **Each functional requirement MUST have acceptance criteria** — no exceptions
+2. **Requirements must be testable** — if it can't be verified, it's not a valid requirement
+3. **Use active voice** — "The system SHALL..." not "It would be nice if the system..."
+4. **Prioritize with MoSCoW** — Must/Should/Could/Won't or High/Medium/Low
+5. **Sequential IDs** — FR-001, FR-002... / BR-001, BR-002... for traceability

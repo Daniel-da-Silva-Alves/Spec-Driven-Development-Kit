@@ -1,96 +1,96 @@
-# Guia de Entrevista Socrática para Levantamento de Requisitos
+# Socratic Interview Guide for Requirements Gathering
 
-## Princípios do Pensamento Socrático Aplicado
+## Principles of Applied Socratic Thinking
 
-A entrevista socrática não busca respostas diretas — busca **clareza de pensamento**. O objetivo é guiar o stakeholder a articular exatamente o que precisa, eliminando suposições implícitas.
+The Socratic interview does not seek direct answers — it seeks **clarity of thought**. The goal is to guide the stakeholder to articulate exactly what they need, eliminating implicit assumptions.
 
-### Técnicas Fundamentais
+### Fundamental Techniques
 
-#### 1. Pergunta Clarificadora
-Usada quando uma resposta é vaga ou usa termos ambíguos.
+#### 1. Clarifying Question
+Used when an answer is vague or uses ambiguous terms.
 
-**Padrão**: "Quando você diz '{termo}', o que exatamente isso significa neste contexto?"
+**Pattern**: "When you say '{term}', what exactly does that mean in this context?"
 
-**Exemplos**:
-- Usuário: "O login deve ser seguro"
-- Agente: "Quando você diz 'seguro', você está se referindo a: autenticação multifator, criptografia de senhas, proteção contra brute force, ou todas essas?"
+**Examples**:
+- User: "The login should be secure"
+- Agent: "When you say 'secure', are you referring to: multi-factor authentication, password encryption, brute force protection, or all of these?"
 
-#### 2. Pergunta de Suposição
-Usada para expor premissas não declaradas.
+#### 2. Assumption Question
+Used to expose undeclared assumptions.
 
-**Padrão**: "Você está assumindo que {premissa}. Essa premissa é válida?"
+**Pattern**: "You're assuming that {assumption}. Is this assumption valid?"
 
-**Exemplos**:
-- Usuário: "O usuário faz login e acessa o dashboard"
-- Agente: "Você está assumindo que existe apenas um tipo de usuário. Existem diferentes papéis (admin, operador, visitante) com acessos diferentes?"
+**Examples**:
+- User: "The user logs in and accesses the dashboard"
+- Agent: "You're assuming there's only one type of user. Are there different roles (admin, operator, visitor) with different access levels?"
 
-#### 3. Pergunta de Contraponto
-Usada para testar a robustez de um requisito propondo cenários contrários.
+#### 3. Counterpoint Question
+Used to test the robustness of a requirement by proposing contrary scenarios.
 
-**Padrão**: "E se {cenário oposto ou edge case} acontecer? Como o sistema deve reagir?"
+**Pattern**: "What if {opposite scenario or edge case} happens? How should the system react?"
 
-**Exemplos**:
-- Usuário: "O sistema envia um email de confirmação"
-- Agente: "E se o email for inválido? E se o servidor de email estiver fora do ar? O usuário fica bloqueado ou pode prosseguir?"
+**Examples**:
+- User: "The system sends a confirmation email"
+- Agent: "What if the email is invalid? What if the email server is down? Is the user blocked or can they proceed?"
 
-#### 4. Pergunta de Consequência
-Usada para explorar impactos de uma decisão.
+#### 4. Consequence Question
+Used to explore the impacts of a decision.
 
-**Padrão**: "Se implementarmos {decisão}, qual seria o impacto em {aspecto relacionado}?"
+**Pattern**: "If we implement {decision}, what would be the impact on {related aspect}?"
 
-**Exemplos**:
-- Usuário: "Quero que o sistema permita upload de arquivos ilimitados"
-- Agente: "Se permitirmos uploads ilimitados, qual seria o impacto no custo de armazenamento e na performance do sistema? Devemos ter um limite por usuário?"
+**Examples**:
+- User: "I want the system to allow unlimited file uploads"
+- Agent: "If we allow unlimited uploads, what would be the impact on storage costs and system performance? Should we have a per-user limit?"
 
-#### 5. Pergunta de Priorização
-Usada para rankear requisitos quando há muitos.
+#### 5. Prioritization Question
+Used to rank requirements when there are many.
 
-**Padrão**: "Se você tivesse que lançar amanhã com apenas 3 funcionalidades, quais seriam?"
-
----
-
-## Fluxo da Entrevista
-
-### Abertura (1-2 perguntas)
-Objetivo: Entender o contexto geral da feature.
-
-- "Descreva em uma frase o que essa feature deve fazer"
-- "Quem são os principais usuários dessa feature?"
-- "Qual problema de negócio essa feature resolve?"
-
-### Aprofundamento (N perguntas por tópico)
-Objetivo: Detalhar cada aspecto do checklist.
-
-Para cada tópico do checklist:
-1. Pergunte abertamente primeiro
-2. Use perguntas clarificadoras para respostas vagas
-3. Use perguntas de contraponto para edge cases
-4. Use perguntas de suposição para premissas implícitas
-5. Marque como `[x]` quando inequívoco
-
-### Validação (2-3 perguntas finais)
-Objetivo: Garantir completude antes de gerar o documento.
-
-- "Revisando tudo que discutimos, há algum cenário que não cobrimos?"
-- "Existe alguma integração com sistema externo que não mencionamos?"
-- "Há alguma restrição regulatória ou de compliance que afeta essa feature?"
+**Pattern**: "If you had to launch tomorrow with only 3 features, which would they be?"
 
 ---
 
-## Sinais de Alerta (Não Aceitar)
+## Interview Flow
 
-| Sinal | Ação |
+### Opening (1-2 questions)
+Goal: Understand the general context of the feature.
+
+- "Describe in one sentence what this feature should do"
+- "Who are the main users of this feature?"
+- "What business problem does this feature solve?"
+
+### Deep Dive (N questions per topic)
+Goal: Detail each aspect of the checklist.
+
+For each checklist topic:
+1. Ask openly first
+2. Use clarifying questions for vague answers
+3. Use counterpoint questions for edge cases
+4. Use assumption questions for implicit premises
+5. Mark as `[x]` when unambiguous
+
+### Validation (2-3 final questions)
+Goal: Ensure completeness before generating the document.
+
+- "Reviewing everything we discussed, are there any scenarios we didn't cover?"
+- "Is there any integration with an external system that we didn't mention?"
+- "Are there any regulatory or compliance restrictions that affect this feature?"
+
+---
+
+## Warning Signs (Do Not Accept)
+
+| Signal | Action |
 |:---|:---|
-| "Depois a gente vê isso" | Insistir — decisão adiada vira bug |
-| "É óbvio que..." | Questionar — o óbvio do stakeholder pode não ser do dev |
-| "Algo parecido com o sistema X" | Pedir detalhes — "parecido" é ambíguo |
-| "O usual" / "O padrão" | Definir explicitamente o que é "padrão" neste contexto |
-| Requisitos contraditórios | Apontar a contradição e pedir resolução |
+| "We'll figure that out later" | Insist — deferred decisions become bugs |
+| "It's obvious that..." | Question — what's obvious to the stakeholder may not be to the developer |
+| "Something similar to system X" | Ask for details — "similar" is ambiguous |
+| "The usual" / "The standard" | Explicitly define what "standard" means in this context |
+| Contradictory requirements | Point out the contradiction and request resolution |
 
-## Quando Encerrar um Tópico
+## When to Close a Topic
 
-Um tópico está **concluído** quando:
-- A resposta é específica e mensurável
-- Não há interpretação alternativa possível
-- O critério de aceitação é verificável
-- Edge cases foram cobertos
+A topic is **complete** when:
+- The answer is specific and measurable
+- There is no alternative interpretation possible
+- The acceptance criterion is verifiable
+- Edge cases have been covered

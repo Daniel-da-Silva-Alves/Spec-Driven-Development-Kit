@@ -1,26 +1,26 @@
-# Template: Convenções de API do Projeto
+# Template: Project API Conventions
 
-Use este template para gerar `.specs/standards/api-conventions.md`. Preencha com as respostas do onboarding. Se o projeto não tem API, criar com "N/A — projeto sem API".
+Use this template to generate `.specs/standards/api-conventions.md`. Fill in with the onboarding interview answers. If the project has no API, create with "N/A — project without API".
 
 ```markdown
-# Convenções de API
+# API Conventions
 
-**Projeto**: {nome do projeto}
-**Última atualização**: {data}
-
----
-
-## 1. Padrão de API
-
-**Tipo**: {REST | GraphQL | tRPC | gRPC}
-**Versionamento**: {ex: URL path /api/v1/, header, nenhum}
-**Base URL**: {ex: /api/v1}
+**Project**: {project name}
+**Last updated**: {date}
 
 ---
 
-## 2. Formato de Response
+## 1. API Pattern
 
-### Response de Sucesso
+**Type**: {REST | GraphQL | tRPC | gRPC}
+**Versioning**: {e.g.: URL path /api/v1/, header, none}
+**Base URL**: {e.g.: /api/v1}
+
+---
+
+## 2. Response Format
+
+### Success Response
 ```json
 {
   "data": { ... },
@@ -32,12 +32,12 @@ Use este template para gerar `.specs/standards/api-conventions.md`. Preencha com
 }
 ```
 
-### Response de Erro
+### Error Response
 ```json
 {
   "error": {
     "code": "{ERROR_CODE}",
-    "message": "{mensagem legível}",
+    "message": "{human-readable message}",
     "details": [ ... ]
   }
 }
@@ -45,44 +45,44 @@ Use este template para gerar `.specs/standards/api-conventions.md`. Preencha com
 
 ### HTTP Status Codes
 
-| Status | Quando usar |
+| Status | When to use |
 |:---|:---|
-| 200 | Sucesso (GET, PUT, PATCH) |
-| 201 | Recurso criado (POST) |
-| 204 | Sucesso sem body (DELETE) |
-| 400 | Validação / input inválido |
-| 401 | Não autenticado |
-| 403 | Não autorizado (sem permissão) |
-| 404 | Recurso não encontrado |
-| 409 | Conflito (ex: email já existe) |
-| 422 | Entidade não processável |
-| 429 | Rate limit excedido |
-| 500 | Erro interno do servidor |
+| 200 | Success (GET, PUT, PATCH) |
+| 201 | Resource created (POST) |
+| 204 | Success with no body (DELETE) |
+| 400 | Validation / invalid input |
+| 401 | Not authenticated |
+| 403 | Not authorized (no permission) |
+| 404 | Resource not found |
+| 409 | Conflict (e.g.: email already exists) |
+| 422 | Unprocessable entity |
+| 429 | Rate limit exceeded |
+| 500 | Internal server error |
 
 ---
 
-## 3. Naming de Endpoints
+## 3. Endpoint Naming
 
-| Regra | Exemplo correto | Exemplo errado |
+| Rule | Correct example | Wrong example |
 |:---|:---|:---|
-| Substantivos no plural | `/api/v1/users` | `/api/v1/user` |
-| Sem verbos na URL | `GET /users` | `GET /getUsers` |
-| Kebab-case para multi-palavras | `/order-items` | `/orderItems` |
-| Recursos aninhados | `/users/:id/orders` | `/getUserOrders` |
+| Plural nouns | `/api/v1/users` | `/api/v1/user` |
+| No verbs in URL | `GET /users` | `GET /getUsers` |
+| Kebab-case for multi-word | `/order-items` | `/orderItems` |
+| Nested resources | `/users/:id/orders` | `/getUserOrders` |
 
 ---
 
-## 4. Paginação
+## 4. Pagination
 
-**Tipo**: {cursor | offset | keyset}
+**Type**: {cursor | offset | keyset}
 
-### Formato de Request
-{ex para offset:}
+### Request Format
+{e.g. for offset:}
 ```
 GET /api/v1/users?page=2&per_page=20
 ```
 
-### Formato de Response (meta)
+### Response Format (meta)
 ```json
 {
   "meta": {
@@ -96,33 +96,33 @@ GET /api/v1/users?page=2&per_page=20
 
 ---
 
-## 5. Filtros e Ordenação
+## 5. Filters and Sorting
 
-### Filtros
+### Filters
 ```
 GET /api/v1/users?status=active&role=admin
 ```
 
-### Ordenação
+### Sorting
 ```
 GET /api/v1/users?sort=created_at&order=desc
 ```
 
 ---
 
-## 6. Autenticação
+## 6. Authentication
 
-**Método**: {ex: Bearer Token (JWT) via header Authorization}
+**Method**: {e.g.: Bearer Token (JWT) via Authorization header}
 **Header**: `Authorization: Bearer {token}`
-**Refresh**: {ex: via POST /api/v1/auth/refresh com refresh token em httpOnly cookie}
+**Refresh**: {e.g.: via POST /api/v1/auth/refresh with refresh token in httpOnly cookie}
 
 ---
 
-## 7. Validação
+## 7. Validation
 
-| Regra | Descrição |
+| Rule | Description |
 |:---|:---|
-| Validação no backend | TODA input é validada no servidor, independente do frontend |
-| Mensagens de erro | Retornar campo + mensagem específica |
-| Formato de erro de validação | `{"error": {"code": "VALIDATION_ERROR", "details": [{"field": "email", "message": "Email inválido"}]}}` |
+| Backend validation | ALL input is validated on the server, regardless of frontend |
+| Error messages | Return field + specific message |
+| Validation error format | `{"error": {"code": "VALIDATION_ERROR", "details": [{"field": "email", "message": "Invalid email"}]}}` |
 ```

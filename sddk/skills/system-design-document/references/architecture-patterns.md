@@ -1,105 +1,105 @@
-# Catálogo de Padrões Arquiteturais
+# Architectural Patterns Catalog
 
-Referência para o agente ao conduzir decisões arquiteturais com o usuário. Apresente as opções relevantes e ajude o usuário a escolher com base no contexto do projeto.
+Reference for the agent when conducting architectural decisions with the user. Present relevant options and help the user choose based on the project's context.
 
 ---
 
-## Padrões de Arquitetura de Aplicação
+## Application Architecture Patterns
 
 ### MVC (Model-View-Controller)
-- **Quando usar**: Aplicações web tradicionais, APIs simples, projetos menores
-- **Prós**: Simples, bem documentado, fácil onboarding
-- **Contras**: Pode ficar desorganizado em projetos grandes, acoplamento entre camadas
-- **Exemplos**: Express.js + templates, Ruby on Rails, Django
+- **When to use**: Traditional web applications, simple APIs, smaller projects
+- **Pros**: Simple, well-documented, easy onboarding
+- **Cons**: Can become disorganized in large projects, coupling between layers
+- **Examples**: Express.js + templates, Ruby on Rails, Django
 
 ### Clean Architecture
-- **Quando usar**: Aplicações de médio/grande porte, domínios complexos, quando testabilidade é prioridade
-- **Prós**: Independência de frameworks, alta testabilidade, separação clara de responsabilidades
-- **Contras**: Mais boilerplate, curva de aprendizado, overengineering para projetos simples
-- **Exemplos**: NestJS com módulos, FastAPI com camadas, aplicações enterprise
+- **When to use**: Medium/large applications, complex domains, when testability is a priority
+- **Pros**: Framework independence, high testability, clear separation of responsibilities
+- **Cons**: More boilerplate, learning curve, overengineering for simple projects
+- **Examples**: NestJS with modules, FastAPI with layers, enterprise applications
 
 ### Hexagonal (Ports & Adapters)
-- **Quando usar**: Sistemas com múltiplas integrações externas, quando a lógica de negócio precisa ser isolada
-- **Prós**: Facilita troca de dependências externas, excelente para testes
-- **Contras**: Complexidade adicional, muitas interfaces/abstrações
-- **Exemplos**: Sistemas financeiros, aplicações com múltiplos data sources
+- **When to use**: Systems with multiple external integrations, when business logic needs to be isolated
+- **Pros**: Facilitates swapping external dependencies, excellent for testing
+- **Cons**: Additional complexity, many interfaces/abstractions
+- **Examples**: Financial systems, applications with multiple data sources
 
 ### Feature-Based (Vertical Slicing)
-- **Quando usar**: Aplicações frontend/fullstack, quando cada feature é relativamente independente
-- **Prós**: Código organizado por funcionalidade (não por tipo), fácil de navegar
-- **Contras**: Pode haver duplicação entre features, difícil quando há muita lógica compartilhada
-- **Exemplos**: Next.js App Router, módulos NestJS, features de app mobile
+- **When to use**: Frontend/fullstack applications, when each feature is relatively independent
+- **Pros**: Code organized by functionality (not by type), easy to navigate
+- **Cons**: Possible duplication between features, difficult when there's lots of shared logic
+- **Examples**: Next.js App Router, NestJS modules, mobile app features
 
 ---
 
-## Padrões de Comunicação
+## Communication Patterns
 
 ### REST
-- **Quando usar**: APIs públicas, CRUD simples, integração com múltiplos clientes
-- **Prós**: Universal, stateless, cacheable, bem documentado
-- **Contras**: Over/under-fetching, múltiplas requisições para dados relacionados
+- **When to use**: Public APIs, simple CRUD, integration with multiple clients
+- **Pros**: Universal, stateless, cacheable, well-documented
+- **Cons**: Over/under-fetching, multiple requests for related data
 
 ### GraphQL
-- **Quando usar**: Frontends complexos com dados aninhados, múltiplas views do mesmo dado
-- **Prós**: Fetch exato do necessário, tipagem forte, introspection
-- **Contras**: Complexidade no backend, N+1 queries, caching mais difícil
+- **When to use**: Complex frontends with nested data, multiple views of the same data
+- **Pros**: Fetch exactly what's needed, strong typing, introspection
+- **Cons**: Backend complexity, N+1 queries, caching is harder
 
 ### tRPC
-- **Quando usar**: Fullstack TypeScript, quando cliente e servidor estão no mesmo repo
-- **Prós**: Type-safety end-to-end sem código gerado, DX excelente
-- **Contras**: Só funciona com TypeScript, acoplamento client-server
+- **When to use**: Fullstack TypeScript, when client and server are in the same repo
+- **Pros**: End-to-end type-safety without generated code, excellent DX
+- **Cons**: Only works with TypeScript, client-server coupling
 
 ---
 
-## Padrões de State Management (Frontend)
+## State Management Patterns (Frontend)
 
 ### React Context
-- **Quando usar**: Estado simples e pouco frequente (theme, auth, locale)
-- **Prós**: Nativo, zero dependências
-- **Contras**: Re-renders desnecessários, não escala bem
+- **When to use**: Simple and infrequent state (theme, auth, locale)
+- **Pros**: Native, zero dependencies
+- **Cons**: Unnecessary re-renders, doesn't scale well
 
 ### Zustand
-- **Quando usar**: Estado moderado, performance importa, simplicidade é prioridade
-- **Prós**: API mínima, seletores granulares, sem boilerplate
-- **Contras**: Menos estruturado que Redux, pode virar "bag of state"
+- **When to use**: Moderate state, performance matters, simplicity is a priority
+- **Pros**: Minimal API, granular selectors, no boilerplate
+- **Cons**: Less structured than Redux, can become a "bag of state"
 
 ### Redux Toolkit
-- **Quando usar**: Estado complexo com muitas interações, quando previsibilidade é crítica
-- **Prós**: DevTools, time-travel debugging, ecosistema maduro
-- **Contras**: Boilerplate, curva de aprendizado, overengineering para projetos simples
+- **When to use**: Complex state with many interactions, when predictability is critical
+- **Pros**: DevTools, time-travel debugging, mature ecosystem
+- **Cons**: Boilerplate, learning curve, overengineering for simple projects
 
 ### TanStack Query (React Query)
-- **Quando usar**: Estado que vem do servidor (server state), cache de API
-- **Prós**: Cache automático, invalidação, refetch em background, loading states
-- **Contras**: Não substitui client state, curva para cache policies
+- **When to use**: Server-derived state (server state), API cache
+- **Pros**: Automatic cache, invalidation, background refetch, loading states
+- **Cons**: Doesn't replace client state, learning curve for cache policies
 
 ---
 
-## Padrões de Acesso a Dados
+## Data Access Patterns
 
 ### ORM (Prisma, TypeORM, SQLAlchemy)
-- **Quando usar**: CRUD-heavy, migrations automatizadas, type-safety
-- **Prós**: Produtividade, migrations, tipagem
-- **Contras**: Performance em queries complexas, abstração leaky
+- **When to use**: CRUD-heavy, automated migrations, type-safety
+- **Pros**: Productivity, migrations, typing
+- **Cons**: Performance on complex queries, leaky abstraction
 
 ### Query Builder (Knex, Drizzle)
-- **Quando usar**: Queries complexas, performance importa, controle fino
-- **Prós**: Flexibilidade, performance, composabilidade
-- **Contras**: Mais verboso que ORM, sem migrations automáticas (alguns)
+- **When to use**: Complex queries, performance matters, fine control
+- **Pros**: Flexibility, performance, composability
+- **Cons**: More verbose than ORM, no automatic migrations (some)
 
 ### Raw SQL
-- **Quando usar**: Queries altamente otimizadas, stored procedures, DBA no time
-- **Prós**: Máxima performance e controle
-- **Contras**: Sem tipagem, vulnerável a SQL injection se mal feito, difícil manutenção
+- **When to use**: Highly optimized queries, stored procedures, DBA on the team
+- **Pros**: Maximum performance and control
+- **Cons**: No typing, vulnerable to SQL injection if poorly done, difficult maintenance
 
 ---
 
-## Como Apresentar ao Usuário
+## How to Present to the User
 
-Ao conduzir a entrevista técnica:
+When conducting the technical interview:
 
-1. Identifique qual **categoria** de decisão está em jogo
-2. Apresente **2-3 opções relevantes** (não todas) com base no contexto
-3. Inclua a **recomendação** baseada no projeto
-4. Use `ask_question` com as opções formatadas
-5. Registre a decisão com justificativa no SDD
+1. Identify which **decision category** is at play
+2. Present **2-3 relevant options** (not all) based on context
+3. Include a **recommendation** based on the project
+4. Use `ask_question` with formatted options
+5. Record the decision with justification in the SDD

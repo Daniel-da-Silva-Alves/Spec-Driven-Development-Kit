@@ -1,126 +1,126 @@
-# Guia de Configuração de Fontes de Documentação Técnica
+# Technical Documentation Sources Configuration Guide
 
-## Propósito
+## Purpose
 
-Durante o desenvolvimento (Skill 4) e code review (Skill 5), o agente precisa consultar documentação técnica das tecnologias da stack. Este guia define como configurar as fontes de documentação para cada tecnologia, garantindo que o agente use **a versão correta** e **a fonte mais confiável**.
+During development (Skill 4) and code review (Skill 5), the agent needs to consult technical documentation for the stack's technologies. This guide defines how to configure documentation sources for each technology, ensuring the agent uses **the correct version** and **the most reliable source**.
 
-## Hierarquia de Consulta
+## Lookup Hierarchy
 
-Ao precisar de documentação técnica, o agente segue esta ordem de prioridade:
+When needing technical documentation, the agent follows this priority order:
 
 ```
-1. 📁 Docs locais do projeto     (docs/, README, ARCHITECTURE.md)
-    ↓ se não encontrar
-2. 🔌 MCP/Skill da tecnologia    (se existir e for da versão correta)
-    ↓ se não existir
-3. 🌐 URL oficial pré-configurada (registrada no SDD, pinada à versão)
-    ↓ se não cobrir o caso
-4. 🔍 Web search como fallback   (pesquisa direcionada ao site oficial)
+1. 📁 Local project docs          (docs/, README, ARCHITECTURE.md)
+    ↓ if not found
+2. 🔌 Technology MCP/Skill        (if it exists and matches the version)
+    ↓ if it doesn't exist
+3. 🌐 Pre-configured official URL (registered in the SDD, pinned to version)
+    ↓ if it doesn't cover the case
+4. 🔍 Web search as fallback      (search directed at the official site)
 ```
 
-### Por que esta ordem?
+### Why this order?
 
-| Prioridade | Fonte | Justificativa |
+| Priority | Source | Justification |
 |:---:|:---|:---|
-| 1 | **Docs locais** | Mais específico ao projeto, padrões customizados, convenções internas |
-| 2 | **MCP/Skill** | Curado, confiável, eficiente em tokens, funciona offline |
-| 3 | **URL oficial** | Fonte canônica da tecnologia, pinada à versão correta |
-| 4 | **Web search** | Fallback universal, mas ruidoso e pode trazer versão errada |
+| 1 | **Local docs** | Most specific to the project, custom standards, internal conventions |
+| 2 | **MCP/Skill** | Curated, reliable, token-efficient, works offline |
+| 3 | **Official URL** | Canonical source of the technology, pinned to the correct version |
+| 4 | **Web search** | Universal fallback, but noisy and may bring the wrong version |
 
 ---
 
-## Como Conduzir a Entrevista de Fontes
+## How to Conduct the Sources Interview
 
-Durante a Fase 2.5 do SDD, após definir a stack, perguntar para cada tecnologia:
+During Phase 2.5 of the SDD, after defining the stack, ask for each technology:
 
-### Pergunta padrão (via ask_question):
+### Standard question (via ask_question):
 
 ```
-Para a tecnologia {nome} v{versão}, qual fonte de documentação devemos usar?
+For technology {name} v{version}, which documentation source should we use?
 ```
 
-**Opções:**
-1. **URL oficial** — informar a URL da documentação oficial pinada na versão
-2. **MCP disponível** — informar qual MCP server provê docs desta tecnologia
-3. **Skill local** — o projeto tem uma skill customizada para esta tecnologia
-4. **Docs no projeto** — existe pasta `docs/` ou wiki com documentação interna
+**Options:**
+1. **Official URL** — provide the official documentation URL pinned to the version
+2. **MCP available** — specify which MCP server provides docs for this technology
+3. **Local skill** — the project has a custom skill for this technology
+4. **Docs in project** — there's a `docs/` folder or wiki with internal documentation
 
-### Tecnologias com MCPs conhecidos:
+### Technologies with known MCPs:
 
-| Tecnologia | MCP Disponível | Notas |
+| Technology | MCP Available | Notes |
 |:---|:---|:---|
-| Múltiplas libs | Context7 | Cobre muitas bibliotecas populares via `context7` |
+| Multiple libs | Context7 | Covers many popular libraries via `context7` |
 | PostgreSQL | postgres-mcp | Schema awareness |
 | GitHub | github-mcp | Issues, PRs, repos |
-| Filesystem | filesystem-mcp | Nativo do Antigravity |
+| Filesystem | filesystem-mcp | Native to Antigravity |
 
 > [!NOTE]
-> A disponibilidade de MCPs muda frequentemente. Pergunte ao usuário se ele tem MCPs configurados no projeto.
+> MCP availability changes frequently. Ask the user if they have MCPs configured in their project.
 
 ---
 
-## Formato da Seção no SDD
+## SDD Section Format
 
-A seção "10. Fontes de Documentação Técnica" no SDD deve seguir este formato:
+Section "10. Technical Documentation Sources" in the SDD should follow this format:
 
 ```markdown
-## 10. Fontes de Documentação Técnica
+## 10. Technical Documentation Sources
 
-### 10.1 Configuração de Fontes
+### 10.1 Source Configuration
 
-| Tecnologia | Versão | Fonte Primária | URL Oficial | MCP/Skill |
+| Technology | Version | Primary Source | Official URL | MCP/Skill |
 |:---|:---|:---|:---|:---|
-| Next.js | 15.2 | URL oficial | https://nextjs.org/docs | — |
-| React | 19.1 | URL oficial | https://react.dev/reference | — |
+| Next.js | 15.2 | Official URL | https://nextjs.org/docs | — |
+| React | 19.1 | Official URL | https://react.dev/reference | — |
 | Prisma | 6.3 | MCP | https://prisma.io/docs | context7 |
-| Tailwind CSS | 4.0 | URL oficial | https://tailwindcss.com/docs | — |
+| Tailwind CSS | 4.0 | Official URL | https://tailwindcss.com/docs | — |
 | PostgreSQL | 16 | MCP | https://www.postgresql.org/docs/16/ | postgres-mcp |
-| TypeScript | 5.7 | URL oficial | https://www.typescriptlang.org/docs/ | — |
+| TypeScript | 5.7 | Official URL | https://www.typescriptlang.org/docs/ | — |
 
-### 10.2 Documentação Local do Projeto
+### 10.2 Local Project Documentation
 
-| Caminho | Conteúdo |
+| Path | Content |
 |:---|:---|
-| `docs/api.md` | Documentação da API interna |
-| `docs/conventions.md` | Convenções de código do projeto |
-| `ARCHITECTURE.md` | Arquitetura geral do sistema |
+| `docs/api.md` | Internal API documentation |
+| `docs/conventions.md` | Project code conventions |
+| `ARCHITECTURE.md` | General system architecture |
 
-### 10.3 Regra de Consulta
+### 10.3 Lookup Rule
 
-Ordem de prioridade para consulta de documentação durante o desenvolvimento:
-1. Documentação local do projeto (caminhos listados em 10.2)
-2. MCP/Skill (se listado na coluna MCP/Skill em 10.1)
-3. URL oficial (usar `read_url_content` na URL listada em 10.1)
-4. Web search (usar `search_web` com query: "{tecnologia} {versão} {tópico} site:{domínio oficial}")
+Priority order for documentation lookup during development:
+1. Local project documentation (paths listed in 10.2)
+2. MCP/Skill (if listed in the MCP/Skill column in 10.1)
+3. Official URL (use `read_url_content` on the URL listed in 10.1)
+4. Web search (use `search_web` with query: "{technology} {version} {topic} site:{official domain}")
 ```
 
 ---
 
-## Instruções para o Agente (Dev e CodeReview)
+## Agent Instructions (Dev and CodeReview)
 
-Quando o agente precisar consultar documentação durante o desenvolvimento:
+When the agent needs to consult documentation during development:
 
-### Passo 1: Ler a seção 10 do SDD
-Abrir `.specs/features/{feature}/sdd.md` e ler a seção "10. Fontes de Documentação Técnica"
+### Step 1: Read section 10 of the SDD
+Open `.specs/features/{feature}/sdd.md` and read section "10. Technical Documentation Sources"
 
-### Passo 2: Seguir a hierarquia
-1. **Docs local?** → `view_file` no caminho listado em 10.2
-2. **MCP/Skill?** → Usar a ferramenta/skill configurada em 10.1
-3. **URL oficial?** → `read_url_content("{url-da-tabela-10.1}/topico-especifico")`
-4. **Nenhum?** → `search_web("{tecnologia} {versão} {tópico} site:{domínio}")`
+### Step 2: Follow the hierarchy
+1. **Local docs?** → `view_file` on the path listed in 10.2
+2. **MCP/Skill?** → Use the tool/skill configured in 10.1
+3. **Official URL?** → `read_url_content("{url-from-table-10.1}/specific-topic")`
+4. **None?** → `search_web("{technology} {version} {topic} site:{domain}")`
 
-### Passo 3: Validar a versão
+### Step 3: Validate the version
 > [!WARNING]
-> Antes de usar qualquer informação de documentação, verificar se corresponde à versão listada na tabela 10.1. Documentação da versão errada pode gerar código incompatível.
+> Before using any documentation information, verify it matches the version listed in table 10.1. Documentation from the wrong version may generate incompatible code.
 
-### Exemplo prático de consulta:
+### Practical lookup example:
 
 ```
-Microtask: "Implementar server action de criação de usuário"
+Microtask: "Implement user creation server action"
 Stack: Next.js 15.2
 
-1. Docs local? → Não tem docs sobre server actions
-2. MCP/Skill? → Não tem MCP de Next.js
-3. URL oficial? → read_url_content("https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations")
-4. Se URL não cobrir → search_web("Next.js 15 server actions mutations site:nextjs.org")
+1. Local docs? → No docs about server actions
+2. MCP/Skill? → No Next.js MCP
+3. Official URL? → read_url_content("https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations")
+4. If URL doesn't cover → search_web("Next.js 15 server actions mutations site:nextjs.org")
 ```

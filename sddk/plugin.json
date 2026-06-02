@@ -1,7 +1,7 @@
 {
   "name": "spec-driven-development-kit",
   "version": "2.0.0",
-  "description": "Spec-Driven Development Kit (SDDK) — Plugin com pipeline sequencial de 5 skills para desenvolvimento orientado por especificacao. Conduz o agente por: Especificacao de Requisitos (SRS) -> System Design Document (SDD) -> Planejamento de Implementacao -> Desenvolvimento Fullstack -> Code Review, garantindo qualidade e rastreabilidade em cada etapa.",
+  "description": "Spec-Driven Development Kit (SDDK) — Plugin with a sequential 5-skill pipeline for specification-driven development. Guides the agent through: Software Requirements Specification (SRS) -> System Design Document (SDD) -> Implementation Planning -> Fullstack Development -> Code Review, ensuring quality and traceability at every stage.",
   "skills": [
     "skills/software-requirements-specification",
     "skills/system-design-document",

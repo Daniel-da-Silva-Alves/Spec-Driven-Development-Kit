@@ -1,80 +1,80 @@
-# Regras de Clean Code
+# Clean Code Rules
 
-Regras stack-agnostic que o agente deve seguir durante o desenvolvimento. Estas regras são aplicadas automaticamente — não precisam ser mencionadas ao usuário.
-
----
-
-## 1. Nomenclatura
-
-### Variáveis e Funções
-| ❌ Ruim | ✅ Bom | Razão |
-|:---|:---|:---|
-| `data` | `userProfile` | Descreve o conteúdo |
-| `temp` | `formattedDate` | Descreve o propósito |
-| `handleClick` | `handleLoginSubmit` | Descreve a ação específica |
-| `result` | `validationErrors` | Descreve o que contém |
-| `x`, `y`, `i` (fora de loop) | `index`, `coordinate` | Autodocumentável |
-| `flag` | `isAuthenticated` | Semântico |
-| `arr` | `activeUsers` | Descreve o conteúdo da coleção |
-
-### Funções
-| ❌ Ruim | ✅ Bom | Razão |
-|:---|:---|:---|
-| `process()` | `validateAndSaveUser()` | Descreve o que faz |
-| `doStuff()` | `calculateShippingCost()` | Específico |
-| `getData()` | `fetchUserOrders()` | Especifica o que busca |
-| `check()` | `isEmailAlreadyRegistered()` | Booleans com prefixo `is/has/can` |
-
-### Componentes (React/Vue/Svelte)
-| ❌ Ruim | ✅ Bom | Razão |
-|:---|:---|:---|
-| `Card` (genérico) | `ProductCard` | Específico ao domínio |
-| `Modal` (genérico) | `ConfirmDeleteModal` | Descreve o propósito |
-| `List` (genérico) | `OrderHistoryList` | Específico |
-| `Button` (global catch-all) | `SubmitButton`, `NavigationButton` | Variantes explícitas |
+Stack-agnostic rules that the agent must follow during development. These rules are applied automatically — they don't need to be mentioned to the user.
 
 ---
 
-## 2. Comentários
+## 1. Naming
 
-### Comentários Proibidos (❌)
+### Variables and Functions
+| ❌ Bad | ✅ Good | Reason |
+|:---|:---|:---|
+| `data` | `userProfile` | Describes the content |
+| `temp` | `formattedDate` | Describes the purpose |
+| `handleClick` | `handleLoginSubmit` | Describes the specific action |
+| `result` | `validationErrors` | Describes what it contains |
+| `x`, `y`, `i` (outside loops) | `index`, `coordinate` | Self-documenting |
+| `flag` | `isAuthenticated` | Semantic |
+| `arr` | `activeUsers` | Describes the collection content |
+
+### Functions
+| ❌ Bad | ✅ Good | Reason |
+|:---|:---|:---|
+| `process()` | `validateAndSaveUser()` | Describes what it does |
+| `doStuff()` | `calculateShippingCost()` | Specific |
+| `getData()` | `fetchUserOrders()` | Specifies what it fetches |
+| `check()` | `isEmailAlreadyRegistered()` | Booleans with `is/has/can` prefix |
+
+### Components (React/Vue/Svelte)
+| ❌ Bad | ✅ Good | Reason |
+|:---|:---|:---|
+| `Card` (generic) | `ProductCard` | Domain-specific |
+| `Modal` (generic) | `ConfirmDeleteModal` | Describes the purpose |
+| `List` (generic) | `OrderHistoryList` | Specific |
+| `Button` (global catch-all) | `SubmitButton`, `NavigationButton` | Explicit variants |
+
+---
+
+## 2. Comments
+
+### Prohibited Comments (❌)
 ```typescript
-// Incrementa o contador
+// Increment the counter
 counter++;
 
-// Retorna o usuário
+// Return the user
 return user;
 
-// Define o estado como true
+// Set state to true
 setIsLoading(true);
 
-// Cria uma nova instância
+// Create a new instance
 const service = new UserService();
 ```
 
-### Comentários Aceitáveis (✅)
+### Acceptable Comments (✅)
 ```typescript
-// Regex RFC 5322 simplificada para validação de email corporativo
-const EMAIL_PATTERN = /^[a-zA-Z0-9._%+-]+@empresa\.com$/;
+// Simplified RFC 5322 regex for corporate email validation
+const EMAIL_PATTERN = /^[a-zA-Z0-9._%+-]+@company\.com$/;
 
-// Delay de 300ms para debounce de busca — evita flood de requests
-// durante digitação rápida no campo de pesquisa
+// 300ms delay for search debounce — prevents request flooding
+// during rapid typing in the search field
 const SEARCH_DEBOUNCE_MS = 300;
 
-// TODO(#123): Migrar para a v2 da API quando disponível em produção
+// TODO(#123): Migrate to API v2 when available in production
 const API_BASE = '/api/v1';
 ```
 
-### Regra Geral
-> Comente o **porquê**, nunca o **o quê**. Se o código precisa de comentário para explicar o que faz, renomeie variáveis e funções até ficar óbvio.
+### General Rule
+> Comment the **why**, never the **what**. If code needs a comment to explain what it does, rename variables and functions until it's obvious.
 
 ---
 
-## 3. Abstração e Reutilização
+## 3. Abstraction and Reuse
 
-### Código Repetitivo (❌)
+### Repetitive Code (❌)
 ```typescript
-// Repetido em 5 componentes
+// Repeated in 5 components
 const response = await fetch('/api/users', {
   headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }
 });
@@ -82,54 +82,54 @@ if (!response.ok) throw new Error('Failed to fetch');
 const data = await response.json();
 ```
 
-### Com Abstração (✅)
+### With Abstraction (✅)
 ```typescript
-// Usado em 5+ componentes — fetch centralizado
+// Used in 5+ components — centralized fetch
 const users = await apiClient.get<User[]>('/users');
 ```
 
-### Regra: Extrair quando repetir ≥ 2 vezes
-Se um padrão de código aparece 2 ou mais vezes, deve ser extraído para:
-- Uma função utilitária
-- Um componente reutilizável
-- Um hook customizado (React)
-- Um serviço/module
+### Rule: Extract when repeating ≥ 2 times
+If a code pattern appears 2 or more times, it should be extracted to:
+- A utility function
+- A reusable component
+- A custom hook (React)
+- A service/module
 
 ---
 
-## 4. Estrutura de Arquivos
+## 4. File Structure
 
-### Arquivo Monolítico (❌)
+### Monolithic File (❌)
 ```
-src/components/Dashboard.tsx  ← 500+ linhas com tudo junto
+src/components/Dashboard.tsx  ← 500+ lines with everything together
 ```
 
-### Arquivos Granulares (✅)
+### Granular Files (✅)
 ```
 src/components/dashboard/
-├── Dashboard.tsx              ← Composição dos sub-componentes
-├── DashboardHeader.tsx        ← Header isolado
-├── DashboardMetrics.tsx       ← Cards de métricas
-├── DashboardRecentOrders.tsx  ← Lista de pedidos recentes
-└── useDashboardData.ts        ← Hook de dados
+├── Dashboard.tsx              ← Composition of sub-components
+├── DashboardHeader.tsx        ← Isolated header
+├── DashboardMetrics.tsx       ← Metrics cards
+├── DashboardRecentOrders.tsx  ← Recent orders list
+└── useDashboardData.ts        ← Data hook
 ```
 
-### Regra: 1 componente por arquivo, máximo ~150 linhas significativas
+### Rule: 1 component per file, maximum ~150 meaningful lines
 
 ---
 
-## 5. Tratamento de Erros
+## 5. Error Handling
 
-### Genérico (❌)
+### Generic (❌)
 ```typescript
 try {
   await saveUser(data);
 } catch (e) {
-  console.log(e);  // Ignora silenciosamente
+  console.log(e);  // Silently ignores
 }
 ```
 
-### Específico (✅)
+### Specific (✅)
 ```typescript
 try {
   await saveUser(data);
@@ -137,7 +137,7 @@ try {
   if (error instanceof ValidationError) {
     showFieldErrors(error.fields);
   } else if (error instanceof NetworkError) {
-    showRetryNotification('Falha na conexão. Tente novamente.');
+    showRetryNotification('Connection failed. Try again.');
   } else {
     logger.error('Unexpected error saving user', { error, userId: data.id });
     showGenericError();

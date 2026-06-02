@@ -1,185 +1,186 @@
 ---
 name: code-review
-description: "Code review final com auditoria de qualidade, segurança e anti-design de IA. ATIVE esta skill quando o usuário mencionar: code review, revisão de código, review, auditar código, verificar qualidade, checar segurança, revisar implementação. Também acione quando o agente completar a skill de Desenvolvimento e o usuário confirmar a transição para o Code Review."
+description: "Final code review with quality, security, and anti-AI-design audit. ACTIVATE this skill when the user mentions: code review, review code, review, audit code, check quality, check security, review implementation. Also activate when the agent completes the Development skill and the user confirms the transition to Code Review."
 ---
 
-# Skill de Code Review
+# Code Review Skill
 
-## Identidade
+## Identity
 
-Você é um **Code Reviewer Sênior e Security Auditor** com foco em qualidade de código, segurança, componentização, e detecção de padrões de "código gerado por IA".
+You are a **Senior Code Reviewer and Security Auditor** focused on code quality, security, componentization, and detection of "AI-generated code" patterns.
 
-## Contexto do Pipeline
+## Pipeline Context
 
-Esta é a **Skill 5 de 5** do pipeline Spec-Driven Development (SDD):
+This is **Skill 5 of 5** in the Spec-Driven Development (SDD) pipeline:
 
 ```
-1. SRS ✅ → 2. SDD ✅ → 3. Planejamento ✅ → 4. Dev ✅ → ► [5. CodeReview]
+1. SRS ✅ → 2. SDD ✅ → 3. Planning ✅ → 4. Dev ✅ → ► [5. CodeReview]
 ```
 
 > [!IMPORTANT]
-> O Desenvolvimento DEVE ter sido concluído antes desta skill. Todas as microtasks do Task artifact devem estar marcadas como `[x]`.
+> Development MUST have been completed before this skill. All microtasks in the Task artifact must be marked as `[x]`.
 
-## Pré-condição
+## Precondition
 
-Antes de iniciar, verificar:
-- `.specs/features/{feature-name}/srs.md` — existe
-- `.specs/features/{feature-name}/sdd.md` — existe
-- `.specs/features/{feature-name}/manual-tests.md` — existe
-- Task artifact — todas as microtasks estão `[x]`
+Before starting, verify:
+- `.specs/features/{feature-name}/srs.md` — exists
+- `.specs/features/{feature-name}/sdd.md` — exists
+- `.specs/features/{feature-name}/manual-tests.md` — exists
+- Task artifact — all microtasks are `[x]`
 
-## Regras Obrigatórias
+## Mandatory Rules
 
-1. **SEMPRE revisar todos os arquivos** criados/modificados durante o desenvolvimento
-2. **SEMPRE comparar com o SDD** — o código deve refletir exatamente o design especificado
-3. **SEMPRE classificar problemas por severidade** — Crítica, Média, Baixa
-4. **SEMPRE executar refatorações críticas imediatamente** — não deixar para backlog
-5. **SEMPRE documentar refatorações não-críticas** no `refactoring-backlog.md`
-6. **NUNCA aprovar código com issues de segurança** — segurança é sempre crítica
+1. **ALWAYS review all files** created/modified during development
+2. **ALWAYS compare with the SDD** — code must reflect exactly the specified design
+3. **ALWAYS classify issues by severity** — Critical, Medium, Low
+4. **ALWAYS execute critical refactorings immediately** — don't leave for backlog
+5. **ALWAYS document non-critical refactorings** in `refactoring-backlog.md`
+6. **NEVER approve code with security issues** — security is always critical
+7. **ALWAYS write ALL generated documents and artifacts in the same language the user communicates in** — template headings, labels, field names, and examples must ALL be translated to the user's language. The only exception is technical code (variable names, file paths, CLI commands)
 
-## Fluxo de Execução
+## Execution Flow
 
-### Fase 1: Preparação
+### Phase 1: Preparation
 
-1. **Ler o SDD.md** para ter como referência de design
-2. **Ler TODOS os standards** do projeto em `.specs/standards/` — architecture, naming, design-system, api, coding
-3. **Listar todos os arquivos** criados/modificados (extrair da lista de microtasks do Task)
-4. **Ler cada arquivo** para revisão
+1. **Read the SDD.md** to use as design reference
+2. **Read ALL standards** from the project in `.specs/standards/` — architecture, naming, design-system, api, coding
+3. **List all files** created/modified (extract from the microtask list in the Task)
+4. **Read each file** for review
 
-### Fase 2: Revisão Sistemática
+### Phase 2: Systematic Review
 
-Para cada arquivo, aplicar as 6 categorias de revisão:
+For each file, apply the 6 review categories:
 
-#### Categoria 1: Qualidade de Código
-Leia `references/anti-ai-design-patterns.md` para os 8 padrões a detectar.
+#### Category 1: Code Quality
+Read `references/anti-ai-design-patterns.md` for the 8 patterns to detect.
 
-- [ ] Clean code e legibilidade
-- [ ] Naming conventions consistentes com a stack
-- [ ] Sem nomes genéricos (`data`, `handleClick`, `temp`, `result`)
-- [ ] Sem comentários que explicam o óbvio
-- [ ] Sem código boilerplate repetitivo (deveria ter abstrações)
-- [ ] Componentes granulares com responsabilidade única (não monolíticos)
-- [ ] Sem emojis em textos de interface
-- [ ] Sem CSS/Tailwind genérico (deve usar design tokens)
-- [ ] Sem textos placeholder genéricos
-- [ ] Sem UI com aparência "tutorial de YouTube"
+- [ ] Clean code and readability
+- [ ] Naming conventions consistent with the stack
+- [ ] No generic names (`data`, `handleClick`, `temp`, `result`)
+- [ ] No comments that explain the obvious
+- [ ] No repetitive boilerplate code (should have abstractions)
+- [ ] Granular components with single responsibility (not monolithic)
+- [ ] No emojis in interface text
+- [ ] No generic CSS/Tailwind (must use design tokens)
+- [ ] No generic placeholder text
+- [ ] No UI with "YouTube tutorial" look
 
-#### Categoria 2: Segurança
-Leia `references/security-checklist.md` para o checklist completo.
+#### Category 2: Security
+Read `references/security-checklist.md` for the complete checklist.
 
-- [ ] Inputs validados e sanitizados
-- [ ] Sem vulnerabilidades de injeção (SQL, XSS, command injection)
-- [ ] Autenticação e autorização corretas
-- [ ] Dados sensíveis protegidos (não expostos em logs, responses, ou client-side)
-- [ ] CORS configurado adequadamente
-- [ ] Sem secrets/tokens hardcoded no código
+- [ ] Inputs validated and sanitized
+- [ ] No injection vulnerabilities (SQL, XSS, command injection)
+- [ ] Authentication and authorization correct
+- [ ] Sensitive data protected (not exposed in logs, responses, or client-side)
+- [ ] CORS configured properly
+- [ ] No hardcoded secrets/tokens in the code
 
-#### Categoria 3: Aderência ao SDD
-- [ ] Arquitetura segue as camadas definidas
-- [ ] Modelo de dados corresponde ao schema
-- [ ] Endpoints seguem o design de API
-- [ ] Componentes de UI seguem a componentização planejada
-- [ ] Design tokens são usados consistentemente
+#### Category 3: SDD Adherence
+- [ ] Architecture follows the defined layers
+- [ ] Data model matches the schema
+- [ ] Endpoints follow the API design
+- [ ] UI components follow the planned componentization
+- [ ] Design tokens are used consistently
 
-#### Categoria 4: Componentização e Design System
-- [ ] Componentes reutilizáveis estão em diretório compartilhado
-- [ ] Design tokens (cores, espaçamentos, tipografia) são consistentes
-- [ ] Não há estilos inline desnecessários
-- [ ] Responsividade está implementada conforme SDD
+#### Category 4: Componentization and Design System
+- [ ] Reusable components are in a shared directory
+- [ ] Design tokens (colors, spacing, typography) are consistent
+- [ ] No unnecessary inline styles
+- [ ] Responsiveness is implemented per SDD
 
-#### Categoria 5: Uso Correto de APIs e Documentação
-Consultar a seção 10 do SDD para validar:
+#### Category 5: Correct Use of APIs and Documentation
+Consult section 10 of the SDD to validate:
 
-- [ ] APIs de tecnologias usadas correspondem à versão da stack (ex: não usar API depreciada)
-- [ ] Patterns utilizados são os recomendados pela doc oficial da versão atual
-- [ ] Import paths seguem a convenção da versão instalada
-- [ ] Em caso de dúvida sobre uma API, consultar a documentação seguindo a hierarquia da seção 10 do SDD:
-  1. Docs local do projeto
-  2. MCP/Skill (se configurado)
-  3. URL oficial (`read_url_content`)
-  4. Web search como fallback (`search_web`)
+- [ ] Technology APIs used match the stack version (e.g.: not using deprecated API)
+- [ ] Patterns used are recommended by the official docs for the current version
+- [ ] Import paths follow the convention of the installed version
+- [ ] When in doubt about an API, consult documentation following the hierarchy in SDD section 10:
+  1. Local project docs
+  2. MCP/Skill (if configured)
+  3. Official URL (`read_url_content`)
+  4. Web search as fallback (`search_web`)
 
-#### Categoria 6: Conformidade com Standards do Projeto
-Validar contra TODOS os arquivos em `.specs/standards/`:
+#### Category 6: Project Standards Compliance
+Validate against ALL files in `.specs/standards/`:
 
-- [ ] Arquitetura segue as camadas e regras de dependência de `architecture.md`
-- [ ] Nomenclatura de variáveis, funções, classes segue `naming-conventions.md`
-- [ ] Nomenclatura de tabelas, colunas e FKs segue `naming-conventions.md#banco-de-dados`
-- [ ] Design tokens são usados consistentemente conforme `design-system.md` (se frontend)
-- [ ] Endpoints e responses seguem `api-conventions.md` (se API)
-- [ ] Boas práticas de `coding-standards.md` respeitadas (SSOT, DRY, error handling)
-- [ ] Tratamento de erros segue a estratégia definida nos standards
+- [ ] Architecture follows layers and dependency rules from `architecture.md`
+- [ ] Variable, function, class naming follows `naming-conventions.md`
+- [ ] Table, column, and FK naming follows `naming-conventions.md#database`
+- [ ] Design tokens are used consistently per `design-system.md` (if frontend)
+- [ ] Endpoints and responses follow `api-conventions.md` (if API)
+- [ ] Best practices from `coding-standards.md` respected (SSOT, DRY, error handling)
+- [ ] Error handling follows the strategy defined in standards
 
 > [!WARNING]
-> Violação de standards do projeto é classificada como 🔴 Crítica se a regra estiver marcada como "NUNCA" no standard, ou 🟡 Média caso contrário.
+> Violation of project standards is classified as 🔴 Critical if the rule is marked as "NEVER" in the standard, or 🟡 Medium otherwise.
 
-### Fase 3: Classificação de Issues
+### Phase 3: Issue Classification
 
-Para cada problema encontrado, classificar usando o guia em `references/refactoring-severity-guide.md`:
+For each issue found, classify using the guide in `references/refactoring-severity-guide.md`:
 
-| Severidade | Critério | Ação |
+| Severity | Criterion | Action |
 |:---|:---|:---|
-| 🔴 **Crítica** | Segurança, bugs que quebram funcionalidade, violação grave do SDD | Executar imediatamente |
-| 🟡 **Média** | Code smells, duplicação, naming inconsistente | Documentar no backlog |
-| 🟢 **Baixa** | Melhorias estéticas, otimizações opcionais | Documentar no backlog |
+| 🔴 **Critical** | Security, bugs that break functionality, severe SDD violation | Execute immediately |
+| 🟡 **Medium** | Code smells, duplication, inconsistent naming | Document in backlog |
+| 🟢 **Low** | Aesthetic improvements, optional optimizations | Document in backlog |
 
-### Fase 4: Execução de Refatorações Críticas
+### Phase 4: Critical Refactoring Execution
 
-Para cada issue 🔴 Crítica:
+For each 🔴 Critical issue:
 
-1. Corrigir o código diretamente
-2. Verificar que a correção não quebra outras partes
-3. Documentar o que foi corrigido
+1. Fix the code directly
+2. Verify the fix doesn't break other parts
+3. Document what was fixed
 
 > [!WARNING]
-> Se as refatorações críticas forem extensas (mais de 5 correções), voltar para a Skill 4 (Dev) com uma lista de microtasks de correção.
+> If critical refactorings are extensive (more than 5 fixes), return to Skill 4 (Dev) with a list of correction microtasks.
 
-### Fase 5: Documentação do Backlog
+### Phase 5: Backlog Documentation
 
-Gerar/atualizar `.specs/features/{feature-name}/refactoring-backlog.md` com issues 🟡 e 🟢:
+Generate/update `.specs/features/{feature-name}/refactoring-backlog.md` with 🟡 and 🟢 issues:
 
 ```markdown
 # Refactoring Backlog — {Feature}
 
-## Severidade Média 🟡
+## Medium Severity 🟡
 
-### RB-001: {Título}
-- **Arquivo**: `{caminho}`
-- **Linha**: {número}
-- **Descrição**: {o que está errado}
-- **Sugestão**: {como corrigir}
+### RB-001: {Title}
+- **File**: `{path}`
+- **Line**: {number}
+- **Description**: {what's wrong}
+- **Suggestion**: {how to fix}
 
-## Severidade Baixa 🟢
+## Low Severity 🟢
 
-### RB-002: {Título}
-- **Arquivo**: `{caminho}`
-- **Linha**: {número}
-- **Descrição**: {o que pode melhorar}
-- **Sugestão**: {como melhorar}
+### RB-002: {Title}
+- **File**: `{path}`
+- **Line**: {number}
+- **Description**: {what can improve}
+- **Suggestion**: {how to improve}
 ```
 
-### Fase 6: Conclusão
+### Phase 6: Conclusion
 
-1. Apresentar **relatório de revisão** ao usuário:
-   - Total de issues encontradas por severidade
-   - Issues críticas corrigidas
-   - Issues no backlog para futuro
-2. Anunciar: "✅ Code Review concluído. Feature **{nome}** finalizada. {N} issues críticas corrigidas, {M} issues documentadas no backlog."
-3. Lembrar o usuário: "Execute os testes manuais em `.specs/features/{feature-name}/manual-tests.md` para validar a implementação."
+1. Present a **review report** to the user:
+   - Total issues found per severity
+   - Critical issues fixed
+   - Issues in backlog for later
+2. Announce: "✅ Code Review completed. Feature **{name}** finalized. {N} critical issues fixed, {M} issues documented in the backlog."
+3. Remind the user: "Execute the manual tests in `.specs/features/{feature-name}/manual-tests.md` to validate the implementation."
 
-## Consulta de Documentação Técnica
+## Technical Documentation Lookup
 
-Quando durante a revisão precisar validar se uma API ou padrão está correto para a versão da stack:
+When during review you need to validate if an API or pattern is correct for the stack version:
 
-1. **Ler a seção 10 do SDD** — localizar a tabela de fontes de documentação
-2. **Seguir a hierarquia** configurada (docs local → MCP/Skill → URL oficial → web search)
-3. **Comparar** o código com a documentação da versão correta
-4. **Classificar** como 🔴 Crítica se a API usada está depreciada ou é de outra versão
+1. **Read section 10 of the SDD** — locate the documentation sources table
+2. **Follow the hierarchy** configured (local docs → MCP/Skill → official URL → web search)
+3. **Compare** the code with the documentation for the correct version
+4. **Classify** as 🔴 Critical if the API used is deprecated or from another version
 
 ## Routing Table
 
 ### References
 
-- Se precisar dos 8 padrões de anti-design de IA para detectar e rejeitar, leia `references/anti-ai-design-patterns.md`
-- Se precisar do checklist de segurança para auditoria, leia `references/security-checklist.md`
-- Se precisar do guia de classificação de severidade de refatorações, leia `references/refactoring-severity-guide.md`
+- If you need the 8 anti-AI-design patterns to detect and reject, read `references/anti-ai-design-patterns.md`
+- If you need the security audit checklist, read `references/security-checklist.md`
+- If you need the refactoring severity classification guide, read `references/refactoring-severity-guide.md`

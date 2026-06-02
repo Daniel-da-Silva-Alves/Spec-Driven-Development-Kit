@@ -1,76 +1,76 @@
-# Template: Padrões Arquiteturais do Projeto
+# Template: Project Architectural Standards
 
-Use este template para gerar `.specs/standards/architecture.md`. Preencha com as respostas do onboarding.
+Use this template to generate `.specs/standards/architecture.md`. Fill in with the onboarding interview answers.
 
 ```markdown
-# Padrões Arquiteturais do Projeto
+# Project Architectural Standards
 
-**Projeto**: {nome do projeto}
-**Última atualização**: {data}
+**Project**: {project name}
+**Last updated**: {date}
 
 ---
 
-## 1. Padrão Arquitetural Base
+## 1. Base Architectural Pattern
 
-**Padrão**: {ex: Domain-Driven Design (DDD)}
-**Justificativa**: {por que este padrão}
+**Pattern**: {e.g.: Domain-Driven Design (DDD)}
+**Justification**: {why this pattern}
 
-### Camadas e Responsabilidades
+### Layers and Responsibilities
 
-| Camada | Responsabilidade | Pode importar de | NÃO pode importar de |
+| Layer | Responsibility | Can import from | CANNOT import from |
 |:---|:---|:---|:---|
-| {ex: Domain} | {ex: Entidades, Value Objects, regras de negócio} | {nenhuma} | {Application, Infrastructure, Presentation} |
-| {ex: Application} | {ex: Use Cases, DTOs, Ports} | {Domain} | {Infrastructure, Presentation} |
-| {ex: Infrastructure} | {ex: Repositories, API clients, DB} | {Domain, Application} | {Presentation} |
-| {ex: Presentation} | {ex: Controllers, Views, Components} | {Application} | {Domain, Infrastructure} |
+| {e.g.: Domain} | {e.g.: Entities, Value Objects, business rules} | {none} | {Application, Infrastructure, Presentation} |
+| {e.g.: Application} | {e.g.: Use Cases, DTOs, Ports} | {Domain} | {Infrastructure, Presentation} |
+| {e.g.: Infrastructure} | {e.g.: Repositories, API clients, DB} | {Domain, Application} | {Presentation} |
+| {e.g.: Presentation} | {e.g.: Controllers, Views, Components} | {Application} | {Domain, Infrastructure} |
 
-### Estrutura de Diretórios Padrão
+### Default Directory Structure
 
 ```
 src/
-├── {camada1}/
-├── {camada2}/
-├── {camada3}/
-└── {camada4}/
+├── {layer1}/
+├── {layer2}/
+├── {layer3}/
+└── {layer4}/
 ```
 
 ---
 
-## 2. Padrões Avançados
+## 2. Advanced Patterns
 
-### {ex: Event Sourcing}
-- **Usado em**: {módulos/contextos onde se aplica}
-- **NÃO usado em**: {módulos onde NÃO se aplica}
-- **Implementação**: {detalhes técnicos}
+### {e.g.: Event Sourcing}
+- **Used in**: {modules/contexts where it applies}
+- **NOT used in**: {modules where it does NOT apply}
+- **Implementation**: {technical details}
 
-### {ex: BFF (Backend for Frontend)}
-- **Escopo**: {cada frontend tem seu BFF? ou BFF único?}
-- **Regra**: {BFF contém lógica de negócio? Ou apenas orquestra?}
+### {e.g.: BFF (Backend for Frontend)}
+- **Scope**: {does each frontend have its own BFF? or a single BFF?}
+- **Rule**: {does BFF contain business logic? Or only orchestrates?}
 
-### {ex: CQRS (Command Query Responsibility Segregation)}
-- **Usado em**: {onde se aplica}
-- **Command**: {como são os commands}
-- **Query**: {como são as queries}
+### {e.g.: CQRS (Command Query Responsibility Segregation)}
+- **Used in**: {where it applies}
+- **Command**: {what commands look like}
+- **Query**: {what queries look like}
 
 ---
 
-## 3. Regras de Dependência
+## 3. Dependency Rules
 
 > [!IMPORTANT]
-> Estas regras NUNCA devem ser violadas. Violação é classificada como 🔴 Crítica no Code Review.
+> These rules must NEVER be violated. Violations are classified as 🔴 Critical in Code Review.
 
-1. {ex: Domain NUNCA importa de Infrastructure}
-2. {ex: Use Cases orquestram, NUNCA contêm lógica de domínio pura}
-3. {ex: Cada Aggregate tem seu próprio Repository}
-4. {ex: Repositories retornam Domain Entities, não DTOs}
+1. {e.g.: Domain NEVER imports from Infrastructure}
+2. {e.g.: Use Cases orchestrate, NEVER contain pure domain logic}
+3. {e.g.: Each Aggregate has its own Repository}
+4. {e.g.: Repositories return Domain Entities, not DTOs}
 
 ---
 
-## 4. Princípios de Design
+## 4. Design Principles
 
-| Princípio | Como aplicamos |
+| Principle | How we apply it |
 |:---|:---|
-| {ex: SSOT} | {ex: Estado vive no banco. Cache é derivado, nunca fonte primária} |
-| {ex: Separation of Concerns} | {ex: Cada módulo tem responsabilidade única} |
-| {ex: Fail Fast} | {ex: Validar inputs na borda do sistema} |
+| {e.g.: SSOT} | {e.g.: State lives in the database. Cache is derived, never the primary source} |
+| {e.g.: Separation of Concerns} | {e.g.: Each module has a single responsibility} |
+| {e.g.: Fail Fast} | {e.g.: Validate inputs at the system boundary} |
 ```

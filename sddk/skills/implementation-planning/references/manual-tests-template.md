@@ -1,95 +1,95 @@
-# Template de Testes Manuais
+# Manual Tests Template
 
-Use este template para gerar o `manual-tests.md` de cada feature. Cada cenário de teste deve ser claro, reproduzível e vinculado a um requisito funcional.
+Use this template to generate the `manual-tests.md` for each feature. Each test scenario must be clear, reproducible, and linked to a functional requirement.
 
-## Estrutura do Documento
+## Document Structure
 
 ```markdown
-# Testes Manuais — {Nome da Feature}
+# Manual Tests — {Feature Name}
 
-**Feature**: {nome da feature}
-**Data**: {data de geração}
-**SRS Referência**: [srs.md](.specs/features/{feature}/srs.md)
-**SDD Referência**: [sdd.md](.specs/features/{feature}/sdd.md)
-
----
-
-## Instruções para o Desenvolvedor
-
-1. Execute cada cenário de teste **na ordem listada**
-2. Marque `[x]` nos cenários que passaram
-3. Para cenários que falharam, anote o comportamento observado na coluna "Resultado Real"
-4. Todos os cenários DEVEM passar antes de considerar a feature completa
+**Feature**: {feature name}
+**Date**: {generation date}
+**SRS Reference**: [srs.md](.specs/features/{feature}/srs.md)
+**SDD Reference**: [sdd.md](.specs/features/{feature}/sdd.md)
 
 ---
 
-## Cenários de Teste
+## Instructions for the Developer
 
-### CT-001: {Nome descritivo do cenário}
+1. Execute each test scenario **in the listed order**
+2. Mark `[x]` on scenarios that passed
+3. For failed scenarios, note the observed behavior in the "Actual Result" column
+4. All scenarios MUST pass before considering the feature complete
 
-| Campo | Valor |
+---
+
+## Test Scenarios
+
+### TS-001: {Descriptive scenario name}
+
+| Field | Value |
 |:---|:---|
-| **Requisito** | RF-{xxx} — {nome do requisito} |
-| **Prioridade** | Alta / Média / Baixa |
-| **Pré-condição** | {estado inicial necessário} |
+| **Requirement** | FR-{xxx} — {requirement name} |
+| **Priority** | High / Medium / Low |
+| **Precondition** | {required initial state} |
 
-**Passos:**
-1. {ação específica 1}
-2. {ação específica 2}
-3. {ação específica 3}
+**Steps:**
+1. {specific action 1}
+2. {specific action 2}
+3. {specific action 3}
 
-**Resultado Esperado:**
-{descrição precisa do que deve acontecer}
+**Expected Result:**
+{precise description of what should happen}
 
-**Resultado Real:**
-- [ ] ✅ Passou
-- [ ] ❌ Falhou — Observação: ___
-
----
-
-### CT-002: {Nome descritivo do cenário}
-
-(repetir formato)
+**Actual Result:**
+- [ ] ✅ Passed
+- [ ] ❌ Failed — Observation: ___
 
 ---
 
-## Cenários de Edge Case
+### TS-002: {Descriptive scenario name}
 
-### EC-001: {Nome do edge case}
+(repeat format)
 
-| Campo | Valor |
+---
+
+## Edge Case Scenarios
+
+### EC-001: {Edge case name}
+
+| Field | Value |
 |:---|:---|
-| **Requisito** | RF-{xxx} |
-| **Tipo** | Input inválido / Erro de rede / Concorrência / Limite |
+| **Requirement** | FR-{xxx} |
+| **Type** | Invalid input / Network error / Concurrency / Limit |
 
-**Passos:**
-1. {ação que provoca o edge case}
+**Steps:**
+1. {action that triggers the edge case}
 
-**Resultado Esperado:**
-{como o sistema deve se comportar neste caso}
+**Expected Result:**
+{how the system should behave in this case}
 
-**Resultado Real:**
-- [ ] ✅ Passou
-- [ ] ❌ Falhou — Observação: ___
+**Actual Result:**
+- [ ] ✅ Passed
+- [ ] ❌ Failed — Observation: ___
 
 ---
 
-## Resumo de Execução
+## Execution Summary
 
-| Total | Passou | Falhou | Pendente |
+| Total | Passed | Failed | Pending |
 |:---:|:---:|:---:|:---:|
 | {n} | {n} | {n} | {n} |
 
 **Executor**: ___
-**Data de execução**: ___
-**Aprovado para deploy**: [ ] Sim / [ ] Não
+**Execution date**: ___
+**Approved for deploy**: [ ] Yes / [ ] No
 ```
 
-## Regras de Geração
+## Generation Rules
 
-1. **Cada requisito funcional (RF-xxx) DEVE ter pelo menos 1 cenário de teste**
-2. **Cada regra de negócio (RN-xxx) DEVE ter pelo menos 1 cenário que a valida**
-3. **Incluir pelo menos 2 edge cases** por feature (inputs inválidos, limites, erros)
-4. **Passos DEVEM ser reproduzíveis** — "clicar no botão X" e não "testar a funcionalidade"
-5. **Resultado esperado DEVE ser específico** — "exibir toast verde com texto 'Salvo com sucesso'" e não "funcionar"
-6. **Prioridade dos cenários** corresponde à prioridade do requisito que testam
+1. **Each functional requirement (FR-xxx) MUST have at least 1 test scenario**
+2. **Each business rule (BR-xxx) MUST have at least 1 scenario that validates it**
+3. **Include at least 2 edge cases** per feature (invalid inputs, limits, errors)
+4. **Steps MUST be reproducible** — "click button X" not "test the functionality"
+5. **Expected result MUST be specific** — "display green toast with text 'Saved successfully'" not "work"
+6. **Scenario priority** corresponds to the priority of the requirement they test

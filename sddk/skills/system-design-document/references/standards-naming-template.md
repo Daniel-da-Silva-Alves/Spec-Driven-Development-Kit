@@ -1,96 +1,96 @@
-# Template: Convenções de Nomenclatura do Projeto
+# Template: Project Naming Conventions
 
-Use este template para gerar `.specs/standards/naming-conventions.md`. Preencha com as respostas do onboarding.
+Use this template to generate `.specs/standards/naming-conventions.md`. Fill in with the onboarding interview answers.
 
 ```markdown
-# Convenções de Nomenclatura
+# Naming Conventions
 
-**Projeto**: {nome do projeto}
-**Última atualização**: {data}
+**Project**: {project name}
+**Last updated**: {date}
 
 ---
 
-## 1. Banco de Dados
+## 1. Database
 
-| Elemento | Convenção | Exemplo | Anti-exemplo |
+| Element | Convention | Example | Anti-example |
 |:---|:---|:---|:---|
-| Tabelas | {ex: snake_case, plural} | {ex: `auth_users`} | {ex: `User`, `authUser`} |
-| Colunas | {ex: snake_case, singular} | {ex: `first_name`} | {ex: `firstName`, `FirstName`} |
-| Primary Keys | {ex: `id` (UUID v4)} | {ex: `id`} | {ex: `user_id`, `ID`} |
-| Foreign Keys | {ex: `{tabela_singular}_id`} | {ex: `user_id`} | {ex: `fk_user`, `userId`} |
-| Índices | {ex: `idx_{tabela}_{colunas}`} | {ex: `idx_users_email`} | {ex: `index1`} |
-| Enums (valores) | {ex: UPPER_SNAKE_CASE} | {ex: `PENDING_PAYMENT`} | {ex: `pendingPayment`} |
-| Timestamps | {ex: `created_at`, `updated_at`} | — | {ex: `createdAt`, `date_created`} |
-| Soft delete | {ex: `deleted_at` nullable} | — | {ex: `is_deleted`} |
-| Booleanos | {ex: `is_` prefix} | {ex: `is_active`} | {ex: `active`, `status`} |
+| Tables | {e.g.: snake_case, plural} | {e.g.: `auth_users`} | {e.g.: `User`, `authUser`} |
+| Columns | {e.g.: snake_case, singular} | {e.g.: `first_name`} | {e.g.: `firstName`, `FirstName`} |
+| Primary Keys | {e.g.: `id` (UUID v4)} | {e.g.: `id`} | {e.g.: `user_id`, `ID`} |
+| Foreign Keys | {e.g.: `{singular_table}_id`} | {e.g.: `user_id`} | {e.g.: `fk_user`, `userId`} |
+| Indexes | {e.g.: `idx_{table}_{columns}`} | {e.g.: `idx_users_email`} | {e.g.: `index1`} |
+| Enums (values) | {e.g.: UPPER_SNAKE_CASE} | {e.g.: `PENDING_PAYMENT`} | {e.g.: `pendingPayment`} |
+| Timestamps | {e.g.: `created_at`, `updated_at`} | — | {e.g.: `createdAt`, `date_created`} |
+| Soft delete | {e.g.: `deleted_at` nullable} | — | {e.g.: `is_deleted`} |
+| Booleans | {e.g.: `is_` prefix} | {e.g.: `is_active`} | {e.g.: `active`, `status`} |
 
-### Prefixos de Módulo (se aplicável)
-| Módulo | Prefixo | Exemplo |
+### Module Prefixes (if applicable)
+| Module | Prefix | Example |
 |:---|:---|:---|
-| {ex: Autenticação} | {ex: `auth_`} | {ex: `auth_users`, `auth_sessions`} |
-| {ex: Pagamentos} | {ex: `pay_`} | {ex: `pay_transactions`} |
+| {e.g.: Authentication} | {e.g.: `auth_`} | {e.g.: `auth_users`, `auth_sessions`} |
+| {e.g.: Payments} | {e.g.: `pay_`} | {e.g.: `pay_transactions`} |
 
 ---
 
-## 2. Código ({linguagem})
+## 2. Code ({language})
 
-### Variáveis
+### Variables
 
-| Tipo | Convenção | Exemplo | Anti-exemplo |
+| Type | Convention | Example | Anti-example |
 |:---|:---|:---|:---|
-| Variáveis locais | {ex: camelCase} | {ex: `userName`} | {ex: `user_name`, `UserName`} |
-| Constantes | {ex: UPPER_SNAKE_CASE} | {ex: `MAX_RETRIES`} | {ex: `maxRetries`} |
-| Booleanos | {ex: prefixo is/has/can/should} | {ex: `isAuthenticated`} | {ex: `authenticated`, `auth`} |
-| Arrays/Coleções | {ex: plural} | {ex: `activeUsers`} | {ex: `userList`, `data`} |
+| Local variables | {e.g.: camelCase} | {e.g.: `userName`} | {e.g.: `user_name`, `UserName`} |
+| Constants | {e.g.: UPPER_SNAKE_CASE} | {e.g.: `MAX_RETRIES`} | {e.g.: `maxRetries`} |
+| Booleans | {e.g.: is/has/can/should prefix} | {e.g.: `isAuthenticated`} | {e.g.: `authenticated`, `auth`} |
+| Arrays/Collections | {e.g.: plural} | {e.g.: `activeUsers`} | {e.g.: `userList`, `data`} |
 
-### Funções
+### Functions
 
-| Tipo | Convenção | Exemplo | Anti-exemplo |
+| Type | Convention | Example | Anti-example |
 |:---|:---|:---|:---|
-| Funções gerais | {ex: verbo + substantivo, camelCase} | {ex: `calculateTotal`} | {ex: `calc`, `doStuff`} |
-| Handlers | {ex: handle + evento específico} | {ex: `handleLoginSubmit`} | {ex: `handleClick`} |
-| Getters | {ex: get + o quê} | {ex: `getUserOrders`} | {ex: `getData`} |
-| Validadores | {ex: is/validate + o quê} | {ex: `isValidEmail`} | {ex: `check`} |
-| Transformadores | {ex: formato + To + formato} | {ex: `dtoToEntity`} | {ex: `convert`} |
+| General functions | {e.g.: verb + noun, camelCase} | {e.g.: `calculateTotal`} | {e.g.: `calc`, `doStuff`} |
+| Handlers | {e.g.: handle + specific event} | {e.g.: `handleLoginSubmit`} | {e.g.: `handleClick`} |
+| Getters | {e.g.: get + what} | {e.g.: `getUserOrders`} | {e.g.: `getData`} |
+| Validators | {e.g.: is/validate + what} | {e.g.: `isValidEmail`} | {e.g.: `check`} |
+| Transformers | {e.g.: format + To + format} | {e.g.: `dtoToEntity`} | {e.g.: `convert`} |
 
-### Classes e Types
+### Classes and Types
 
-| Tipo | Convenção | Exemplo | Anti-exemplo |
+| Type | Convention | Example | Anti-example |
 |:---|:---|:---|:---|
-| Classes | {ex: PascalCase, substantivo} | {ex: `UserService`} | {ex: `userService`} |
-| Interfaces | {ex: PascalCase, sem prefixo I} | {ex: `UserProfile`} | {ex: `IUserProfile`} |
-| Types | {ex: PascalCase} | {ex: `OrderStatus`} | {ex: `TOrderStatus`} |
-| Enums | {ex: PascalCase singular} | {ex: `PaymentMethod`} | {ex: `PaymentMethods`} |
+| Classes | {e.g.: PascalCase, noun} | {e.g.: `UserService`} | {e.g.: `userService`} |
+| Interfaces | {e.g.: PascalCase, no I prefix} | {e.g.: `UserProfile`} | {e.g.: `IUserProfile`} |
+| Types | {e.g.: PascalCase} | {e.g.: `OrderStatus`} | {e.g.: `TOrderStatus`} |
+| Enums | {e.g.: PascalCase singular} | {e.g.: `PaymentMethod`} | {e.g.: `PaymentMethods`} |
 
-### Componentes (Frontend)
+### Components (Frontend)
 
-| Tipo | Convenção | Exemplo | Anti-exemplo |
+| Type | Convention | Example | Anti-example |
 |:---|:---|:---|:---|
-| Componentes | {ex: PascalCase, específico} | {ex: `ProductCard`} | {ex: `Card`} |
-| Hooks | {ex: use + contexto} | {ex: `useOrderData`} | {ex: `useData`} |
-| Context | {ex: PascalCase + Context} | {ex: `AuthContext`} | {ex: `ctx`} |
+| Components | {e.g.: PascalCase, specific} | {e.g.: `ProductCard`} | {e.g.: `Card`} |
+| Hooks | {e.g.: use + context} | {e.g.: `useOrderData`} | {e.g.: `useData`} |
+| Context | {e.g.: PascalCase + Context} | {e.g.: `AuthContext`} | {e.g.: `ctx`} |
 
 ---
 
-## 3. Arquivos e Diretórios
+## 3. Files and Directories
 
-| Tipo | Convenção | Exemplo |
+| Type | Convention | Example |
 |:---|:---|:---|
-| Componentes | {ex: PascalCase.tsx} | {ex: `ProductCard.tsx`} |
-| Hooks | {ex: camelCase.ts} | {ex: `useAuth.ts`} |
-| Utils | {ex: camelCase.ts} | {ex: `formatCurrency.ts`} |
-| Types | {ex: camelCase.ts} | {ex: `userTypes.ts`} |
-| Services | {ex: camelCase.service.ts} | {ex: `auth.service.ts`} |
-| Repositories | {ex: camelCase.repository.ts} | {ex: `user.repository.ts`} |
-| Migrations | {ex: NNN_descricao.sql} | {ex: `001_create_users.sql`} |
+| Components | {e.g.: PascalCase.tsx} | {e.g.: `ProductCard.tsx`} |
+| Hooks | {e.g.: camelCase.ts} | {e.g.: `useAuth.ts`} |
+| Utils | {e.g.: camelCase.ts} | {e.g.: `formatCurrency.ts`} |
+| Types | {e.g.: camelCase.ts} | {e.g.: `userTypes.ts`} |
+| Services | {e.g.: camelCase.service.ts} | {e.g.: `auth.service.ts`} |
+| Repositories | {e.g.: camelCase.repository.ts} | {e.g.: `user.repository.ts`} |
+| Migrations | {e.g.: NNN_description.sql} | {e.g.: `001_create_users.sql`} |
 
 ---
 
 ## 4. Git
 
-| Tipo | Convenção | Exemplo |
+| Type | Convention | Example |
 |:---|:---|:---|
-| Branches | {ex: tipo/descricao-curta} | {ex: `feat/user-auth`, `fix/login-redirect`} |
-| Commits | {ex: Conventional Commits} | {ex: `feat(auth): add login endpoint`} |
-| Tags | {ex: semver} | {ex: `v1.2.3`} |
+| Branches | {e.g.: type/short-description} | {e.g.: `feat/user-auth`, `fix/login-redirect`} |
+| Commits | {e.g.: Conventional Commits} | {e.g.: `feat(auth): add login endpoint`} |
+| Tags | {e.g.: semver} | {e.g.: `v1.2.3`} |
 ```

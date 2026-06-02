@@ -1,96 +1,96 @@
-# Guia de Classificação de Severidade de Refatorações
+# Refactoring Severity Classification Guide
 
-Use este guia para classificar cada issue encontrada durante o Code Review. A classificação determina a **ação imediata** a ser tomada.
+Use this guide to classify each issue found during Code Review. The classification determines the **immediate action** to be taken.
 
 ---
 
-## Severidades
+## Severities
 
-### 🔴 Crítica — Execução Imediata
+### 🔴 Critical — Immediate Execution
 
-Issues que **devem ser corrigidas na mesma sessão** antes de considerar a feature concluída.
+Issues that **must be fixed in the same session** before considering the feature complete.
 
-#### Critérios para Classificar como Crítica:
+#### Criteria for Classifying as Critical:
 
-| Categoria | Exemplos |
+| Category | Examples |
 |:---|:---|
-| **Segurança** | SQL injection, XSS, IDOR, secrets expostos, senhas em plaintext |
-| **Bug funcional** | Feature não funciona conforme SRS, crash em fluxo principal |
-| **Violação grave do SDD** | Arquitetura implementada diferente do design (ex: lógica de negócio no controller) |
-| **Perda de dados** | Operações destrutivas sem confirmação, falta de validação em deletes |
+| **Security** | SQL injection, XSS, IDOR, exposed secrets, plaintext passwords |
+| **Functional bug** | Feature doesn't work per SRS, crash in main flow |
+| **Severe SDD violation** | Architecture implemented differently from design (e.g.: business logic in controller) |
+| **Data loss** | Destructive operations without confirmation, missing validation on deletes |
 
-#### Ação:
-1. Corrigir o código diretamente
-2. Documentar o que foi corrigido no relatório de review
-3. Se houver mais de 5 correções críticas, criar microtasks e voltar para Skill 4
+#### Action:
+1. Fix the code directly
+2. Document what was fixed in the review report
+3. If there are more than 5 critical fixes, create microtasks and return to Skill 4
 
 ---
 
-### 🟡 Média — Documentar no Backlog
+### 🟡 Medium — Document in Backlog
 
-Issues que **afetam qualidade mas não impedem o funcionamento**. Devem ser resolvidas antes do próximo release ou sprint.
+Issues that **affect quality but don't prevent functionality**. Should be resolved before the next release or sprint.
 
-#### Critérios para Classificar como Média:
+#### Criteria for Classifying as Medium:
 
-| Categoria | Exemplos |
+| Category | Examples |
 |:---|:---|
-| **Code smell** | Duplicação de código, funções muito longas, complexidade ciclomática alta |
-| **Naming** | Nomes inconsistentes entre arquivos, convenções misturadas |
-| **Anti-IA detectado** | Emojis em UI, CSS genérico, comentários óbvios |
-| **Componentização** | Componente com múltiplas responsabilidades (mas funcional) |
-| **Configuração** | CORS aberto, falta de rate limiting, validação apenas no frontend |
+| **Code smell** | Code duplication, overly long functions, high cyclomatic complexity |
+| **Naming** | Inconsistent names across files, mixed conventions |
+| **Anti-AI detected** | Emojis in UI, generic CSS, obvious comments |
+| **Componentization** | Component with multiple responsibilities (but functional) |
+| **Configuration** | Open CORS, missing rate limiting, frontend-only validation |
 
-#### Ação:
-1. Documentar em `.specs/features/{feature}/refactoring-backlog.md`
-2. Incluir: arquivo, linha, descrição, sugestão de correção
-3. Priorizar dentro do backlog
+#### Action:
+1. Document in `.specs/features/{feature}/refactoring-backlog.md`
+2. Include: file, line, description, fix suggestion
+3. Prioritize within the backlog
 
 ---
 
-### 🟢 Baixa — Documentar no Backlog (Baixa Prioridade)
+### 🟢 Low — Document in Backlog (Low Priority)
 
-Issues que são **melhorias opcionais** de estética, performance ou organização. Não urgentes.
+Issues that are **optional improvements** to aesthetics, performance, or organization. Not urgent.
 
-#### Critérios para Classificar como Baixa:
+#### Criteria for Classifying as Low:
 
-| Categoria | Exemplos |
+| Category | Examples |
 |:---|:---|
-| **Otimização** | Queries que poderiam ser mais eficientes (mas funcionam) |
-| **Estilo** | Formatação inconsistente (que um linter resolveria) |
-| **Documentação** | Falta de JSDoc em funções públicas |
-| **Organização** | Arquivo poderia estar em outro diretório (mas funciona onde está) |
-| **DX** | Mensagens de log pouco informativas |
+| **Optimization** | Queries that could be more efficient (but work) |
+| **Style** | Inconsistent formatting (that a linter would fix) |
+| **Documentation** | Missing JSDoc on public functions |
+| **Organization** | File could be in a different directory (but works where it is) |
+| **DX** | Uninformative log messages |
 
-#### Ação:
-1. Documentar em `.specs/features/{feature}/refactoring-backlog.md`
-2. Marcar como baixa prioridade
-3. Resolver quando houver tempo disponível
+#### Action:
+1. Document in `.specs/features/{feature}/refactoring-backlog.md`
+2. Mark as low priority
+3. Resolve when time is available
 
 ---
 
-## Árvore de Decisão
+## Decision Tree
 
 ```
-O código funciona incorretamente ou tem falha de segurança?
-├── SIM → 🔴 Crítica → CORRIGIR AGORA
-└── NÃO
-    └── O código viola boas práticas, convenções ou o SDD?
-        ├── SIM → 🟡 Média → BACKLOG (prioridade)
-        └── NÃO
-            └── O código pode ser melhorado mas está OK?
-                ├── SIM → 🟢 Baixa → BACKLOG (quando possível)
-                └── NÃO → ✅ Sem issue
+Does the code work incorrectly or have a security flaw?
+├── YES → 🔴 Critical → FIX NOW
+└── NO
+    └── Does the code violate best practices, conventions, or the SDD?
+        ├── YES → 🟡 Medium → BACKLOG (priority)
+        └── NO
+            └── Can the code be improved but is it OK?
+                ├── YES → 🟢 Low → BACKLOG (when possible)
+                └── NO → ✅ No issue
 ```
 
-## Formato do Backlog Entry
+## Backlog Entry Format
 
 ```markdown
-### RB-{número}: {Título descritivo}
-- **Severidade**: 🟡 Média / 🟢 Baixa
-- **Arquivo**: `{caminho/do/arquivo.ext}`
-- **Linha(s)**: {L42-L58}
-- **Categoria**: {Code Smell | Naming | Anti-IA | Segurança | Performance | Organização}
-- **Descrição**: {O que está errado}
-- **Sugestão**: {Como corrigir}
-- **Esforço estimado**: {Baixo | Médio | Alto}
+### RB-{number}: {Descriptive title}
+- **Severity**: 🟡 Medium / 🟢 Low
+- **File**: `{path/to/file.ext}`
+- **Line(s)**: {L42-L58}
+- **Category**: {Code Smell | Naming | Anti-AI | Security | Performance | Organization}
+- **Description**: {What's wrong}
+- **Suggestion**: {How to fix}
+- **Estimated effort**: {Low | Medium | High}
 ```

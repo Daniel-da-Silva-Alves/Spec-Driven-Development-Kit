@@ -1,64 +1,64 @@
-# Checklist de Auto-Review (Self-Review)
+# Self-Review Checklist
 
-Aplique este checklist após implementar cada microtask. Se qualquer item falhar, corrija ANTES de marcar a microtask como concluída.
+Apply this checklist after implementing each microtask. If any item fails, fix it BEFORE marking the microtask as complete.
 
 ---
 
 ## Checklist
 
-### 1. Aderência ao SDD
+### 1. SDD Adherence
 
-- [ ] O código implementa exatamente o que está especificado na seção referenciada do SDD?
-- [ ] A estrutura de pastas/arquivos segue o definido no SDD?
-- [ ] O modelo de dados corresponde ao schema do SDD (campos, tipos, constraints)?
-- [ ] Os endpoints/rotas seguem o design de API do SDD (paths, methods, bodies)?
-- [ ] As camadas de responsabilidade estão separadas conforme arquitetura do SDD?
+- [ ] Does the code implement exactly what is specified in the referenced SDD section?
+- [ ] Does the folder/file structure follow what's defined in the SDD?
+- [ ] Does the data model match the SDD schema (fields, types, constraints)?
+- [ ] Do the endpoints/routes follow the SDD API design (paths, methods, bodies)?
+- [ ] Are the responsibility layers separated according to the SDD architecture?
 
 ### 2. Clean Code
 
-- [ ] Todas as variáveis e funções têm nomes descritivos e específicos?
-- [ ] Não há comentários que apenas descrevem o que o código faz (óbvios)?
-- [ ] Não há código repetido que deveria ser abstraído?
-- [ ] Cada arquivo/componente tem responsabilidade única (≤ 150 linhas significativas)?
-- [ ] O tratamento de erros é específico (não genérico catch-all)?
+- [ ] Do all variables and functions have descriptive and specific names?
+- [ ] Are there no comments that just describe what the code does (obvious)?
+- [ ] Is there no repeated code that should be abstracted?
+- [ ] Does each file/component have single responsibility (≤ 150 meaningful lines)?
+- [ ] Is error handling specific (not generic catch-all)?
 
-### 3. Naming Conventions (conforme `.specs/standards/naming-conventions.md`)
+### 3. Naming Conventions (per `.specs/standards/naming-conventions.md`)
 
-- [ ] As conventions de nome seguem o definido nos **standards do projeto**?
-- [ ] Variáveis e funções seguem a convenção do projeto (verificar `naming-conventions.md`)?
-- [ ] Nomes de tabelas/colunas seguem a convenção do banco (verificar `naming-conventions.md#banco-de-dados`)?
-- [ ] Componentes usam a convenção definida para frontend (verificar `naming-conventions.md#componentes`)?
-- [ ] Variáveis booleanas usam o prefixo definido nos standards (`is`, `has`, `can`, `should`)?
-- [ ] Constantes usam a convenção definida nos standards?
+- [ ] Do naming conventions follow what's defined in the **project standards**?
+- [ ] Do variables and functions follow the project convention (check `naming-conventions.md`)?
+- [ ] Do table/column names follow the database convention (check `naming-conventions.md#database`)?
+- [ ] Do components use the convention defined for frontend (check `naming-conventions.md#components`)?
+- [ ] Do boolean variables use the prefix defined in standards (`is`, `has`, `can`, `should`)?
+- [ ] Do constants use the convention defined in standards?
 
-### 4. Anti-Design de IA
+### 4. Anti-AI-Design
 
-- [ ] Não há emojis em textos de interface (botões, labels, headings)?
-- [ ] CSS/Tailwind usa design tokens do SDD/`design-system.md` (não valores hardcoded genéricos)?
-- [ ] Não há textos placeholder genéricos ('Lorem ipsum', 'Click here', 'Submit')?
-- [ ] A UI não tem aparência de "tutorial de YouTube" (sombras e gradientes sem propósito)?
-- [ ] Componentes estão devidamente separados (não monolíticos)?
-- [ ] Não há código boilerplate repetitivo sem abstração?
+- [ ] Are there no emojis in interface text (buttons, labels, headings)?
+- [ ] Does CSS/Tailwind use design tokens from the SDD/`design-system.md` (no generic hardcoded values)?
+- [ ] Are there no generic placeholder texts ('Lorem ipsum', 'Click here', 'Submit')?
+- [ ] Does the UI not look like a "YouTube tutorial" (purposeless shadows and gradients)?
+- [ ] Are components properly separated (not monolithic)?
+- [ ] Is there no repetitive boilerplate code without abstraction?
 
-### 5. Conformidade com Standards do Projeto
+### 5. Project Standards Compliance
 
-- [ ] A arquitetura segue as camadas e regras de dependência de `.specs/standards/architecture.md`?
-- [ ] Design tokens do `.specs/standards/design-system.md` estão sendo usados (se frontend)?
-- [ ] API segue as convenções de `.specs/standards/api-conventions.md` (format de response, status codes)?
-- [ ] Boas práticas de `.specs/standards/coding-standards.md` estão sendo respeitadas?
-- [ ] Tratamento de erros segue a estratégia definida nos standards?
+- [ ] Does the architecture follow the layers and dependency rules from `.specs/standards/architecture.md`?
+- [ ] Are design tokens from `.specs/standards/design-system.md` being used (if frontend)?
+- [ ] Does the API follow conventions from `.specs/standards/api-conventions.md` (response format, status codes)?
+- [ ] Are best practices from `.specs/standards/coding-standards.md` being respected?
+- [ ] Does error handling follow the strategy defined in standards?
 
-### 6. Funcionalidade
+### 6. Functionality
 
-- [ ] O código compila/executa sem erros?
-- [ ] O critério de "done" da microtask foi atendido?
-- [ ] Não foi adicionada funcionalidade não especificada no SRS/SDD?
+- [ ] Does the code compile/execute without errors?
+- [ ] Has the microtask's "done" criterion been met?
+- [ ] Was no unspecified functionality added that's not in the SRS/SDD?
 
 ---
 
-## Como Usar
+## How to Use
 
-1. Após implementar uma microtask, percorra cada item do checklist mentalmente
-2. Se qualquer item estiver ❌, corrija o código
-3. Só marque a microtask como `[x]` quando todos os itens estiverem ✅
-4. Não é necessário listar o checklist ao usuário — é um processo interno do agente
+1. After implementing a microtask, go through each checklist item mentally
+2. If any item is ❌, fix the code
+3. Only mark the microtask as `[x]` when all items are ✅
+4. No need to list the checklist to the user — it's an internal agent process

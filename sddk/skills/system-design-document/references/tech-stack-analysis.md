@@ -1,12 +1,12 @@
-# Guia de Análise e Sugestão de Stack Tecnológica
+# Technology Stack Analysis and Suggestion Guide
 
-## Como Detectar a Stack Existente
+## How to Detect the Existing Stack
 
-Antes de sugerir qualquer tecnologia, analise o projeto existente do usuário:
+Before suggesting any technology, analyze the user's existing project:
 
-### Arquivos Indicadores
+### Indicator Files
 
-| Arquivo | Indica |
+| File | Indicates |
 |:---|:---|
 | `package.json` | Node.js / JavaScript / TypeScript |
 | `tsconfig.json` | TypeScript |
@@ -17,22 +17,22 @@ Antes de sugerir qualquer tecnologia, analise o projeto existente do usuário:
 | `Gemfile` | Ruby |
 | `composer.json` | PHP |
 
-### Dentro do `package.json` — Detectar Framework
+### Inside `package.json` — Detect Framework
 
-| Dependência | Framework |
+| Dependency | Framework |
 |:---|:---|
 | `next` | Next.js |
 | `nuxt` | Nuxt.js |
-| `react` (sem next) | React SPA (provavelmente Vite) |
-| `vue` (sem nuxt) | Vue.js SPA |
+| `react` (without next) | React SPA (probably Vite) |
+| `vue` (without nuxt) | Vue.js SPA |
 | `@angular/core` | Angular |
 | `express` | Express.js |
 | `@nestjs/core` | NestJS |
 | `fastify` | Fastify |
 
-### Dentro do `requirements.txt` / `pyproject.toml` — Detectar Framework Python
+### Inside `requirements.txt` / `pyproject.toml` — Detect Python Framework
 
-| Dependência | Framework |
+| Dependency | Framework |
 |:---|:---|
 | `django` | Django |
 | `fastapi` | FastAPI |
@@ -41,44 +41,44 @@ Antes de sugerir qualquer tecnologia, analise o projeto existente do usuário:
 
 ---
 
-## Como Sugerir Stack (Quando Não Há Projeto)
+## How to Suggest a Stack (When There's No Project)
 
-Se o usuário está começando do zero, use estas perguntas para guiar a sugestão:
+If the user is starting from scratch, use these questions to guide the suggestion:
 
-### Pergunta 1: Tipo de Aplicação
+### Question 1: Application Type
 
-| Tipo | Stack Sugerida |
+| Type | Suggested Stack |
 |:---|:---|
 | **Web fullstack (SSR)** | Next.js + TypeScript + Prisma + PostgreSQL |
-| **Web SPA + API separada** | Vite + React + TypeScript (front) + NestJS ou FastAPI (back) |
-| **API/Backend only** | NestJS (TS) ou FastAPI (Python) |
-| **Mobile** | React Native + Expo ou Flutter |
-| **CLI tool** | Node.js + Commander ou Python + Click |
+| **Web SPA + separate API** | Vite + React + TypeScript (front) + NestJS or FastAPI (back) |
+| **API/Backend only** | NestJS (TS) or FastAPI (Python) |
+| **Mobile** | React Native + Expo or Flutter |
+| **CLI tool** | Node.js + Commander or Python + Click |
 
-### Pergunta 2: Prioridades do Projeto
+### Question 2: Project Priorities
 
-| Prioridade | Influência na Stack |
+| Priority | Stack Influence |
 |:---|:---|
-| **Performance** | Considerar Rust, Go, ou otimizações específicas |
-| **Velocidade de desenvolvimento** | Frameworks com mais abstrações (Next.js, Django) |
-| **Escalabilidade** | Microserviços, filas, cache distribuído |
-| **Simplicidade** | Monolito, ORM, framework full-featured |
+| **Performance** | Consider Rust, Go, or specific optimizations |
+| **Development speed** | Frameworks with more abstractions (Next.js, Django) |
+| **Scalability** | Microservices, queues, distributed cache |
+| **Simplicity** | Monolith, ORM, full-featured framework |
 
-### Pergunta 3: Equipe
+### Question 3: Team
 
-| Contexto | Influência |
+| Context | Influence |
 |:---|:---|
-| Dev solo | Menos abstrações, full-stack frameworks |
-| Equipe pequena (2-5) | Monorepo, TypeScript end-to-end |
-| Equipe grande (5+) | Módulos bem definidos, CI/CD robusto |
+| Solo dev | Fewer abstractions, full-stack frameworks |
+| Small team (2-5) | Monorepo, end-to-end TypeScript |
+| Large team (5+) | Well-defined modules, robust CI/CD |
 
 ---
 
-## Regras para Sugestão
+## Suggestion Rules
 
-1. **NUNCA sugira uma stack sem justificativa** — sempre explique o "porquê"
-2. **Considere a experiência do usuário** — não sugira Rust se o usuário é iniciante
-3. **Apresente no máximo 3 opções** — excesso de escolha paralisa
-4. **Inclua prós e contras** de cada opção
-5. **Use `ask_question`** para que o usuário escolha formalmente
-6. **Registre a decisão** com justificativa no SDD
+1. **NEVER suggest a stack without justification** — always explain the "why"
+2. **Consider the user's experience** — don't suggest Rust if the user is a beginner
+3. **Present at most 3 options** — excess choice paralyzes
+4. **Include pros and cons** of each option
+5. **Use `ask_question`** so the user can formally choose
+6. **Record the decision** with justification in the SDD

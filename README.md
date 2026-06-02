@@ -1,7 +1,7 @@
 <!-- prettier-ignore -->
 <div align="center">
 
-<img src="./docs/sddk.svg" alt="SDDK Logo" height="200" />
+<img src="sddk.svg" alt="SDDK Logo" height="200" />
 
 # Spec-Driven Development Kit (SDDK)
 
@@ -258,7 +258,7 @@ Spec-Driven-Development-Kit/
 │               └── refactoring-severity-guide.md
 ├── docs/
 │   ├── sddk.svg                                 # Project logo
-│   └── agent-workflow-sdd.pdf                   # Pipeline workflow diagram
+│   └── ARCHITECTURE.md                          # Architecture documentation and diagrams
 └── .github/                                     # Issue & PR templates
 ```
 

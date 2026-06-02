@@ -1,0 +1,119 @@
+name: Publish to npm
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18, 20, 22]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: CLI --version
+        run: node bin/cli.js --version
+
+      - name: CLI --help
+        run: node bin/cli.js --help
+
+      - name: CLI status
+        run: node bin/cli.js status
+
+      - name: Validate package.json
+        run: node -e "const p = require('./package.json'); console.log(p.name + '@' + p.version + ' ✓');"
+
+      - name: Verify all SKILL.md files exist
+        run: |
+          for skill in software-requirements-specification system-design-document implementation-planning fullstack-development code-review; do
+            if [ ! -f "sddk/skills/$skill/SKILL.md" ]; then
+              echo "MISSING: sddk/skills/$skill/SKILL.md"
+              exit 1
+            fi
+            echo "OK: sddk/skills/$skill/SKILL.md"
+          done
+
+      - name: Verify all reference files exist
+        run: |
+          # SRS references
+          for f in ieee-830-template.md socratic-interview-guide.md checklist-template.md; do
+            test -f "sddk/skills/software-requirements-specification/references/$f" && echo "OK: $f" || exit 1
+          done
+          # SDD references
+          for f in sdd-template.md architecture-patterns.md tech-stack-analysis.md documentation-sources-guide.md standards-onboarding-guide.md standards-architecture-template.md standards-naming-template.md standards-design-system-template.md standards-api-template.md standards-coding-template.md; do
+            test -f "sddk/skills/system-design-document/references/$f" && echo "OK: $f" || exit 1
+          done
+          # Planning references
+          for f in microtask-template.md manual-tests-template.md; do
+            test -f "sddk/skills/implementation-planning/references/$f" && echo "OK: $f" || exit 1
+          done
+          # Dev references
+          for f in self-review-checklist.md clean-code-rules.md; do
+            test -f "sddk/skills/fullstack-development/references/$f" && echo "OK: $f" || exit 1
+          done
+          # Review references
+          for f in anti-ai-design-patterns.md security-checklist.md refactoring-severity-guide.md; do
+            test -f "sddk/skills/code-review/references/$f" && echo "OK: $f" || exit 1
+          done
+          echo "All reference files verified."
+
+  publish:
+    needs: validate
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Verify tag matches package.json version
+        run: |
+          TAG_VERSION="${GITHUB_REF#refs/tags/v}"
+          PKG_VERSION=$(node -p "require('./package.json').version")
+          if [ "$TAG_VERSION" != "$PKG_VERSION" ]; then
+            echo "ERROR: Tag version ($TAG_VERSION) does not match package.json version ($PKG_VERSION)"
+            echo "Update package.json version before tagging."
+            exit 1
+          fi
+          echo "Version match: v$PKG_VERSION ✓"
+
+      - name: Publish to npm
+        run: npm publish --access public --provenance
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Extract changelog for this version
+        id: changelog
+        run: |
+          VERSION="${GITHUB_REF#refs/tags/v}"
+          # Extract the section for this version from CHANGELOG.md
+          NOTES=$(awk "/^## \[${VERSION}\]/{found=1; next} /^## \[/{if(found) exit} found{print}" CHANGELOG.md)
+          if [ -z "$NOTES" ]; then
+            NOTES="Release v${VERSION}"
+          fi
+          # Write to file to preserve multiline
+          echo "$NOTES" > /tmp/release-notes.md
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: v${{ steps.changelog.outputs.version }}
+          body_path: /tmp/release-notes.md
+          generate_release_notes: false

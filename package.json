@@ -1,6 +1,6 @@
 {
   "name": "@daniel-da-silva-alves/sddk",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "Spec-Driven Development Kit — An AI agent plugin that enforces disciplined software engineering through a 5-stage specification-driven pipeline (SRS → SDD → Planning → Dev → Code Review).",
   "author": "SDDK Contributors",
   "license": "MIT",
@@ -42,8 +42,13 @@
   "engines": {
     "node": ">=18.0.0"
   },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "scripts": {
     "test": "node bin/cli.js --version",
-    "validate": "node -e \"const p = require('./package.json'); console.log(p.name + '@' + p.version + ' ✓');\""
+    "validate": "node -e \"const p = require('./package.json'); console.log(p.name + '@' + p.version + ' ✓');\"",
+    "prepublishOnly": "node bin/cli.js --version && echo 'Pre-publish validation passed ✓'"
   }
 }

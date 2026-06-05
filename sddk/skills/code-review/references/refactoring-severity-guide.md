@@ -41,7 +41,7 @@ Issues that **affect quality but don't prevent functionality**. Should be resolv
 | **Configuration** | Open CORS, missing rate limiting, frontend-only validation |
 
 #### Action:
-1. Document in `.specs/features/{feature}/refactoring-backlog.md`
+1. Document in `.specs/{type}/{work-name}/refactoring-backlog.md`
 2. Include: file, line, description, fix suggestion
 3. Prioritize within the backlog
 
@@ -62,7 +62,7 @@ Issues that are **optional improvements** to aesthetics, performance, or organiz
 | **DX** | Uninformative log messages |
 
 #### Action:
-1. Document in `.specs/features/{feature}/refactoring-backlog.md`
+1. Document in `.specs/{type}/{work-name}/refactoring-backlog.md`
 2. Mark as low priority
 3. Resolve when time is available
 

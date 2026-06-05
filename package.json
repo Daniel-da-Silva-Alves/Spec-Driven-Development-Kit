@@ -1,6 +1,6 @@
 {
   "name": "@daniel-da-silva-alves/sddk",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Spec-Driven Development Kit — An AI agent plugin that enforces disciplined software engineering through a 5-stage specification-driven pipeline (SRS → SDD → Planning → Dev → Code Review).",
   "author": "SDDK Contributors",
   "license": "MIT",

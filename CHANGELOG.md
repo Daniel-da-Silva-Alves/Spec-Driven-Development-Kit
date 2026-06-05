@@ -5,6 +5,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.0] - 2026-06-05
+
+### Added
+- **4 work types** — `.specs/` now supports `features/`, `fix/`, `refact/`, and `chore/` directories
+- **Phase 0: Work Type Selection** — Skill 1 now asks the user to select the work type before starting
+- **Phase 2.5: Code Investigation** — 3 investigation modes that actively analyze the codebase:
+  - **Root Cause Investigation (RCI)** for `fix/` — Scientific debugging with ranked hypothesis elimination
+  - **Impact Analysis (IA)** for `refact/` — Forward/backward slicing to map blast radius
+  - **Compatibility Scan (CS)** for `chore/` — Changelog reading + codebase scanning for breaking changes
+- **3-layer Code Discovery Strategy** — SDD reference → static analysis → user confirmation
+- **Bug Report template** (`bug-report-template.md`) — IEEE 1044-inspired template with Section 9: RCI
+- **Refactoring Specification template** (`refact-spec-template.md`) — IEEE 1219/ISO 14764-inspired template with Section 9: Impact Analysis
+- **Maintenance Specification template** (`chore-spec-template.md`) — ISO 14764-inspired template with Section 9: Compatibility Scan
+- **3 type-specific interview checklists** with investigation topics
+- **Reduced SDD template** (`sdd-refact-template.md`) — 6-section RFC+ADR style for refactoring
+- **Minimal SDD template** (`sdd-fix-chore-template.md`) — 4-section ADR style for fix/chore
+- **Type-specific Socratic interview adaptations** with Phase 2.5 transition guide
+
+### Changed
+- **Skill 1 (Specification)** — completely rewritten with conditional logic per work type and Phase 2.5 investigation
+- **Skill 2 (SDD)** — completely rewritten with work type awareness and conditional template routing
+- **Skill 3 (Planning)** — paths updated from `features/{name}` to `{type}/{name}`, spec references made type-aware
+- **Skill 4 (Dev)** — paths updated, spec references made type-aware, context loading strategy documented per type
+- **Skill 5 (Code Review)** — paths updated, spec references made type-aware
+- **README.md** — updated pipeline table, usage section, and generated artifacts tree
+- **ARCHITECTURE.md** — updated generated artifacts section with ISO 14764 taxonomy mapping
+
 ## [2.1.0] - 2026-06-02
 
 ### Added

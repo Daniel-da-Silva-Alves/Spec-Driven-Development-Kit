@@ -51,8 +51,8 @@ graph LR
 
 | Stage | Skill | Agent Role | Output |
 |:---:|:---|:---|:---|
-| 1 | **Software Requirements Specification** | Senior Requirements Engineer | `srs.md` — Formal requirements doc (IEEE 830) |
-| 2 | **System Design Document** | Senior Software Architect | `sdd.md` — Architecture, stack, data model, API design |
+| 1 | **Specification** | Senior Requirements Engineer | `srs.md` / `bug-report.md` / `refact-spec.md` / `chore-spec.md` — adapted by work type |
+| 2 | **System Design Document** | Senior Software Architect | `sdd.md` — Architecture (full, reduced, or minimal by type) |
 | 3 | **Implementation Planning** | Senior Tech Lead | `implementation_plan` — Phased microtasks with traceability |
 | 4 | **Fullstack Development** | Senior Fullstack Developer | Production code following specs + inline self-review |
 | 5 | **Code Review** | Senior Reviewer & Security Auditor | Audit report + refactoring backlog |
@@ -107,12 +107,24 @@ The plugin will be installed to `~/.gemini/config/plugins/sddk/` and will be ava
 
 ### Starting the Pipeline
 
-To begin, simply describe the feature you want to build. Use natural language — the agent will activate the first skill (SRS) and guide you through the process:
+To begin, simply describe the work you want to do. The agent will first ask what **type of work** it is:
 
 ```
-You:  "I want to create an authentication feature with email/password and OAuth"
-Agent: "I'll conduct an interview to fully specify this feature. Let's go topic by topic..."
+Agent: "What type of work is this?"
+  a) New feature
+  b) Bug fix
+  c) Refactoring
+  d) Chore (maintenance/infra)
 ```
+
+Then it will activate the appropriate skill with templates adapted to the work type:
+
+| Type | Directory | Phase 1 Document | Standard | Interview Depth |
+|:---|:---|:---|:---|:---|
+| **Feature** | `features/` | `srs.md` | IEEE 830 | Full (12-20 questions) |
+| **Fix** | `fix/` | `bug-report.md` | IEEE 1044 | Focused (5-8 questions) |
+| **Refactoring** | `refact/` | `refact-spec.md` | IEEE 1219 / ISO 14764 | Moderate (6-10 questions) |
+| **Chore** | `chore/` | `chore-spec.md` | ISO 14764 | Minimal (4-7 questions) |
 
 ### Stage 1 — Requirements Specification (SRS)
 
@@ -132,6 +144,9 @@ After all questions are answered, the agent generates a formal **SRS document** 
 ```
 .specs/features/{feature-name}/srs.md
 ```
+
+> [!TIP]
+> For non-feature work types, the agent generates different documents: `bug-report.md` (fixes), `refact-spec.md` (refactoring), `chore-spec.md` (chores). Each uses a template adapted from the relevant IEEE/ISO standard.
 
 ### Stage 2 — System Design Document (SDD)
 
@@ -210,12 +225,30 @@ After completing the pipeline, your project will contain:
 │   ├── design-system.md
 │   ├── api-conventions.md
 │   └── coding-standards.md
-└── features/
-    └── {feature-name}/
-        ├── srs.md                    # Stage 1 — Requirements specification
-        ├── sdd.md                    # Stage 2 — System design document
-        ├── manual-tests.md           # Stage 3 — Test scenarios
-        └── refactoring-backlog.md    # Stage 5 — Non-critical improvements
+├── features/                         # New features (IEEE 830)
+│   └── {feature-name}/
+│       ├── srs.md
+│       ├── sdd.md
+│       ├── manual-tests.md
+│       └── refactoring-backlog.md
+├── fix/                              # Bug fixes (IEEE 1044)
+│   └── {fix-name}/
+│       ├── bug-report.md
+│       ├── sdd.md
+│       ├── manual-tests.md
+│       └── refactoring-backlog.md
+├── refact/                           # Refactoring (IEEE 1219 / ISO 14764)
+│   └── {refact-name}/
+│       ├── refact-spec.md
+│       ├── sdd.md
+│       ├── manual-tests.md
+│       └── refactoring-backlog.md
+└── chore/                            # Maintenance (ISO 14764)
+    └── {chore-name}/
+        ├── chore-spec.md
+        ├── sdd.md
+        ├── manual-tests.md
+        └── refactoring-backlog.md
 ```
 
 ## Project Structure

@@ -6,8 +6,8 @@ Each microtask in the Implementation Plan MUST follow this format:
 
 ```markdown
 - [ ] **{Phase}.{Number}: {Descriptive task title}**
-  - 📎 Ref SDD: [{section}](.specs/features/{feature}/sdd.md#L{start}-L{end})
-  - 📎 Ref SRS: [{requirement}](.specs/features/{feature}/srs.md#L{start}-L{end})
+  - 📎 Ref SDD: [{section}](.specs/{type}/{work}/sdd.md#L{start}-L{end})
+  - 📎 Ref Spec: [{requirement/invariant/criterion}](.specs/{type}/{work}/{spec_doc}#L{start}-L{end})
   - 📎 Ref Standards: [{standard}](.specs/standards/{file}.md#{section})  ← when applicable
   - 📁 Files:
     - `{path/to/file.ext}` — {create | modify} — {brief description}

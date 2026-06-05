@@ -18,10 +18,10 @@ This is **Skill 4 of 5** in the Spec-Driven Development (SDD) pipeline:
 ```
 
 > [!IMPORTANT]
-> The SRS, SDD, and Planning MUST have been completed before this skill. Verify that the following exist:
-> - `.specs/features/{feature-name}/srs.md`
-> - `.specs/features/{feature-name}/sdd.md`
-> - `.specs/features/{feature-name}/manual-tests.md`
+> The Specification, SDD, and Planning MUST have been completed before this skill. Verify that the following exist:
+> - `.specs/{type}/{work-name}/{spec_document}` (srs.md, bug-report.md, refact-spec.md, or chore-spec.md)
+> - `.specs/{type}/{work-name}/sdd.md`
+> - `.specs/{type}/{work-name}/manual-tests.md`
 > - Task artifact with microtasks
 
 ## Mandatory Rules
@@ -37,7 +37,7 @@ This is **Skill 4 of 5** in the Spec-Driven Development (SDD) pipeline:
 6. **ALWAYS follow the architecture defined in the SDD** — respect layers, folder structure, patterns
 7. **ALWAYS follow the SDD data model** — fields, types, constraints exactly as defined
 8. **ALWAYS follow the SDD API design** — endpoints, request/response bodies, status codes
-9. **NEVER invent unspecified functionality** — if it's not in the SRS/SDD, don't implement it
+9. **NEVER invent unspecified functionality** — if it's not in the specification/SDD, don't implement it
 
 ### Anti-AI-Design
 10. **NEVER use emojis** in interface text (buttons, labels, headings, placeholders)
@@ -64,8 +64,8 @@ For EACH microtask, follow this cycle:
 1. Mark the microtask as `[/]` (in progress) in the Task artifact
 2. **Read the microtask's references (pointers)**:
    - Open and read the specific SDD section referenced
-   - Open and read the specific SRS section referenced
-   - Open and read the referenced standard (if there's a `📎 Ref Standards` pointer)
+   - Open and read the specific specification section referenced (SRS, bug-report, refact-spec, or chore-spec)
+   - Open and read the referenced standard (if there’s a `📎 Ref Standards` pointer)
 3. Announce: "Starting microtask {Phase.Number}: {title}"
 
 #### 2b. Implement
@@ -77,7 +77,7 @@ For EACH microtask, follow this cycle:
 After implementing, verify using the checklist in `references/self-review-checklist.md`:
 
 1. **SDD adherence** — does the code reflect exactly what the SDD specifies?
-2. **Clean code** — descriptive names? No obvious comments? No repetition?
+2. **Specification adherence** — does the implementation satisfy the requirements/invariants/criteria from the spec document?
 3. **Naming conventions** — consistent with the stack?
 4. **Anti-AI patterns** — no emojis, no generic CSS, no placeholders?
 
@@ -104,13 +104,16 @@ The correct strategy is:
 2. When starting a microtask, read **ONLY** the referenced sections
 3. This ensures the loaded context is precise and relevant to the current task
 
+> [!NOTE]
+> For `fix/` and `chore/` work types, the specification and SDD documents are smaller, so the entire document may fit in a single read. For `features/` and `refact/`, always use the pointer-based strategy.
+
 ## Technical Documentation Lookup
 
 When you need to consult documentation for a stack technology (e.g.: "how to use server actions in Next.js 15?"), follow the hierarchy configured in **section 10 of the SDD**:
 
 ### Step by step:
 
-1. **Read section 10 of the SDD** — open `.specs/features/{feature}/sdd.md` and locate the sources table
+1. **Read section 10 of the SDD** (or section 6/4 for reduced/minimal SDDs) — open `.specs/{type}/{work-name}/sdd.md` and locate the sources table
 2. **Follow the priority hierarchy**:
    - **Local docs?** → `view_file` on the path listed in section 10.2
    - **MCP/Skill?** → Use the tool/skill configured in table 10.1

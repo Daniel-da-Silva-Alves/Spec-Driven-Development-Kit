@@ -101,7 +101,7 @@ Priority order for documentation lookup during development:
 When the agent needs to consult documentation during development:
 
 ### Step 1: Read section 10 of the SDD
-Open `.specs/features/{feature}/sdd.md` and read section "10. Technical Documentation Sources"
+Open `.specs/{type}/{work-name}/sdd.md` and read the Technical Documentation Sources section
 
 ### Step 2: Follow the hierarchy
 1. **Local docs?** → `view_file` on the path listed in 10.2

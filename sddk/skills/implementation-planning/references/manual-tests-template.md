@@ -9,8 +9,8 @@ Use this template to generate the `manual-tests.md` for each feature. Each test 
 
 **Feature**: {feature name}
 **Date**: {generation date}
-**SRS Reference**: [srs.md](.specs/features/{feature}/srs.md)
-**SDD Reference**: [sdd.md](.specs/features/{feature}/sdd.md)
+**Spec Reference**: [{spec_doc}](.specs/{type}/{work-name}/{spec_doc})
+**SDD Reference**: [sdd.md](.specs/{type}/{work-name}/sdd.md)
 
 ---
 

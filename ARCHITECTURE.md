@@ -230,25 +230,219 @@ SDDK's Socratic interview forces these decisions to surface **before** a single 
 
 ## Generated Artifacts
 
-The pipeline produces a structured documentation tree that serves as both specification and memory:
+The pipeline produces a structured documentation tree organized by **work type**, with each type using templates adapted from industry standards:
 
 ```
 .specs/
-├── standards/                        # Project-wide (generated once, reused across features)
+├── standards/                        # Project-wide (generated once, reused across all work)
 │   ├── architecture.md               # Layer rules, dependency direction, folder structure
 │   ├── naming-conventions.md         # Variables, functions, DB columns, components
 │   ├── design-system.md              # Colors, typography, spacing, component library
 │   ├── api-conventions.md            # Response format, status codes, versioning
 │   └── coding-standards.md           # Error handling, logging, testing patterns
-└── features/
-    └── {feature-name}/
-        ├── srs.md                    # Stage 1 → Formal requirements (IEEE 830)
-        ├── sdd.md                    # Stage 2 → Architecture, stack, data model, API
-        ├── manual-tests.md           # Stage 3 → Test scenarios for QA
-        └── refactoring-backlog.md    # Stage 5 → Non-critical improvements
+├── features/                         # New features (IEEE 830 / ISO 29148)
+│   └── {name}/
+│       ├── srs.md                    # Stage 1 — Formal requirements (IEEE 830)
+│       ├── sdd.md                    # Stage 2 — Full architecture (10 sections)
+│       ├── manual-tests.md           # Stage 3 — Test scenarios
+│       └── refactoring-backlog.md    # Stage 5 — Non-critical improvements
+├── fix/                              # Bug fixes (IEEE 1044)
+│   └── {name}/
+│       ├── bug-report.md             # Stage 1 — Anomaly report (expected vs actual)
+│       ├── sdd.md                    # Stage 2 — Minimal SDD/ADR (4 sections)
+│       ├── manual-tests.md
+│       └── refactoring-backlog.md
+├── refact/                           # Refactoring (IEEE 1219 / ISO 14764)
+│   └── {name}/
+│       ├── refact-spec.md            # Stage 1 — Invariants + quality metrics
+│       ├── sdd.md                    # Stage 2 — Reduced SDD/RFC (6 sections)
+│       ├── manual-tests.md
+│       └── refactoring-backlog.md
+└── chore/                            # Maintenance (ISO 14764)
+    └── {name}/
+        ├── chore-spec.md             # Stage 1 — Change + rollback plan
+        ├── sdd.md                    # Stage 2 — Minimal SDD/ADR (4 sections)
+        ├── manual-tests.md
+        └── refactoring-backlog.md
 ```
 
-These artifacts are not just documentation — they are the **memory system** of the pipeline. Each stage reads from previous artifacts and writes new ones, creating a chain of traceability from requirements to code.
+### Work Type Taxonomy (ISO/IEC/IEEE 14764 Mapping)
+
+The 4 work types map directly to the ISO/IEC/IEEE 14764 software maintenance classification:
+
+| ISO 14764 Type | SDDK Type | Description | Interview Depth |
+|:---|:---|:---|:---|
+| (New development) | `features/` | New functionality for end users | Full (12-20 questions) |
+| Corrective | `fix/` | Reactive correction of discovered defects | Focused (5-8 questions) |
+| Perfective | `refact/` | Improvement of maintainability or structure | Moderate (6-10 questions) |
+| Adaptive / Preventive | `chore/` | Environment changes or latent fault prevention | Minimal (4-7 questions) |
+
+### Pipeline Flow by Work Type
+
+The pipeline adapts at Stages 1 and 2 based on the work type, while Stages 3–5 remain consistent. Types `fix/`, `refact/`, and `chore/` include an additional **Phase 2.5 — Code Investigation** before moving to Stage 2:
+
+```mermaid
+flowchart TD
+    START(["User: describe work item"])
+    START --> P0{"Phase 0:<br>What type of work?"}
+
+    P0 -->|"New feature"| F_PATH["features/"]
+    P0 -->|"Bug fix"| X_PATH["fix/"]
+    P0 -->|"Refactoring"| R_PATH["refact/"]
+    P0 -->|"Maintenance"| C_PATH["chore/"]
+
+    subgraph FEAT["Feature Pipeline"]
+        direction LR
+        F1["Phase 1-2:<br>Interview<br>srs.md<br>IEEE 830"]
+        F2["Stage 2<br>sdd.md<br>Full: 10 sections"]
+        F1 -->|"human approval"| F2
+    end
+
+    subgraph FIX["Fix Pipeline"]
+        direction LR
+        X1["Phase 1-2:<br>Interview<br>bug-report.md<br>IEEE 1044"]
+        X1B["Phase 2.5:<br>RCI<br>Hypothesis<br>Elimination"]
+        X2["Stage 2<br>sdd.md<br>Minimal: 4 sections"]
+        X1 --> X1B -->|"root cause confirmed"| X2
+    end
+
+    subgraph REFACT["Refactoring Pipeline"]
+        direction LR
+        R1["Phase 1-2:<br>Interview<br>refact-spec.md<br>IEEE 1219"]
+        R1B["Phase 2.5:<br>Impact Analysis<br>Forward/Backward<br>Slicing"]
+        R2["Stage 2<br>sdd.md<br>Reduced: 6 sections"]
+        R1 --> R1B -->|"blast radius confirmed"| R2
+    end
+
+    subgraph CHORE["Chore Pipeline"]
+        direction LR
+        C1["Phase 1-2:<br>Interview<br>chore-spec.md<br>ISO 14764"]
+        C1B["Phase 2.5:<br>Compat Scan<br>Breaking Changes<br>Detection"]
+        C2["Stage 2<br>sdd.md<br>Minimal: 4 sections"]
+        C1 --> C1B -->|"compat report confirmed"| C2
+    end
+
+    F_PATH --> FEAT
+    X_PATH --> FIX
+    R_PATH --> REFACT
+    C_PATH --> CHORE
+
+    FEAT --> SHARED
+    FIX --> SHARED
+    REFACT --> SHARED
+    CHORE --> SHARED
+
+    subgraph SHARED["Stages 3-5: Same for All Types"]
+        direction LR
+        S3["Stage 3<br>Planning<br>Microtasks"]
+        S4["Stage 4<br>Dev<br>Implementation"]
+        S5["Stage 5<br>Code Review<br>Audit"]
+        S3 -->|"human approval"| S4
+        S4 -->|"human approval"| S5
+    end
+
+    S5 --> DONE(["Done"])
+    S5 -.->|"refactoring backlog"| S3
+```
+
+### Stage 1 — Interview + Investigation Flow by Type
+
+```mermaid
+flowchart LR
+    subgraph FEATURE["Feature: Full Interview"]
+        direction TB
+        FA["Context + Business Problem"]
+        FB["Actors + Personas"]
+        FC["Functional Requirements"]
+        FD["Business Rules"]
+        FE["Non-Functional Requirements"]
+        FF["Interfaces + Integrations"]
+        FG["Acceptance Criteria"]
+        FA --> FB --> FC --> FD --> FE --> FF --> FG
+    end
+
+    subgraph BUGFIX["Fix: Interview + RCI"]
+        direction TB
+        XA["Bug Summary + Severity"]
+        XB["Reproduction Steps"]
+        XC["Expected vs Actual"]
+        XD["Impact + Workaround"]
+        XE["Evidence: Logs, Screenshots"]
+        XF["Acceptance Criteria"]
+        XG["Phase 2.5: Map Files"]
+        XH["Hypothesize + Eliminate"]
+        XI["Root Cause Confirmed"]
+        XA --> XB --> XC --> XD --> XE --> XF --> XG --> XH --> XI
+    end
+
+    subgraph REFACTOR["Refact: Interview + Impact Analysis"]
+        direction TB
+        RA["Motivation + Origin"]
+        RB["Quality Metrics"]
+        RC["Scope: What Changes vs Not"]
+        RD["Invariants"]
+        RE["Current vs Proposed"]
+        RF["Risk Assessment"]
+        RG["Acceptance Criteria"]
+        RH["Phase 2.5: Map Files"]
+        RI["Forward + Backward Slicing"]
+        RJ["Blast Radius Confirmed"]
+        RA --> RB --> RC --> RD --> RE --> RF --> RG --> RH --> RI --> RJ
+    end
+
+    subgraph MAINTENANCE["Chore: Interview + Compat Scan"]
+        direction TB
+        CA["Objective + Why Now"]
+        CB["Current vs Target State"]
+        CC["Breaking Changes"]
+        CD["Rollback Plan"]
+        CE["Acceptance Criteria"]
+        CF["Phase 2.5: Read Changelogs"]
+        CG["Scan Codebase"]
+        CH["Compat Report Confirmed"]
+        CA --> CB --> CC --> CD --> CE --> CF --> CG --> CH
+    end
+```
+
+### Stage 2 — SDD Depth by Type
+
+```mermaid
+flowchart TD
+    subgraph FULL["Feature SDD: 10 Sections"]
+        direction TB
+        F1S["1. Technical Overview + Stack"]
+        F2S["2. System Architecture"]
+        F3S["3. Data Model"]
+        F4S["4. API Design"]
+        F5S["5. Interface Design"]
+        F6S["6. Integrations"]
+        F7S["7. Error Handling"]
+        F8S["8. Security"]
+        F9S["9. SRS References"]
+        F10S["10. Documentation Sources"]
+        F1S --> F2S --> F3S --> F4S --> F5S --> F6S --> F7S --> F8S --> F9S --> F10S
+    end
+
+    subgraph REDUCED["Refact SDD: 6 Sections"]
+        direction TB
+        R1S["1. Technical Overview"]
+        R2S["2. Current vs Proposed Architecture"]
+        R3S["3. Impacted Files"]
+        R4S["4. Test Strategy"]
+        R5S["5. Spec References"]
+        R6S["6. Documentation Sources"]
+        R1S --> R2S --> R3S --> R4S --> R5S --> R6S
+    end
+
+    subgraph MINIMAL["Fix/Chore SDD: 4 Sections"]
+        direction TB
+        M1S["1. Root Cause / Change Analysis"]
+        M2S["2. Proposed Solution + Alternatives"]
+        M3S["3. Impact Assessment"]
+        M4S["4. Documentation Sources"]
+        M1S --> M2S --> M3S --> M4S
+    end
+```
 
 ---
 

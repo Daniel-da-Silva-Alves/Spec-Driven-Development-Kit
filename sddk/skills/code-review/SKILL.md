@@ -23,9 +23,9 @@ This is **Skill 5 of 5** in the Spec-Driven Development (SDD) pipeline:
 ## Precondition
 
 Before starting, verify:
-- `.specs/features/{feature-name}/srs.md` — exists
-- `.specs/features/{feature-name}/sdd.md` — exists
-- `.specs/features/{feature-name}/manual-tests.md` — exists
+- `.specs/{type}/{work-name}/{spec_document}` — the Phase 1 spec (srs.md, bug-report.md, refact-spec.md, or chore-spec.md) — exists
+- `.specs/{type}/{work-name}/sdd.md` — exists
+- `.specs/{type}/{work-name}/manual-tests.md` — exists
 - Task artifact — all microtasks are `[x]`
 
 ## Mandatory Rules
@@ -43,9 +43,10 @@ Before starting, verify:
 ### Phase 1: Preparation
 
 1. **Read the SDD.md** to use as design reference
-2. **Read ALL standards** from the project in `.specs/standards/` — architecture, naming, design-system, api, coding
-3. **List all files** created/modified (extract from the microtask list in the Task)
-4. **Read each file** for review
+2. **Read the specification document** (srs.md, bug-report.md, refact-spec.md, or chore-spec.md) to validate requirements/invariants/criteria adherence
+3. **Read ALL standards** from the project in `.specs/standards/` — architecture, naming, design-system, api, coding
+4. **List all files** created/modified (extract from the microtask list in the Task)
+5. **Read each file** for review
 
 ### Phase 2: Systematic Review
 
@@ -137,7 +138,7 @@ For each 🔴 Critical issue:
 
 ### Phase 5: Backlog Documentation
 
-Generate/update `.specs/features/{feature-name}/refactoring-backlog.md` with 🟡 and 🟢 issues:
+Generate/update `.specs/{type}/{work-name}/refactoring-backlog.md` with 🟡 and 🟢 issues:
 
 ```markdown
 # Refactoring Backlog — {Feature}
@@ -166,7 +167,7 @@ Generate/update `.specs/features/{feature-name}/refactoring-backlog.md` with �
    - Critical issues fixed
    - Issues in backlog for later
 2. Announce: "✅ Code Review completed. Feature **{name}** finalized. {N} critical issues fixed, {M} issues documented in the backlog."
-3. Remind the user: "Execute the manual tests in `.specs/features/{feature-name}/manual-tests.md` to validate the implementation."
+3. Remind the user: "Execute the manual tests in `.specs/{type}/{work-name}/manual-tests.md` to validate the implementation."
 
 ## Technical Documentation Lookup
 

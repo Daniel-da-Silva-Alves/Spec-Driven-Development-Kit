@@ -1,10 +1,12 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
-import { join, resolve, basename } from 'node:path';
+import { join, resolve, basename, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 // ─── Config ────────────────────────────────────────────────────────
-const ROOT = resolve(import.meta.dirname, '..');
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const ROOT = resolve(__dirname, '..');
 const SDDK = join(ROOT, 'sddk');
 const PLUGIN_JSON = join(SDDK, 'plugin.json');
 const PACKAGE_JSON = join(ROOT, 'package.json');

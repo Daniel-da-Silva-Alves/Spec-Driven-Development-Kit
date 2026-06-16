@@ -44,6 +44,12 @@ The SDDK supports 4 types of work, each with its own specification template and 
 6. **ALWAYS save the specification document** at the path `.specs/{type}/{work-name}/{document}` within the user's project
 7. **NEVER assume requirements** — if something was not explicitly stated by the user, ask
 8. **ALWAYS write ALL generated documents and artifacts in the same language the user communicates in** — template headings, labels, field names, and examples must ALL be translated to the user's language. The only exception is technical code (variable names, file paths, CLI commands)
+9. **ALWAYS use the naming convention `{module-acronym}-{number}-{kebab-description}`** for feature folders (type: `features` ONLY):
+   - `{module-acronym}` — lowercase acronym that MUST match a module registered in `.specs/features/_overview.md`
+   - `{number}` — sequential integer per module, auto-calculated by inspecting existing folders. Numbers are NEVER reused, even if a feature is deleted
+   - `{kebab-description}` — descriptive name in kebab-case (lowercase, hyphens)
+   - Examples: `ass-13-consulta-promocoes`, `bca-10-reverificacao-vtex`, `dsh-1-dashboard-engajamento`
+   - This rule does NOT apply to `fix/`, `refact/`, or `chore/` work types — those use free-form naming
 
 ## Execution Flow
 
@@ -68,15 +74,56 @@ Before anything else, determine the type of work:
 > [!NOTE]
 > If the user's initial message clearly indicates the type (e.g., "I want to specify a refactoring", "there's a bug in..."), you may skip asking and confirm: "This sounds like a **{type}**. Is that correct?" — but always confirm before proceeding.
 
+### Phase 0.5: Project Overview Verification (type: features ONLY)
+
+> [!NOTE]
+> This phase is **SKIPPED for `fix/`, `refact/`, and `chore/`** — those work types use free-form naming and do not require a project overview registry.
+
+Before feature initialization, verify the project's overview registry. This phase ensures the project has a living overview document (`_overview.md`) that maps modules, tracks features, and maintains a changelog.
+
+1. **Check if `.specs/features/_overview.md` exists** in the user's project
+
+2. **If it DOES NOT exist** → conduct a **Product Discovery interview** to understand the project before any feature work:
+
+   This interview follows the same Socratic approach as the feature specification (one question at a time, challenge vague answers, detect ambiguities), but focused on understanding the project as a whole — like a systems analyst having a first requirements gathering conversation with a new client.
+
+   **Topics to cover (one at a time, using `ask_question` when there are clear options):**
+
+   a. **Project Identity** — "What is the name of this project/system?"
+   b. **Problem & Context** — "What problem does this system solve? Who are the target users and what is the business context?"
+   c. **Vision & Scope** — "In one or two sentences, what is the core purpose of this system? What does it do at a high level?"
+   d. **Module Structure** — "What are the main modules or functional areas of this system? For each one, I need: a short acronym (2-4 letters), the module name, and a brief description of what it covers."
+      - Guide the user to think about logical groupings (e.g., by domain area, user type, or business capability)
+      - If the user is unsure, suggest a breakdown based on what you can infer from the project structure (analyze `package.json`, directory structure, etc.)
+      - Validate each module: "Is this the complete list, or are there other areas?"
+
+   > [!IMPORTANT]
+   > Do NOT rush this interview. The module structure defined here will govern the naming convention for ALL future features. Take time to get it right — challenge the user if modules overlap or seem too broad/narrow.
+
+   e. **Generate the `_overview.md`** using the template in `references/overview-template.md` with the information gathered
+   f. **Save to `.specs/features/_overview.md`**
+   g. Announce: "✅ Project overview created at `.specs/features/_overview.md`. Proceeding to feature specification."
+
+3. **If it exists** → read it and load the module list for use in Phase 1 folder naming. Briefly confirm to the user: "📋 Project overview loaded ({N} modules). Proceeding to feature specification."
+
 ### Phase 1: Initialization
 
-1. Create the directory `.specs/{type}/{work-name}/` if it doesn't exist
-2. Create a **Task artifact** with the interview topic checklist. Use the appropriate checklist template:
+1. **Determine the work item folder name**:
+   - **For `features`** — follow the mandatory naming convention (Rule 9):
+     a. Read the `_overview.md` to obtain the module list
+     b. Ask the user which module this feature belongs to (via `ask_question` with the registered modules as options)
+     c. Inspect existing folders in `.specs/features/` that start with the selected module acronym to calculate the next sequential number
+     d. Ask the user for the feature description in kebab-case (or propose one based on the feature description they already provided)
+     e. Propose the folder name: `{acronym}-{number}-{description}`
+     f. Confirm with the user before creating — "The feature folder will be named `{name}`. Confirm?"
+   - **For `fix` / `refact` / `chore`** — use a descriptive kebab-case name proposed by the agent and confirmed by the user
+2. Create the directory `.specs/{type}/{work-name}/` if it doesn't exist
+3. Create a **Task artifact** with the interview topic checklist. Use the appropriate checklist template:
    - `features` → `references/checklist-template.md`
    - `fix` → `references/checklist-bug-template.md`
    - `refact` → `references/checklist-refact-template.md`
    - `chore` → `references/checklist-chore-template.md`
-3. Announce to the user: "I'll conduct an interview to fully specify this {type}. Let's go topic by topic."
+4. Announce to the user: "I'll conduct an interview to fully specify this {type}. Let's go topic by topic."
 
 ### Phase 2: Socratic Interview
 
@@ -185,6 +232,10 @@ Before generating the document:
    - `chore` → `references/chore-spec-template.md` → save as `chore-spec.md`
 2. Save to `.specs/{type}/{work-name}/{spec_document}`
 3. Present to the user for review
+4. **Update `.specs/features/_overview.md`** (type: `features` ONLY, if the file exists):
+   - Add the feature to the **Feature Map** of the corresponding module with status `📝 In specification` and today's date
+   - Add an entry to the **Changelog** under today's date with category `Added` and description of the new feature
+5. Announce the `_overview.md` update to the user (if applicable)
 
 ### Phase 5: Transition
 
@@ -215,3 +266,4 @@ After user approval of the specification document:
 
 #### Shared
 - If you need guidance on how to conduct the Socratic interview (all types), read `references/socratic-interview-guide.md`
+- If you need the `_overview.md` template for project onboarding (features only), read `references/overview-template.md`

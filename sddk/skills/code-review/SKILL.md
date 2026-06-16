@@ -162,12 +162,15 @@ Generate/update `.specs/{type}/{work-name}/refactoring-backlog.md` with 🟡 and
 
 ### Phase 6: Conclusion
 
-1. Present a **review report** to the user:
+1. **Update `.specs/features/_overview.md`** (type: `features` ONLY, if the file exists):
+   - Update the feature's status in the **Feature Map** to `✅ Implemented`
+   - Add an entry to the **Changelog** under today's date with category `Implemented` and a brief description
+2. Present a **review report** to the user:
    - Total issues found per severity
    - Critical issues fixed
    - Issues in backlog for later
-2. Announce: "✅ Code Review completed. Feature **{name}** finalized. {N} critical issues fixed, {M} issues documented in the backlog."
-3. Remind the user: "Execute the manual tests in `.specs/{type}/{work-name}/manual-tests.md` to validate the implementation."
+3. Announce: "✅ Code Review completed. Work item **{name}** finalized. {N} critical issues fixed, {M} issues documented in the backlog."
+4. Remind the user: "Execute the manual tests in `.specs/{type}/{work-name}/manual-tests.md` to validate the implementation."
 
 ## Technical Documentation Lookup
 

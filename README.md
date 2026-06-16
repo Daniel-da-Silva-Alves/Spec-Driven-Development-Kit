@@ -261,20 +261,33 @@ Spec-Driven-Development-Kit/
 │   ├── plugin.json                              # Plugin manifest
 │   └── skills/
 │       ├── software-requirements-specification/
-│       │   ├── SKILL.md                         # Skill 1 — SRS
+│       │   ├── SKILL.md                         # Skill 1 — Specification
 │       │   └── references/
-│       │       ├── ieee-830-template.md
-│       │       ├── socratic-interview-guide.md
-│       │       └── checklist-template.md
+│       │       ├── ieee-830-template.md          # SRS template (IEEE 830)
+│       │       ├── bug-report-template.md        # Bug report template (IEEE 1044)
+│       │       ├── refact-spec-template.md       # Refactoring spec template (IEEE 1219)
+│       │       ├── chore-spec-template.md        # Maintenance spec template (ISO 14764)
+│       │       ├── checklist-template.md          # Feature interview checklist
+│       │       ├── checklist-bug-template.md      # Bug interview checklist
+│       │       ├── checklist-refact-template.md   # Refactoring interview checklist
+│       │       ├── checklist-chore-template.md    # Chore interview checklist
+│       │       ├── socratic-interview-guide.md    # Interview methodology guide
+│       │       └── overview-template.md           # Project overview (_overview.md) template
 │       ├── system-design-document/
 │       │   ├── SKILL.md                         # Skill 2 — SDD
 │       │   └── references/
-│       │       ├── sdd-template.md
-│       │       ├── architecture-patterns.md
-│       │       ├── tech-stack-analysis.md
-│       │       ├── documentation-sources-guide.md
-│       │       ├── standards-onboarding-guide.md
-│       │       └── standards-*-template.md      # 5 standards templates
+│       │       ├── sdd-template.md               # Full SDD template (features)
+│       │       ├── sdd-refact-template.md         # Reduced SDD template (refactoring)
+│       │       ├── sdd-fix-chore-template.md      # Minimal SDD template (fix/chore)
+│       │       ├── architecture-patterns.md       # Architecture patterns catalog
+│       │       ├── tech-stack-analysis.md          # Stack analysis guide
+│       │       ├── documentation-sources-guide.md  # Doc sources hierarchy guide
+│       │       ├── standards-onboarding-guide.md   # Standards onboarding guide
+│       │       ├── standards-architecture-template.md
+│       │       ├── standards-naming-template.md
+│       │       ├── standards-design-system-template.md
+│       │       ├── standards-api-template.md
+│       │       └── standards-coding-template.md
 │       ├── implementation-planning/
 │       │   ├── SKILL.md                         # Skill 3 — Planning
 │       │   └── references/
@@ -291,14 +304,18 @@ Spec-Driven-Development-Kit/
 │               ├── anti-ai-design-patterns.md
 │               ├── security-checklist.md
 │               └── refactoring-severity-guide.md
-├── docs/
-│   ├── sddk.svg                                 # Project logo
-│   └── ARCHITECTURE.md                          # Architecture documentation and diagrams
+├── tests/
+│   └── validate-plugin.mjs                      # Plugin consistency tests (node --test)
 ├── .github/
 │   └── workflows/
 │       ├── ci.yml                               # CI validation (Node 18, 20, 22)
 │       └── publish.yml                          # Auto-publish to npm on tag push
-└── CHANGELOG.md                                 # Release history (Keep a Changelog)
+├── sddk.svg                                     # Project logo
+├── ARCHITECTURE.md                              # Architecture documentation
+├── CHANGELOG.md                                 # Release history (Keep a Changelog)
+├── CONTRIBUTING.md                              # Contribution guidelines
+├── SECURITY.md                                  # Security policy
+└── LICENSE                                      # MIT License
 ```
 
 ## Features

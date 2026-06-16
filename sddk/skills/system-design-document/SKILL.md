@@ -47,6 +47,8 @@ Before starting, verify that the following exists:
 7. **ALWAYS update the Implementation Plan** artifact with links to the specification document and SDD
 8. **ALWAYS check `.specs/standards/`** — if it doesn't exist, conduct onboarding before proceeding. If it exists, read and respect the defined standards
 9. **ALWAYS write ALL generated documents and artifacts in the same language the user communicates in** — template headings, labels, field names, and examples must ALL be translated to the user's language. The only exception is technical code (variable names, file paths, CLI commands)
+10. **ALWAYS adopt a propositional posture in the technical interview** — when the user has no preference, PROPOSE a solution with clear justification instead of asking open-ended questions. Present your recommendation as the first option, with 1-2 alternatives. Let the user approve, adjust, or reject
+11. **ALWAYS use `search_web` to validate technology suggestions** — never rely solely on training data for tool/service recommendations. Search for current versions, pricing, and community health before proposing. See `references/tech-stack-analysis.md` — "Web Search Mandate"
 
 ## Execution Flow
 
@@ -74,27 +76,91 @@ Before any technical analysis, check if the project has defined standards:
    - `refact` → read `.specs/refact/{work-name}/refact-spec.md`
    - `chore` → read `.specs/chore/{work-name}/chore-spec.md`
 2. **Read the project standards** in `.specs/standards/` (if they exist) to respect patterns
-3. **Analyze the existing project** (if any):
+3. **Read `.specs/features/_overview.md`** (if it exists) to understand the project's module structure, existing features, and their current status — this provides valuable architectural context for design decisions
+4. **Analyze the existing project** (if any):
    - Detect stack/language/framework
    - Identify patterns already in use
    - Map existing directory structure
-4. **Summarize** for the user: "I've read the specification, the project standards, and analyzed the code. Here's what I found: {summary}"
+5. **Summarize** for the user: "I've read the specification, the project standards, the project overview, and analyzed the code. Here's what I found: {summary}"
+
+### Phase 1.5: Constraints Discovery (type: features ONLY)
+
+> [!NOTE]
+> This phase is **SKIPPED for `fix/`, `refact/`, and `chore/`** — those work types operate within an already-defined technical context and don't need infrastructure-level constraint analysis.
+
+Before proposing any technical solution, explore the project's real-world constraints. These constraints directly influence which technologies, services, and architectural patterns are viable.
+
+**Constraints to explore (one at a time, via `ask_question` when there are clear options):**
+
+1. **Infrastructure / Resources** — "What infrastructure is available or planned? Cloud provider? On-premise? Existing services (database, auth, storage) that the feature must integrate with?"
+   - If the user already has infrastructure, document it as a hard constraint
+   - If starting from scratch, note this — it opens the door for proposals in Phase 2
+
+2. **Financial** — "Are there budget constraints? Are paid SaaS services acceptable, or must the stack use only free/open-source tools?"
+   - This directly impacts hosting, auth, monitoring, and database choices
+   - If on a tight budget: prioritize free tiers, open-source, and self-hosted options
+
+3. **Timeline** — "What's the delivery timeline? Is speed-to-market a priority, or is there room for a more robust setup?"
+   - Tight timeline → prioritize frameworks with abstractions, managed services, conventions over configuration
+   - Comfortable timeline → can invest in more tailored architecture
+
+4. **Security / Compliance** — "Are there regulatory requirements? (LGPD, GDPR, PCI-DSS, HIPAA, SOC2) Is there sensitive data (financial, health, PII)?"
+   - Compliance requirements constrain database choice (data residency), auth (MFA, audit logs), and hosting (certifications)
+   - If yes: document specific requirements and ensure all proposals address them
+
+5. **Legacy / Compatibility** — "Are there existing systems that must be integrated? APIs with fixed contracts? Databases that can't be changed? Libraries or SDKs that must be used?"
+   - Hard constraints from legacy systems override all other preferences
+   - Document API contracts, data formats, and protocol requirements
+
+**After exploring all constraints**, summarize for the user:
+"Here are the constraints I've identified: {constraint summary}. These will guide my technical proposals. Anything to add or correct?"
+
+> [!IMPORTANT]
+> Do NOT propose solutions during this phase. The goal is to LISTEN and MAP the landscape. Proposals come in Phase 2.
 
 ### Phase 2: Technical Interview (Adapted by Type)
 
+> [!IMPORTANT]
+> **Propositional Posture**: In this phase, the agent MUST adopt a **propositional approach**:
+> - **Analyze** the context: SRS + standards + `_overview.md` + constraints (Phase 1.5) + existing stack
+> - **Research** current options using `search_web` (see `references/tech-stack-analysis.md` for search instructions per category)
+> - **PROPOSE** a solution with clear justification based on the gathered context
+> - The user **approves, adjusts, or rejects**. If rejected, the agent proposes an alternative.
+> - **Rule**: "When the user has no preference or says 'I don't know' / 'you suggest', ALWAYS propose with justification instead of asking open-ended questions"
+
 #### For Features (type: features) — Full Interview
 
-Conduct a complete guided technical interview — see `references/tech-stack-analysis.md`:
+For each decision category below, follow the **Propose → Validate** cycle:
+1. Use the diagnostic questions from `references/tech-stack-analysis.md` to understand needs
+2. Use `search_web` to find current options (NEVER rely solely on training data)
+3. Present your **recommendation** with justification + 1-2 alternatives with trade-offs
+4. Use `ask_question` with your recommendation as the first option
+5. Record the decision with justification in the SDD
 
-**Decisions to make (one at a time, via `ask_question` when applicable):**
+**Decision categories (one at a time):**
 
-1. **Technology stack** (if not defined): Language/runtime, framework, database, build/dev tools
-2. **Architecture**: Pattern (MVC, Clean Architecture, Hexagonal), layers, communication patterns
-3. **Data model**: Entities, relationships, persistence strategy, migrations
-4. **API design** (if applicable): Endpoints, request/response format, authentication
-5. **Frontend** (if applicable): Componentization, state management, routing, design system
-6. **External integrations**: Third-party APIs, infrastructure services, webhooks
-7. **Edge cases and error handling**: Strategy, fallbacks, logging
+1. **Technology stack** (if not defined): Language/runtime, framework, build/dev tools
+   - See `references/tech-stack-analysis.md` — "How to Suggest a Stack"
+2. **Database**: Type, engine, managed vs. self-hosted, ORM
+   - See `references/tech-stack-analysis.md` — "Category 1: Database"
+3. **Architecture**: Pattern (MVC, Clean Architecture, Hexagonal), layers, communication
+   - See `references/architecture-patterns.md`
+4. **Authentication** (if applicable): Strategy, provider, session/token management
+   - See `references/tech-stack-analysis.md` — "Category 2: Authentication"
+5. **Hosting & Deploy**: Platform, CI/CD, environments
+   - See `references/tech-stack-analysis.md` — "Category 3: Hosting & Deploy"
+6. **Storage & CDN** (if applicable): File storage, media, static assets
+   - See `references/tech-stack-analysis.md` — "Category 4: Storage & CDN"
+7. **API design** (if applicable): Endpoints, request/response format, versioning
+8. **Frontend** (if applicable): Componentization, state management, routing, design system
+9. **Observability** (if applicable): Error tracking, logging, monitoring
+   - See `references/tech-stack-analysis.md` — "Category 5: Observability"
+10. **Queues & Messaging** (if applicable): Background jobs, async processing
+    - See `references/tech-stack-analysis.md` — "Category 6: Queues & Messaging"
+11. **Edge cases and error handling**: Strategy, fallbacks, logging
+
+> [!NOTE]
+> Not all categories apply to every feature. Skip categories that are irrelevant (e.g., skip "Queues" for a simple CRUD feature). Use judgment based on the SRS scope.
 
 #### For Refactoring (type: refact) — Focused Interview
 

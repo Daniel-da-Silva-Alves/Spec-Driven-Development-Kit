@@ -5,6 +5,40 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.4.0] - 2026-06-16
+
+### Added
+- **Phase 1.5: Constraints Discovery** — new phase in Skill 2 (SDD) that explores infrastructure, financial, timeline, security, and legacy constraints BEFORE proposing technical solutions (features only)
+- **6 infrastructure decision categories** in `tech-stack-analysis.md` — Database, Authentication, Hosting/Deploy, Storage/CDN, Observability, Queues/Messaging — each with diagnostic questions, decision criteria tables, and agent research instructions
+- **Web Search Mandate** — `tech-stack-analysis.md` now requires the agent to use `search_web` for current tool/service data instead of relying on training knowledge
+- **4 new BKL-12 consistency tests** in Layer 4 — validates Phase 1.5, propositional posture, search_web mandate, and infrastructure categories (18 total tests now)
+
+### Changed
+- **Skill 2 (SDD) Phase 2** — rewritten from consultative ("what do you prefer?") to **propositional** ("based on your context, I recommend X because Y — do you agree?")
+- **Skill 2 (SDD) Rules** — added Rule 10 (propositional posture) and Rule 11 (search_web mandate)
+- **Skill 2 (SDD) Feature interview** — expanded from 7 to 11 decision categories, each with cross-references to `tech-stack-analysis.md`
+- **`tech-stack-analysis.md`** — complete rewrite: generic decision criteria that don't become stale + live web search for current data
+
+## [2.3.0] - 2026-06-16
+
+### Added
+- **Feature naming convention** — mandatory `{module-acronym}-{number}-{kebab-description}` pattern for feature folders, enforced in Skill 1 (Rule 9)
+- **Project overview registry** (`_overview.md`) — living document that maps modules, tracks features, and maintains a changelog
+- **Phase 0.5: Project Overview Verification** — Socratic Product Discovery interview in Skill 1 to establish project context and module structure before any feature work
+- **Automated plugin consistency tests** — `tests/validate-plugin.mjs` with 14 tests across 3 layers (structural, semantic, pipeline coherence) using Node.js native test runner
+- **`overview-template.md`** — new reference template for generating `_overview.md`
+
+### Changed
+- **Skill 1 (Specification)** — Phase 1 now determines folder name using naming convention for features; free-form for fix/refact/chore. Phase 4 auto-updates `_overview.md` for features
+- **Skill 2 (SDD)** — Phase 1 now reads `_overview.md` for architectural context
+- **Skill 5 (Code Review)** — Phase 1 now reads the spec document. Phase 6 updates `_overview.md` status to `✅ Implemented` for features
+
+### Fixed
+- **Version drift** — `plugin.json` version synced with `package.json` (was stuck at 2.0.0)
+- **CHANGELOG** — added missing release link for v2.2.0
+- **README** — updated project structure tree to reflect all files added in v2.2.0 and v2.3.0
+- **Code Review** — Preconditions and paths updated to use `{type}/{work-name}` instead of hardcoded `features/{feature-name}`
+
 ## [2.2.0] - 2026-06-05
 
 ### Added
@@ -72,6 +106,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Complete rewrite from v1.0.0
 - Restructured plugin to use `skills/` directory with `SKILL.md` + `references/` pattern
 
+[2.4.0]: https://github.com/Daniel-da-Silva-Alves/Spec-Driven-Development-Kit/releases/tag/v2.4.0
+[2.3.0]: https://github.com/Daniel-da-Silva-Alves/Spec-Driven-Development-Kit/releases/tag/v2.3.0
+[2.2.0]: https://github.com/Daniel-da-Silva-Alves/Spec-Driven-Development-Kit/releases/tag/v2.2.0
 [2.1.0]: https://github.com/Daniel-da-Silva-Alves/Spec-Driven-Development-Kit/releases/tag/v2.1.0
 [2.0.1]: https://github.com/Daniel-da-Silva-Alves/Spec-Driven-Development-Kit/releases/tag/v2.0.1
 [2.0.0]: https://github.com/Daniel-da-Silva-Alves/Spec-Driven-Development-Kit/releases/tag/v2.0.0

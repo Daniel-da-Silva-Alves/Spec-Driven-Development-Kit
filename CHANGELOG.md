@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.5.0] - 2026-06-16
+
+### Added
+- **`.specs/` guardrail in `plugin.json`** — the plugin description now includes an explicit instruction telling the agent to read SDDK skills before taking ANY action involving the `.specs/` directory (analyzing, classifying work items, reviewing naming, modifying specs). This ensures the agent consults the SDDK framework even for meta-questions like "is this a feature or a refactoring?" that wouldn't match individual skill triggers
+
 ## [2.4.0] - 2026-06-16
 
 ### Added
@@ -106,6 +111,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Complete rewrite from v1.0.0
 - Restructured plugin to use `skills/` directory with `SKILL.md` + `references/` pattern
 
+[2.5.0]: https://github.com/Daniel-da-Silva-Alves/Spec-Driven-Development-Kit/releases/tag/v2.5.0
 [2.4.0]: https://github.com/Daniel-da-Silva-Alves/Spec-Driven-Development-Kit/releases/tag/v2.4.0
 [2.3.0]: https://github.com/Daniel-da-Silva-Alves/Spec-Driven-Development-Kit/releases/tag/v2.3.0
 [2.2.0]: https://github.com/Daniel-da-Silva-Alves/Spec-Driven-Development-Kit/releases/tag/v2.2.0

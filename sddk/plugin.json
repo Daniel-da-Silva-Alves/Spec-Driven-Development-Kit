@@ -1,7 +1,7 @@
 {
   "name": "spec-driven-development-kit",
-  "version": "2.4.0",
-  "description": "Spec-Driven Development Kit (SDDK) — Plugin with a sequential 5-skill pipeline for specification-driven development. Guides the agent through: Software Requirements Specification (SRS) -> System Design Document (SDD) -> Implementation Planning -> Fullstack Development -> Code Review, ensuring quality and traceability at every stage.",
+  "version": "2.5.0",
+  "description": "Spec-Driven Development Kit (SDDK) — Plugin with a sequential 5-skill pipeline for specification-driven development. Guides the agent through: Software Requirements Specification (SRS) -> System Design Document (SDD) -> Implementation Planning -> Fullstack Development -> Code Review, ensuring quality and traceability at every stage. IMPORTANT: Before taking ANY action involving the .specs/ directory — including analyzing, classifying, or questioning work item types (feature vs fix vs refactoring vs chore), reviewing naming conventions, or modifying any spec document — you MUST read the relevant SDDK skill first. The skill 'software-requirements-specification' defines the 4 work types and their classification criteria. Never reason about .specs/ content using generic knowledge; always consult the SDDK skills as the authoritative source.",
   "skills": [
     "skills/software-requirements-specification",
     "skills/system-design-document",

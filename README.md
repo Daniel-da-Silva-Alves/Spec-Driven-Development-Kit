@@ -61,8 +61,15 @@ graph LR
 
 ### Prerequisites
 
-- An AI coding agent that supports plugins/skills (e.g., Gemini in VS Code, Claude, or compatible IDE agents)
+- An AI coding agent that supports plugins/skills (Gemini, Claude Code, or compatible IDE agents)
 - Node.js ≥ 18
+
+### Supported IDEs
+
+| IDE | Install Path | Strategy |
+|:---|:---|:---|
+| **Gemini** (Antigravity / Google AI) | `~/.gemini/config/plugins/sddk/` | Full plugin (with `plugin.json`) |
+| **Claude Code** (Anthropic) | `~/.claude/skills/` | Skills only (each skill as independent directory) |
 
 ### Option A: Install via npm (recommended)
 
@@ -70,7 +77,7 @@ graph LR
 # Install the CLI
 npm install -g @daniel-da-silva-alves/sddk
 
-# Install the plugin
+# Install the plugin (interactive IDE selection)
 sddk install
 ```
 
@@ -80,7 +87,19 @@ Or without permanent install:
 npx @daniel-da-silva-alves/sddk install
 ```
 
-The plugin will be installed to `~/.gemini/config/plugins/sddk/` and will be available in **all your projects**.
+The installer will ask which IDE you use:
+
+```
+  Select your IDE:
+
+    1  Gemini (Antigravity / Google AI IDE)
+    2  Claude Code (Anthropic)
+    3  Both (install for Gemini + Claude Code)
+
+→ Choose an option [1/2/3]:
+```
+
+The plugin will be installed globally and will be available in **all your projects**.
 
 ### Option B: Install manually
 
@@ -89,7 +108,9 @@ The plugin will be installed to `~/.gemini/config/plugins/sddk/` and will be ava
    git clone https://github.com/Daniel-da-Silva-Alves/Spec-Driven-Development-Kit.git
    ```
 
-2. Copy the `sddk` folder into the global plugin directory:
+2. Copy the skills into your IDE's global directory:
+
+   **For Gemini:**
    ```bash
    # Linux/macOS:
    cp -r sddk/ ~/.gemini/config/plugins/sddk/
@@ -98,10 +119,19 @@ The plugin will be installed to `~/.gemini/config/plugins/sddk/` and will be ava
    xcopy /E /I sddk %USERPROFILE%\.gemini\config\plugins\sddk
    ```
 
+   **For Claude Code:**
+   ```bash
+   # Linux/macOS:
+   cp -r sddk/skills/* ~/.claude/skills/
+
+   # Windows:
+   xcopy /E /I sddk\skills\* %USERPROFILE%\.claude\skills
+   ```
+
 3. Restart your IDE. The agent will automatically detect the 5 skills.
 
 > [!TIP]
-> You can verify the installation anytime with `sddk status`, or by asking your agent: *"What skills do you have available?"* — it should list the 5 SDDK skills.
+> You can verify the installation anytime with `sddk status` (checks both IDEs), or by asking your agent: *"What skills do you have available?"* — it should list the 5 SDDK skills.
 
 ## Usage
 

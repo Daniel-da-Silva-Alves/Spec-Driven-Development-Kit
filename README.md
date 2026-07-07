@@ -99,6 +99,9 @@ The installer will ask which IDE you use:
 → Choose an option [1/2/3]:
 ```
 
+> [!NOTE]
+> If the interactive prompt doesn't work in your terminal, or you are running in CI, you can bypass the prompt using flags: `sddk install --claude`, `sddk install --gemini`, or `sddk install --both`.
+
 The plugin will be installed globally and will be available in **all your projects**.
 
 ### Option B: Install manually

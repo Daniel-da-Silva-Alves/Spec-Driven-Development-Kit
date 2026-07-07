@@ -462,6 +462,18 @@ function showHelp() {
   log(`    ${color.cyan}sddk --version${color.reset}             Show version`);
   log(`    ${color.cyan}sddk --help${color.reset}                Show this help`);
   log("");
+  log(`${color.bold}  OPTIONS${color.reset}`);
+  log("");
+  log(
+    `    ${color.cyan}--gemini${color.reset}                   Bypass prompt and install/uninstall for Gemini`
+  );
+  log(
+    `    ${color.cyan}--claude${color.reset}                   Bypass prompt and install/uninstall for Claude Code`
+  );
+  log(
+    `    ${color.cyan}--both${color.reset}                     Bypass prompt and install/uninstall for both IDEs`
+  );
+  log("");
   log(`${color.bold}  EXAMPLES${color.reset}`);
   log("");
   log(
@@ -494,7 +506,7 @@ function showVersion() {
   log(VERSION);
 }
 
-async function install() {
+async function install(args) {
   log("");
   log(
     `${color.bold}${color.magenta}  SDDK${color.reset} ${color.dim}v${VERSION}${color.reset}`
@@ -512,8 +524,17 @@ async function install() {
     process.exit(1);
   }
 
-  // Interactive IDE selection
-  const targets = await selectTargets("install");
+  // Determine targets (flags override interactive prompt)
+  let targets = [];
+  if (args.includes("--both")) {
+    targets = ["gemini", "claude"];
+  } else if (args.includes("--gemini")) {
+    targets = ["gemini"];
+  } else if (args.includes("--claude")) {
+    targets = ["claude"];
+  } else {
+    targets = await selectTargets("install");
+  }
 
   try {
     for (const targetKey of targets) {
@@ -542,14 +563,23 @@ async function install() {
   }
 }
 
-async function uninstall() {
+async function uninstall(args) {
   log("");
   log(
     `${color.bold}${color.magenta}  SDDK${color.reset} ${color.dim}v${VERSION}${color.reset}`
   );
 
-  // Interactive IDE selection
-  const targets = await selectTargets("uninstall");
+  // Determine targets (flags override interactive prompt)
+  let targets = [];
+  if (args.includes("--both")) {
+    targets = ["gemini", "claude"];
+  } else if (args.includes("--gemini")) {
+    targets = ["gemini"];
+  } else if (args.includes("--claude")) {
+    targets = ["claude"];
+  } else {
+    targets = await selectTargets("uninstall");
+  }
 
   try {
     for (const targetKey of targets) {
@@ -656,12 +686,12 @@ async function main() {
   // Handle commands
   switch (command) {
     case "install":
-      await install();
+      await install(args);
       break;
 
     case "uninstall":
     case "remove":
-      await uninstall();
+      await uninstall(args);
       break;
 
     case "status":

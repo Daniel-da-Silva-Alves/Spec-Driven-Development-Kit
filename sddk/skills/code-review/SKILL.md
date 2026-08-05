@@ -32,7 +32,8 @@ Before starting, verify:
 
 This skill sets the terminal OKF `status` (contract: `doc/design/okf-perfil-sddk.md`).
 
-- **Phase 6 (Conclusion):** after the review passes (all critical issues fixed), update the anchor spec document's frontmatter to `status: verified`. `verified` is the terminal state signaling the work item is complete — the pipeline's `Stop` gate keys off it.
+- **Independent verification (before `verified`):** invoke the `sddk:verifier` subagent to independently confirm the implementation against the anchor spec, the SDD, and the manual tests. It returns a PASS/FAIL verdict with evidence. If it returns FAIL, treat the violations as critical issues (fix them, or return to Skill 4 Dev) — do NOT set `verified`.
+- **Phase 6 (Conclusion):** after the review passes (all critical issues fixed) AND `sddk:verifier` returns PASS, update the anchor spec document's frontmatter to `status: verified`. `verified` is the terminal state signaling the work item is complete — the pipeline's `Stop` gate keys off it.
 
 ## Mandatory Rules
 

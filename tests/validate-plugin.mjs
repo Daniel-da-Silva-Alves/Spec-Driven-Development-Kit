@@ -467,3 +467,34 @@ describe('Layer 5: Claude Code Plugin Packaging', () => {
   });
 
 });
+
+// ═══════════════════════════════════════════════════════════════════
+// Layer 6: Verifier Subagent (Enforcement)
+// ═══════════════════════════════════════════════════════════════════
+
+describe('Layer 6: Verifier Subagent', () => {
+
+  it('sddk/agents/verifier.md exists with valid frontmatter and is read-only', () => {
+    const agentPath = join(SDDK, 'agents', 'verifier.md');
+    assert.ok(existsSync(agentPath), 'sddk/agents/verifier.md must exist');
+
+    const content = readFileSync(agentPath, 'utf-8');
+    const fm = extractFrontmatter(content);
+    assert.ok(fm.name, 'verifier agent must have frontmatter "name"');
+    assert.ok(fm.description, 'verifier agent must have frontmatter "description"');
+    assert.ok(fm.tools, 'verifier agent must declare an explicit "tools" allowlist');
+    assert.ok(
+      !/\b(Write|Edit|NotebookEdit)\b/.test(fm.tools),
+      `verifier must be read-only: tools must not include Write/Edit/NotebookEdit (got "${fm.tools}")`
+    );
+  });
+
+  it('Code Review skill invokes the verifier before setting status: verified', () => {
+    const review = readSkill('code-review');
+    assert.ok(
+      review.includes('sddk:verifier'),
+      'code-review SKILL.md must invoke the sddk:verifier subagent before marking a work item verified'
+    );
+  });
+
+});

@@ -2,11 +2,26 @@
 
 Use this template when the work type is `fix/` or `chore/`. This is a minimal version of the SDD, styled as an Architecture Decision Record (ADR), focused on root cause analysis (for fixes), change analysis (for chores), the proposed solution, and impact assessment.
 
+> **OKF profile (mandatory).** Every generated document begins with the YAML frontmatter below. It makes the `.specs/` bundle a portable, machine-readable knowledge graph and is what the pipeline gates read (via `status`). See the profile contract in `doc/design/okf-perfil-sddk.md`. Fill the frontmatter FIRST, then the body. The document body is unchanged.
+
 ---
 
 ## Document Structure
 
 ```markdown
+---
+type: sdd
+title: "SDD — {Fix/Chore Name}"
+description: "{one-line summary of the fix/chore design}"
+status: draft            # draft → approved (only 'approved' unlocks the Planning stage)
+work_item: "{module-acronym}-{number}-{kebab-description}"
+work_type: fix    # or 'chore'
+timestamp: {ISO 8601, e.g. 2026-08-05T14:30:00Z}
+traces:
+  - rel: refines
+    target: bug-report.md   # or chore-spec.md
+---
+
 # System Design Document (SDD)
 ## {Fix/Chore Name}
 
@@ -94,3 +109,4 @@ Priority order for documentation lookup during development:
 4. **Regression risk table is MANDATORY** — every change has risk
 5. **Rollback strategy is MANDATORY for chores** — fixes typically don't need rollback if the fix is correct
 6. **Documentation sources are OPTIONAL** — only include if version-specific API lookup is needed
+7. **OKF frontmatter is mandatory** — always emit it, with `type: sdd` and `status: draft` on creation. Set `work_type` to `fix` or `chore` to match the work item, and set `status: approved` only after the user approves the document. `work_item` MUST match the fix/chore folder name exactly

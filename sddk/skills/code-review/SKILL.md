@@ -28,6 +28,13 @@ Before starting, verify:
 - `.specs/{type}/{work-name}/manual-tests.md` — exists
 - Task artifact — all microtasks are `[x]`
 
+## OKF Status Contract
+
+This skill sets the terminal OKF `status` (contract: `doc/design/okf-perfil-sddk.md`).
+
+- **Independent verification (before `verified`):** invoke the `sddk:verifier` subagent to independently confirm the implementation against the anchor spec, the SDD, and the manual tests. It returns a PASS/FAIL verdict with evidence. If it returns FAIL, treat the violations as critical issues (fix them, or return to Skill 4 Dev) — do NOT set `verified`.
+- **Phase 6 (Conclusion):** after the review passes (all critical issues fixed) AND `sddk:verifier` returns PASS, update the anchor spec document's frontmatter to `status: verified`. `verified` is the terminal state signaling the work item is complete — the pipeline's `Stop` gate keys off it.
+
 ## Mandatory Rules
 
 1. **ALWAYS review all files** created/modified during development
@@ -162,9 +169,9 @@ Generate/update `.specs/{type}/{work-name}/refactoring-backlog.md` with 🟡 and
 
 ### Phase 6: Conclusion
 
-1. **Update `.specs/features/_overview.md`** (type: `features` ONLY, if the file exists):
-   - Update the feature's status in the **Feature Map** to `✅ Implemented`
-   - Add an entry to the **Changelog** under today's date with category `Implemented` and a brief description
+1. **Update the project registry** (type: `features` ONLY, if the files exist):
+   - In `.specs/index.md`: update the feature's status in the **Feature Map** to `✅ Implemented`
+   - In `.specs/log.md`: add an entry under today's date with category `Implemented` and a brief description
 2. Present a **review report** to the user:
    - Total issues found per severity
    - Critical issues fixed

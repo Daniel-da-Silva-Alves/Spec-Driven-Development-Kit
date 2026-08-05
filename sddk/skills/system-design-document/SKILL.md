@@ -36,6 +36,14 @@ This skill adapts its depth based on the work type selected in Skill 1:
 Before starting, verify that the following exists:
 - `.specs/{type}/{work-name}/{spec_document}` — read this file completely to understand the specification
 
+## OKF Status Contract
+
+This skill maintains the OKF `status` field (contract: `doc/design/okf-perfil-sddk.md`).
+
+- **Phase 0 (Standards onboarding):** the generated `.specs/standards/*.md` files are project-wide and stable — emit them with `status: approved`.
+- **Phase 4 (SDD Generation):** emit `sdd.md` frontmatter with `status: draft`.
+- **Phase 5 (Transition):** ONLY after explicit user approval, set `sdd.md` to `status: approved`. Both the anchor spec document AND `sdd.md` must be `approved` before code may be written — this is enforced by the pipeline gate.
+
 ## Mandatory Rules
 
 1. **ALWAYS read the specification document** (srs.md, bug-report.md, refact-spec.md, or chore-spec.md) as the first step before any action
@@ -76,7 +84,7 @@ Before any technical analysis, check if the project has defined standards:
    - `refact` → read `.specs/refact/{work-name}/refact-spec.md`
    - `chore` → read `.specs/chore/{work-name}/chore-spec.md`
 2. **Read the project standards** in `.specs/standards/` (if they exist) to respect patterns
-3. **Read `.specs/features/_overview.md`** (if it exists) to understand the project's module structure, existing features, and their current status — this provides valuable architectural context for design decisions
+3. **Read `.specs/index.md`** (if it exists) to understand the project's module structure, existing features, and their current status — this provides valuable architectural context for design decisions
 4. **Analyze the existing project** (if any):
    - Detect stack/language/framework
    - Identify patterns already in use
@@ -122,7 +130,7 @@ Before proposing any technical solution, explore the project's real-world constr
 
 > [!IMPORTANT]
 > **Propositional Posture**: In this phase, the agent MUST adopt a **propositional approach**:
-> - **Analyze** the context: SRS + standards + `_overview.md` + constraints (Phase 1.5) + existing stack
+> - **Analyze** the context: SRS + standards + `index.md` + constraints (Phase 1.5) + existing stack
 > - **Research** current options using `search_web` (see `references/tech-stack-analysis.md` for search instructions per category)
 > - **PROPOSE** a solution with clear justification based on the gathered context
 > - The user **approves, adjusts, or rejects**. If rejected, the agent proposes an alternative.

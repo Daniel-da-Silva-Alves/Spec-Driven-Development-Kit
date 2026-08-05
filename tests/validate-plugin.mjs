@@ -1,8 +1,10 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync, readdirSync, existsSync } from 'node:fs';
+import { readFileSync, readdirSync, existsSync, mkdtempSync, mkdirSync, writeFileSync } from 'node:fs';
 import { join, resolve, basename, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { execFileSync } from 'node:child_process';
+import { tmpdir } from 'node:os';
 
 // ─── Config ────────────────────────────────────────────────────────
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -424,6 +426,145 @@ describe('Layer 4: BKL-12 Propositional Interview', () => {
       techStack.includes('Web Search Mandate'),
       'tech-stack-analysis.md must have a "Web Search Mandate" section'
     );
+  });
+
+});
+
+// ═══════════════════════════════════════════════════════════════════
+// Layer 5: Claude Code Plugin Packaging
+// ═══════════════════════════════════════════════════════════════════
+
+describe('Layer 5: Claude Code Plugin Packaging', () => {
+
+  it('sddk/.claude-plugin/plugin.json exists with a name and version matching package.json', () => {
+    const manifestPath = join(SDDK, '.claude-plugin', 'plugin.json');
+    assert.ok(existsSync(manifestPath), 'sddk/.claude-plugin/plugin.json must exist');
+    const manifest = JSON.parse(readFileSync(manifestPath, 'utf-8'));
+    assert.ok(manifest.name, 'plugin manifest must have a "name"');
+    const pkg = JSON.parse(readFileSync(PACKAGE_JSON, 'utf-8'));
+    assert.equal(
+      manifest.version,
+      pkg.version,
+      `plugin manifest version (${manifest.version}) !== package.json (${pkg.version})`
+    );
+  });
+
+  it('root .claude-plugin/marketplace.json lists the sddk plugin pointing at a valid plugin dir', () => {
+    const mktPath = join(ROOT, '.claude-plugin', 'marketplace.json');
+    assert.ok(existsSync(mktPath), '.claude-plugin/marketplace.json must exist at repo root');
+    const mkt = JSON.parse(readFileSync(mktPath, 'utf-8'));
+    assert.ok(mkt.name, 'marketplace must have a "name"');
+    assert.ok(mkt.owner && mkt.owner.name, 'marketplace must have an "owner.name"');
+    assert.ok(Array.isArray(mkt.plugins) && mkt.plugins.length >= 1, 'marketplace must list at least one plugin');
+
+    const entry = mkt.plugins.find((p) => p.name === 'sddk');
+    assert.ok(entry, 'marketplace must list a plugin named "sddk"');
+    assert.equal(typeof entry.source, 'string', 'sddk plugin source must be a relative path string');
+
+    const pluginManifest = join(resolve(ROOT, entry.source), '.claude-plugin', 'plugin.json');
+    assert.ok(
+      existsSync(pluginManifest),
+      `plugin source "${entry.source}" must contain .claude-plugin/plugin.json`
+    );
+  });
+
+});
+
+// ═══════════════════════════════════════════════════════════════════
+// Layer 6: Verifier Subagent (Enforcement)
+// ═══════════════════════════════════════════════════════════════════
+
+describe('Layer 6: Verifier Subagent', () => {
+
+  it('sddk/agents/verifier.md exists with valid frontmatter and is read-only', () => {
+    const agentPath = join(SDDK, 'agents', 'verifier.md');
+    assert.ok(existsSync(agentPath), 'sddk/agents/verifier.md must exist');
+
+    const content = readFileSync(agentPath, 'utf-8');
+    const fm = extractFrontmatter(content);
+    assert.ok(fm.name, 'verifier agent must have frontmatter "name"');
+    assert.ok(fm.description, 'verifier agent must have frontmatter "description"');
+    assert.ok(fm.tools, 'verifier agent must declare an explicit "tools" allowlist');
+    assert.ok(
+      !/\b(Write|Edit|NotebookEdit)\b/.test(fm.tools),
+      `verifier must be read-only: tools must not include Write/Edit/NotebookEdit (got "${fm.tools}")`
+    );
+  });
+
+  it('Code Review skill invokes the verifier before setting status: verified', () => {
+    const review = readSkill('code-review');
+    assert.ok(
+      review.includes('sddk:verifier'),
+      'code-review SKILL.md must invoke the sddk:verifier subagent before marking a work item verified'
+    );
+  });
+
+});
+
+// ═══════════════════════════════════════════════════════════════════
+// Layer 7: Pipeline-Gate Hooks
+// ═══════════════════════════════════════════════════════════════════
+
+describe('Layer 7: Pipeline-Gate Hooks', () => {
+
+  const GATE = join(SDDK, 'hooks', 'sddk-gate.mjs');
+
+  it('hooks.json exists and wires PreToolUse + Stop to the gate script', () => {
+    const hooksPath = join(SDDK, 'hooks', 'hooks.json');
+    assert.ok(existsSync(hooksPath), 'sddk/hooks/hooks.json must exist');
+    const cfg = JSON.parse(readFileSync(hooksPath, 'utf-8'));
+    assert.ok(cfg.hooks, 'hooks.json must have a top-level "hooks" object');
+    assert.ok(Array.isArray(cfg.hooks.PreToolUse), 'hooks.json must define PreToolUse');
+    assert.ok(Array.isArray(cfg.hooks.Stop), 'hooks.json must define Stop');
+    const commands = JSON.stringify(cfg);
+    assert.ok(commands.includes('sddk-gate.mjs'), 'hooks must invoke sddk-gate.mjs');
+    assert.ok(existsSync(GATE), 'sddk/hooks/sddk-gate.mjs must exist');
+  });
+
+  // Functional: run the gate against throwaway fixtures and assert exit codes.
+  function runGate(mode, projectDir) {
+    try {
+      execFileSync('node', [GATE, mode], {
+        cwd: projectDir,
+        env: { ...process.env, CLAUDE_PROJECT_DIR: projectDir },
+        input: '',
+        stdio: ['pipe', 'pipe', 'pipe'],
+      });
+      return 0;
+    } catch (err) {
+      return typeof err.status === 'number' ? err.status : 1;
+    }
+  }
+
+  function fixtureWithStatus(status, comment = '') {
+    const dir = mkdtempSync(join(tmpdir(), 'sddk-gate-'));
+    const wi = join(dir, '.specs', 'features', 'demo');
+    mkdirSync(wi, { recursive: true });
+    const statusLine = comment ? `status: ${status}            # ${comment}` : `status: ${status}`;
+    writeFileSync(
+      join(wi, 'srs.md'),
+      `---\ntype: srs\n${statusLine}\nwork_item: demo\ntimestamp: 2026-08-05T10:00:00Z\n---\n\n# SRS\n`
+    );
+    return dir;
+  }
+
+  it('stop gate BLOCKS (exit 2) when a work item is implemented-but-not-verified', () => {
+    assert.equal(runGate('stop', fixtureWithStatus('implemented')), 2);
+  });
+
+  it('stop gate ALLOWS (exit 0) when the work item is verified', () => {
+    assert.equal(runGate('stop', fixtureWithStatus('verified')), 0);
+  });
+
+  it('stop gate fails open (exit 0) when there is no .specs/ bundle', () => {
+    const empty = mkdtempSync(join(tmpdir(), 'sddk-empty-'));
+    assert.equal(runGate('stop', empty), 0);
+  });
+
+  // Regression: the templates ship an inline YAML comment on the status line
+  // (e.g. `status: draft  # ...`). The gate must parse the value, not fail open.
+  it('stop gate BLOCKS when status carries an inline YAML comment', () => {
+    assert.equal(runGate('stop', fixtureWithStatus('implemented', 'implemented -> verified')), 2);
   });
 
 });

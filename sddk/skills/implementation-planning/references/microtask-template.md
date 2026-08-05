@@ -2,6 +2,8 @@
 
 Each microtask in the Implementation Plan MUST follow this format:
 
+> **OKF profile (mandatory).** The generated Implementation Plan begins with the YAML frontmatter shown at the top of the Complete Example below. It makes the `.specs/` bundle a portable, machine-readable knowledge graph and is what the pipeline gates read (via `status`). See the profile contract in `doc/design/okf-perfil-sddk.md`. Fill the frontmatter FIRST, then the microtasks.
+
 ## Required Format
 
 ```markdown
@@ -17,6 +19,19 @@ Each microtask in the Implementation Plan MUST follow this format:
 ## Complete Example
 
 ```markdown
+---
+type: implementation-plan
+title: "Implementation Plan — {Feature Name}"
+description: "{one-line summary of the implementation plan}"
+status: draft            # draft → approved (only 'approved' unlocks the Development stage)
+work_item: "{work-name}"
+work_type: features
+timestamp: {ISO 8601, e.g. 2026-08-05T14:30:00Z}
+traces:
+  - rel: plans
+    target: sdd.md
+---
+
 # Implementation Plan — Feature: User Authentication
 
 ## Phase 1: Setup and Configuration
@@ -64,3 +79,4 @@ Each microtask in the Implementation Plan MUST follow this format:
 3. **Files MUST have a clear action** — "create" or "modify"
 4. **Done criterion MUST be verifiable** — not "work well" but "endpoint returns 200 with typed body"
 5. **Each microtask MUST be completable in 1 agent iteration** — if too large, break into sub-tasks
+6. **OKF frontmatter is mandatory** — the plan document begins with it, with `type: implementation-plan`, `work_type: features`, and `status: draft` on creation. Set `status: approved` only after the user approves the plan. `work_item` MUST match the work folder name exactly

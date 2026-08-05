@@ -2,11 +2,29 @@
 
 Use this template as a base to generate the SDD document. Adapt sections according to the feature's complexity.
 
+> **OKF profile (mandatory).** Every generated document begins with the YAML frontmatter below. It makes the `.specs/` bundle a portable, machine-readable knowledge graph and is what the pipeline gates read (via `status`). See the profile contract in `doc/design/okf-perfil-sddk.md`. Fill the frontmatter FIRST, then the body. The document body is unchanged.
+
 ---
 
 ## Document Structure
 
 ```markdown
+---
+type: sdd
+title: "SDD — {Feature Name}"
+description: "{one-line summary of the technical design}"
+status: draft            # draft → approved (only 'approved' unlocks the Planning stage)
+work_item: "{module-acronym}-{number}-{kebab-description}"
+work_type: features
+tags: [{module-acronym}]
+timestamp: {ISO 8601, e.g. 2026-08-05T14:30:00Z}
+traces:
+  - rel: refines
+    target: srs.md
+  - rel: governed-by
+    target: ../../standards/architecture.md
+---
+
 # System Design Document (SDD)
 ## {Feature Name}
 
@@ -257,3 +275,4 @@ Priority order for documentation lookup during development:
 4. **Components MUST be granular** — never a monolithic component
 5. **Design tokens MUST be defined** — never use hardcoded values
 6. **Documentation sources MUST be configured** for each technology in the stack with pinned version
+7. **OKF frontmatter is mandatory** — always emit it, with `type: sdd`, `work_type: features`, and `status: draft` on creation. Set `status: approved` only after the user approves the document. `work_item` MUST match the feature folder name exactly

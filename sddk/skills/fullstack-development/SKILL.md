@@ -24,6 +24,13 @@ This is **Skill 4 of 5** in the Spec-Driven Development (SDD) pipeline:
 > - `.specs/{type}/{work-name}/manual-tests.md`
 > - Task artifact with microtasks
 
+## OKF Status Contract
+
+This skill advances the OKF `status` field (contract: `doc/design/okf-perfil-sddk.md`).
+
+- **Precondition gate:** do NOT begin implementation unless the anchor spec document AND `sdd.md` are `status: approved`. If either is still `draft`, STOP and return to the corresponding skill.
+- **Phase 3 (Transition):** after ALL microtasks are `[x]`, update the anchor spec document's frontmatter to `status: implemented`.
+
 ## Mandatory Rules
 
 ### Clean Code
@@ -94,18 +101,20 @@ After all microtasks are `[x]`:
 1. Announce: "✅ Development completed. All {N} microtasks have been implemented. Next stage: **Code Review**. Would you like to proceed?"
 2. **WAIT** for explicit confirmation before activating the next skill
 
-## Memory Strategy (On-Demand Reading)
+## Memory Strategy (Progressive Disclosure over the OKF Graph)
 
 > [!IMPORTANT]
-> **NEVER try to read the entire SRS and SDD at once.** This pollutes the context and wastes tokens.
+> **NEVER read the entire SRS, SDD, or standards at once.** The `.specs/` bundle is an OKF knowledge graph — traverse it, don't dump it. Loading whole documents pollutes the context and wastes tokens (see the cost model in `doc/design/okf-perfil-sddk.md`).
 
-The correct strategy is:
-1. Each microtask has **pointers** to specific sections (e.g.: `SDD#3.1 L45-L78`)
-2. When starting a microtask, read **ONLY** the referenced sections
-3. This ensures the loaded context is precise and relevant to the current task
+Navigate the graph, loading only the nodes the current microtask needs:
+
+1. **Entry point** — the bundle root `.specs/index.md` (`type: project-index`) is the map. Use it only for discovery (which modules/work items exist); never load it wholesale during implementation.
+2. **Follow edges, not files** — each microtask carries `📎` pointers to specific concept sections (e.g. `SDD#3.1 L45-L78`, `SRS FR-003`). These pointers ARE the graph edges. Resolve each pointer to the exact section and read only those lines.
+3. **Read `traces` before bodies** — a document's frontmatter `traces` (`refines`, `plans`, `governed-by`) tells you which related concepts it links to. Load a linked concept only if the current microtask actually depends on it.
+4. **Bounded working set** — a typical microtask needs 2-3 concept sections (one SDD section + one requirement + maybe one standard), not the full bundle. If you are loading more, re-read the microtask pointers — you are probably over-fetching.
 
 > [!NOTE]
-> For `fix/` and `chore/` work types, the specification and SDD documents are smaller, so the entire document may fit in a single read. For `features/` and `refact/`, always use the pointer-based strategy.
+> For `fix/` and `chore/` work types, the documents are small enough that a full read is acceptable. For `features/` and `refact/`, always traverse the graph.
 
 ## Technical Documentation Lookup
 

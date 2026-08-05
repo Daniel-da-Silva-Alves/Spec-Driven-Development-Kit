@@ -1,7 +1,17 @@
-# _overview.md Template
+# index.md — Project Index Template
 
-> This template is used by the SRS skill (Phase 0) to generate the project's living overview document at `.specs/features/_overview.md`. Replace all `{placeholders}` with actual values gathered during the Product Discovery interview.
+> This template is used by the SRS skill (Phase 0) to generate the project's index document (OKF bundle root) at `.specs/index.md`. Replace all `{placeholders}` with actual values gathered during the Product Discovery interview.
 
+> **OKF profile (mandatory).** The generated `index.md` begins with the YAML frontmatter below. It makes the `.specs/` bundle a portable, machine-readable knowledge graph rooted at this project index. See the profile contract in `doc/design/okf-perfil-sddk.md`. This is a project-level artifact: it carries only `type`, `title`, `description`, `tags`, and `timestamp` — no `status`, `work_item`, or `work_type`.
+
+> Note: the OKF frontmatter below is mandatory — always emit it at the very top of the generated document, with `type: project-index`.
+
+---
+type: project-index
+title: "{Project Name}"
+description: "{one-line summary of the system — problem, users, business context}"
+tags: [{project-slug}]
+timestamp: {ISO 8601, e.g. 2026-08-05T14:30:00Z}
 ---
 
 # {Project Name}
@@ -42,30 +52,4 @@
 
 ## Changelog
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
-
-<!-- Entries are grouped by date, most recent first. -->
-<!-- Categories: Added, Implemented, Changed, Removed -->
-
-### [{YYYY-MM-DD}]
-
-#### Added
-<!-- - `{acronym}-{n}-{description}` — {brief description of the new feature} -->
-
-#### Implemented
-<!-- - `{acronym}-{n}-{description}` — Full pipeline completed -->
-
-#### Changed
-<!-- - `{acronym}-{n}-{description}` — {description of the scope change} -->
-
-#### Removed
-<!-- - `{acronym}-{n}-{description}` — {reason for removal} -->
-
-> [!IMPORTANT]
-> **Changelog categories:**
-> - **Added** — New feature specified (created by SRS skill)
-> - **Implemented** — Feature completed the full pipeline: Dev + CodeReview approved (created by CodeReview skill)
-> - **Changed** — Feature had its scope significantly altered (pivot)
-> - **Removed** — Feature removed from the project scope
->
-> Only include categories that have entries for a given date. Empty categories should be omitted.
+The project changelog is NOT kept in this index. It lives in the OKF-reserved companion file `.specs/log.md` (`type: log`), generated from `references/log-template.md`. Append all `Added` / `Implemented` entries there, not here.

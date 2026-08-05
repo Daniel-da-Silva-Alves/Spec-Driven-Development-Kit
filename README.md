@@ -71,6 +71,17 @@ graph LR
 | **Gemini** (Antigravity / Google AI) | `~/.gemini/config/plugins/sddk/` | Full plugin (with `plugin.json`) |
 | **Claude Code** (Anthropic) | `~/.claude/skills/` | Skills only (each skill as independent directory) |
 
+### Claude Code: install as a native plugin (recommended)
+
+For Claude Code, install SDDK directly from this repo as a plugin marketplace — no file copying, versioned updates over git:
+
+```
+/plugin marketplace add Daniel-da-Silva-Alves/Spec-Driven-Development-Kit
+/plugin install sddk@spec-driven-development-kit
+```
+
+The 5 skills are then available namespaced under `/sddk:` (e.g. `/sddk:software-requirements-specification`).
+
 ### Option A: Install via npm (recommended)
 
 ```bash
@@ -305,7 +316,7 @@ Spec-Driven-Development-Kit/
 │       │       ├── checklist-refact-template.md   # Refactoring interview checklist
 │       │       ├── checklist-chore-template.md    # Chore interview checklist
 │       │       ├── socratic-interview-guide.md    # Interview methodology guide
-│       │       └── overview-template.md           # Project overview (_overview.md) template
+│       │       └── overview-template.md           # Project index (index.md) template
 │       ├── system-design-document/
 │       │   ├── SKILL.md                         # Skill 2 — SDD
 │       │   └── references/

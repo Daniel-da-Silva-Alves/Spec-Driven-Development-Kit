@@ -34,6 +34,13 @@ The SDDK supports 4 types of work, each with its own specification template and 
 | **Refactoring** | `refact/` | `refact-spec.md` | IEEE 1219 / ISO 14764 | Moderate (6-10 questions) |
 | **Chore** | `chore/` | `chore-spec.md` | ISO 14764 | Minimal (4-7 questions) |
 
+## OKF Status Contract
+
+This skill initializes the work item's OKF `status` field (contract: `doc/design/okf-perfil-sddk.md`). The **spec document** (`srs.md` / `bug-report.md` / `refact-spec.md` / `chore-spec.md`) is the ANCHOR artifact — its `status` tracks the overall stage of the work item across the entire pipeline.
+
+- **Phase 4 (Document Generation):** emit the frontmatter with `status: draft`.
+- **Phase 5 (Transition):** ONLY after explicit user approval, update the spec document's frontmatter to `status: approved`. This is what unlocks the SDD stage — never advance while it is still `draft`.
+
 ## Mandatory Rules
 
 1. **ALWAYS select the work type first** (Phase 0) before any other action
@@ -45,7 +52,7 @@ The SDDK supports 4 types of work, each with its own specification template and 
 7. **NEVER assume requirements** — if something was not explicitly stated by the user, ask
 8. **ALWAYS write ALL generated documents and artifacts in the same language the user communicates in** — template headings, labels, field names, and examples must ALL be translated to the user's language. The only exception is technical code (variable names, file paths, CLI commands)
 9. **ALWAYS use the naming convention `{module-acronym}-{number}-{kebab-description}`** for feature folders (type: `features` ONLY):
-   - `{module-acronym}` — lowercase acronym that MUST match a module registered in `.specs/features/_overview.md`
+   - `{module-acronym}` — lowercase acronym that MUST match a module registered in `.specs/index.md`
    - `{number}` — sequential integer per module, auto-calculated by inspecting existing folders. Numbers are NEVER reused, even if a feature is deleted
    - `{kebab-description}` — descriptive name in kebab-case (lowercase, hyphens)
    - Examples: `ass-13-consulta-promocoes`, `bca-10-reverificacao-vtex`, `dsh-1-dashboard-engajamento`
@@ -79,9 +86,9 @@ Before anything else, determine the type of work:
 > [!NOTE]
 > This phase is **SKIPPED for `fix/`, `refact/`, and `chore/`** — those work types use free-form naming and do not require a project overview registry.
 
-Before feature initialization, verify the project's overview registry. This phase ensures the project has a living overview document (`_overview.md`) that maps modules, tracks features, and maintains a changelog.
+Before feature initialization, verify the project's overview registry. This phase ensures the project has a living index document (`index.md`) that maps modules and tracks features. Its OKF-reserved companion `log.md` holds the changelog.
 
-1. **Check if `.specs/features/_overview.md` exists** in the user's project
+1. **Check if `.specs/index.md` exists** in the user's project
 
 2. **If it DOES NOT exist** → conduct a **Product Discovery interview** to understand the project before any feature work:
 
@@ -100,9 +107,10 @@ Before feature initialization, verify the project's overview registry. This phas
    > [!IMPORTANT]
    > Do NOT rush this interview. The module structure defined here will govern the naming convention for ALL future features. Take time to get it right — challenge the user if modules overlap or seem too broad/narrow.
 
-   e. **Generate the `_overview.md`** using the template in `references/overview-template.md` with the information gathered
-   f. **Save to `.specs/features/_overview.md`**
-   g. Announce: "✅ Project overview created at `.specs/features/_overview.md`. Proceeding to feature specification."
+   e. **Generate the `index.md`** using the template in `references/overview-template.md` with the information gathered
+   f. **Generate the `log.md`** using the template in `references/log-template.md` (an empty changelog, ready for entries)
+   g. **Save both** to `.specs/index.md` and `.specs/log.md`
+   h. Announce: "✅ Project index and changelog created at `.specs/index.md` and `.specs/log.md`. Proceeding to feature specification."
 
 3. **If it exists** → read it and load the module list for use in Phase 1 folder naming. Briefly confirm to the user: "📋 Project overview loaded ({N} modules). Proceeding to feature specification."
 
@@ -110,7 +118,7 @@ Before feature initialization, verify the project's overview registry. This phas
 
 1. **Determine the work item folder name**:
    - **For `features`** — follow the mandatory naming convention (Rule 9):
-     a. Read the `_overview.md` to obtain the module list
+     a. Read the `index.md` to obtain the module list
      b. Ask the user which module this feature belongs to (via `ask_question` with the registered modules as options)
      c. Inspect existing folders in `.specs/features/` that start with the selected module acronym to calculate the next sequential number
      d. Ask the user for the feature description in kebab-case (or propose one based on the feature description they already provided)
@@ -232,10 +240,10 @@ Before generating the document:
    - `chore` → `references/chore-spec-template.md` → save as `chore-spec.md`
 2. Save to `.specs/{type}/{work-name}/{spec_document}`
 3. Present to the user for review
-4. **Update `.specs/features/_overview.md`** (type: `features` ONLY, if the file exists):
-   - Add the feature to the **Feature Map** of the corresponding module with status `📝 In specification` and today's date
-   - Add an entry to the **Changelog** under today's date with category `Added` and description of the new feature
-5. Announce the `_overview.md` update to the user (if applicable)
+4. **Update the project registry** (type: `features` ONLY, if the files exist):
+   - In `.specs/index.md`: add the feature to the **Feature Map** of the corresponding module with status `📝 In specification` and today's date
+   - In `.specs/log.md`: add an entry under today's date with category `Added` and description of the new feature
+5. Announce the `index.md` / `log.md` updates to the user (if applicable)
 
 ### Phase 5: Transition
 
@@ -266,4 +274,5 @@ After user approval of the specification document:
 
 #### Shared
 - If you need guidance on how to conduct the Socratic interview (all types), read `references/socratic-interview-guide.md`
-- If you need the `_overview.md` template for project onboarding (features only), read `references/overview-template.md`
+- If you need the `index.md` template for project onboarding (features only), read `references/overview-template.md`
+- If you need the `log.md` (project changelog) template for project onboarding (features only), read `references/log-template.md`

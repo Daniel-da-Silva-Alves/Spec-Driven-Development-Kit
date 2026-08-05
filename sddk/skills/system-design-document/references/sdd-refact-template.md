@@ -2,11 +2,27 @@
 
 Use this template when the work type is `refact/`. This is a reduced version of the full SDD, focused on the architectural delta (current vs proposed), impacted files, and test strategy for behavioral preservation.
 
+> **OKF profile (mandatory).** Every generated document begins with the YAML frontmatter below. It makes the `.specs/` bundle a portable, machine-readable knowledge graph and is what the pipeline gates read (via `status`). See the profile contract in `doc/design/okf-perfil-sddk.md`. Fill the frontmatter FIRST, then the body. The document body is unchanged.
+
 ---
 
 ## Document Structure
 
 ```markdown
+---
+type: sdd
+title: "SDD — {Refactoring Name}"
+description: "{one-line summary of the refactoring design}"
+status: draft            # draft → approved (only 'approved' unlocks the Planning stage)
+work_item: "{module-acronym}-{number}-{kebab-description}"
+work_type: refact
+tags: [{module-acronym}]
+timestamp: {ISO 8601, e.g. 2026-08-05T14:30:00Z}
+traces:
+  - rel: refines
+    target: refact-spec.md
+---
+
 # System Design Document (SDD)
 ## {Refactoring Name}
 
@@ -126,3 +142,4 @@ Priority order for documentation lookup during development:
 4. **Quality metrics MUST have baseline measurements** before refactoring starts
 5. **Impacted files MUST list ALL files** including tests that need updating
 6. **Documentation sources ONLY include technologies relevant to this refactoring** — not the entire stack
+7. **OKF frontmatter is mandatory** — always emit it, with `type: sdd`, `work_type: refact`, and `status: draft` on creation. Set `status: approved` only after the user approves the document. `work_item` MUST match the refact folder name exactly

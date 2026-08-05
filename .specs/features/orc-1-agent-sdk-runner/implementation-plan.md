@@ -52,7 +52,7 @@ Microtasks are ordered so each depends only on earlier ones. References point to
   - 📎 SDD: [§3 Orchestration Design](sdd.md) · 📎 Spec: [FR-005](srs.md), [FR-006](srs.md), [FR-007](srs.md)
   - 📁 `orc/src/pipeline.ts`
   - ✅ Done: runs stages in order; loop cap 3; PASS→merge+advance `verified`; exhaustion→abort (no merge)
-- [ ] **4.2: `run.ts` — orchestrate() entry**
+- [x] **4.2: `run.ts` — orchestrate() entry**
   - 📎 SDD: [§3](sdd.md), [§7](sdd.md) · 📎 Spec: [FR-002](srs.md), [FR-008](srs.md)
   - 📁 `orc/src/run.ts`
   - ✅ Done: precondition gate (refuse if not `approved`) → pipeline → report; injects `runid`/timestamps (no `Date.now`/random in logic)

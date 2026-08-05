@@ -1,6 +1,9 @@
 // Reading and advancing the OKF status of a work item's anchor spec.
 // Implements SDD §7 (precondition) and FR-002 / FR-007 of orc-1-agent-sdk-runner.
 
+import { readFileSync, existsSync } from "node:fs";
+import { join } from "node:path";
+
 export type WorkType = "features" | "fix" | "refact" | "chore";
 export type Status =
   | "draft"
@@ -56,4 +59,23 @@ export function nextStatus(current: Status): Status | null {
 /** Rewrite the frontmatter `status:` line in `content` to `status`. */
 export function withStatus(content: string, status: Status): string {
   return content.replace(/^(\s*status:).*$/m, `$1 ${status}`);
+}
+
+export interface AnchorRef {
+  type: WorkType;
+  path: string;
+  content: string;
+  status: Status | "";
+}
+
+/** Locate a work item's anchor spec across the four type directories under `.specs/`. */
+export function resolveAnchor(baseDir: string, workItem: string): AnchorRef | null {
+  for (const type of Object.keys(ANCHORS) as WorkType[]) {
+    const path = join(baseDir, ".specs", type, workItem, ANCHORS[type]);
+    if (existsSync(path)) {
+      const content = readFileSync(path, "utf-8");
+      return { type, path, content, status: statusOf(content) };
+    }
+  }
+  return null;
 }

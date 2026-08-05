@@ -7,6 +7,14 @@
 
 ---
 
+> **Progresso (2026-08-05).** Action Items 1–6 implementados no branch `feat/okf-profile-migration` (suíte de validação: 26/26).
+> - **Item 2** concluído, exceto a extração do changelog para `log.md` (adiado — o `index.md` mantém o changelog embutido por ora).
+> - **Item 5** entregue como agente `verifier` (namespaced `sddk:verifier`), não `sddk-verifier`.
+> - **Item 6**: `Stop` gate **bloqueante** + `PreToolUse` **advisory** (ambos fail-open). O gate duro de `PreToolUse` (bloquear escrita de código) ficou advisory por causa do mapeamento frágil código→work-item.
+> - **Restam**: Item 7 (medição empírica — exige uso real em features piloto) e Item 8 (orquestrador Agent SDK, fase futura).
+
+---
+
 ## Contexto
 
 O SDDK v2.5.0 entrega um pipeline de 5 estágios (SRS → SDD → Planning → Dev → Code Review) como **5 skills sequenciais** distribuídas por cópia de arquivos (`bin/cli.js`) para `~/.claude/skills/` e `~/.gemini/config/plugins/sddk/`, com um bloco injetado no `~/.claude/CLAUDE.md` global.

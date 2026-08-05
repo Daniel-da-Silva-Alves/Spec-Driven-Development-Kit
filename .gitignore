@@ -1,8 +1,8 @@
 # Dependencies
 node_modules/
 
-# Generated artifacts (SDDK pipeline output)
-.specs/
+# NOTE: .specs/ is intentionally NOT ignored. As of v3.0.0 the bundle is an OKF
+# knowledge graph — durable, versioned project memory that lives with the code.
 
 # OS files
 .DS_Store

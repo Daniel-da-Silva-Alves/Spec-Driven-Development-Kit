@@ -26,6 +26,13 @@ Before starting, verify that the following exist:
 - `.specs/{type}/{work-name}/{spec_document}` — the Phase 1 specification document (`srs.md`, `bug-report.md`, `refact-spec.md`, or `chore-spec.md`) — read completely
 - `.specs/{type}/{work-name}/sdd.md` — read completely
 
+## OKF Status Contract
+
+This skill maintains the OKF `status` field (contract: `doc/design/okf-perfil-sddk.md`).
+
+- **Phase 2 / 3 (Generation):** emit the implementation-plan and `manual-tests.md` frontmatter with `status: draft`.
+- **Phase 5 (Transition):** ONLY after explicit user approval, set both to `status: approved`.
+
 ## Mandatory Rules
 
 1. **ALWAYS read the specification document and SDD.md** as the first step

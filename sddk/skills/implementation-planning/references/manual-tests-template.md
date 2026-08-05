@@ -2,9 +2,24 @@
 
 Use this template to generate the `manual-tests.md` for each feature. Each test scenario must be clear, reproducible, and linked to a functional requirement.
 
+> **OKF profile (mandatory).** Every generated document begins with the YAML frontmatter below. It makes the `.specs/` bundle a portable, machine-readable knowledge graph and is what the pipeline gates read (via `status`). See the profile contract in `doc/design/okf-perfil-sddk.md`. Fill the frontmatter FIRST, then the body.
+
 ## Document Structure
 
 ```markdown
+---
+type: manual-tests
+title: "Manual Tests — {Feature Name}"
+description: "{one-line summary of the test scenarios for this feature}"
+status: draft
+work_item: "{work-name}"
+work_type: features
+timestamp: {ISO 8601, e.g. 2026-08-05T14:30:00Z}
+traces:
+  - rel: tests
+    target: srs.md
+---
+
 # Manual Tests — {Feature Name}
 
 **Feature**: {feature name}
@@ -93,3 +108,4 @@ Use this template to generate the `manual-tests.md` for each feature. Each test 
 4. **Steps MUST be reproducible** — "click button X" not "test the functionality"
 5. **Expected result MUST be specific** — "display green toast with text 'Saved successfully'" not "work"
 6. **Scenario priority** corresponds to the priority of the requirement they test
+7. **OKF frontmatter is mandatory** — always emit it, with `type: manual-tests`, `work_type: features`, and `status: draft` on creation. `work_item` MUST match the work folder name exactly

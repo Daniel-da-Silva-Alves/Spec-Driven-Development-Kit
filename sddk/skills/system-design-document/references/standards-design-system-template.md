@@ -2,7 +2,18 @@
 
 Use this template to generate `.specs/standards/design-system.md`. Fill in with the onboarding interview answers. If the project is backend-only, create the file with content "N/A — backend-only project".
 
+> **OKF profile (mandatory).** The generated document begins with the YAML frontmatter below. It makes the `.specs/` bundle a portable, machine-readable knowledge graph. See the profile contract in `doc/design/okf-perfil-sddk.md`. This is a project-level standard: it carries `type`, `title`, `description`, `tags`, and `timestamp` with `status: approved` — no `work_item` or `work_type`.
+
 ```markdown
+---
+type: standard-design-system
+title: "Design System"
+description: "{one-line summary of the project's design system and tokens}"
+status: approved
+tags: [standards, design-system]
+timestamp: {ISO 8601, e.g. 2026-08-05T14:30:00Z}
+---
+
 # Design System
 
 **Project**: {project name}
@@ -130,6 +141,8 @@ Use this template to generate `.specs/standards/design-system.md`. Fill in with 
 | `--breakpoint-lg` | {e.g.: 1024px} | Desktop |
 | `--breakpoint-xl` | {e.g.: 1280px} | Wide desktop |
 ```
+
+> Note: the OKF frontmatter above is mandatory — always emit it at the top of the generated document, with `type: standard-design-system` and `status: approved`.
 
 ## Rule for the Agent
 

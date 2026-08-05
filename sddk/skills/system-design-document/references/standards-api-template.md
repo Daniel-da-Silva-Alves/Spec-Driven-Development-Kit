@@ -2,7 +2,18 @@
 
 Use this template to generate `.specs/standards/api-conventions.md`. Fill in with the onboarding interview answers. If the project has no API, create with "N/A — project without API".
 
+> **OKF profile (mandatory).** The generated document begins with the YAML frontmatter below. It makes the `.specs/` bundle a portable, machine-readable knowledge graph. See the profile contract in `doc/design/okf-perfil-sddk.md`. This is a project-level standard: it carries `type`, `title`, `description`, `tags`, and `timestamp` with `status: approved` — no `work_item` or `work_type`.
+
 ```markdown
+---
+type: standard-api
+title: "API Conventions"
+description: "{one-line summary of the project's API conventions}"
+status: approved
+tags: [standards, api]
+timestamp: {ISO 8601, e.g. 2026-08-05T14:30:00Z}
+---
+
 # API Conventions
 
 **Project**: {project name}
@@ -126,3 +137,5 @@ GET /api/v1/users?sort=created_at&order=desc
 | Error messages | Return field + specific message |
 | Validation error format | `{"error": {"code": "VALIDATION_ERROR", "details": [{"field": "email", "message": "Invalid email"}]}}` |
 ```
+
+> Note: the OKF frontmatter above is mandatory — always emit it at the top of the generated document, with `type: standard-api` and `status: approved`.

@@ -305,7 +305,7 @@ Spec-Driven-Development-Kit/
 │       │       ├── checklist-refact-template.md   # Refactoring interview checklist
 │       │       ├── checklist-chore-template.md    # Chore interview checklist
 │       │       ├── socratic-interview-guide.md    # Interview methodology guide
-│       │       └── overview-template.md           # Project overview (_overview.md) template
+│       │       └── overview-template.md           # Project index (index.md) template
 │       ├── system-design-document/
 │       │   ├── SKILL.md                         # Skill 2 — SDD
 │       │   └── references/

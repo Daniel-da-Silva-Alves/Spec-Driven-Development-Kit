@@ -2,7 +2,18 @@
 
 Use this template to generate `.specs/standards/naming-conventions.md`. Fill in with the onboarding interview answers.
 
+> **OKF profile (mandatory).** The generated document begins with the YAML frontmatter below. It makes the `.specs/` bundle a portable, machine-readable knowledge graph. See the profile contract in `doc/design/okf-perfil-sddk.md`. This is a project-level standard: it carries `type`, `title`, `description`, `tags`, and `timestamp` with `status: approved` — no `work_item` or `work_type`.
+
 ```markdown
+---
+type: standard-naming
+title: "Naming Conventions"
+description: "{one-line summary of the project's naming conventions}"
+status: approved
+tags: [standards, naming]
+timestamp: {ISO 8601, e.g. 2026-08-05T14:30:00Z}
+---
+
 # Naming Conventions
 
 **Project**: {project name}
@@ -94,3 +105,5 @@ Use this template to generate `.specs/standards/naming-conventions.md`. Fill in 
 | Commits | {e.g.: Conventional Commits} | {e.g.: `feat(auth): add login endpoint`} |
 | Tags | {e.g.: semver} | {e.g.: `v1.2.3`} |
 ```
+
+> Note: the OKF frontmatter above is mandatory — always emit it at the top of the generated document, with `type: standard-naming` and `status: approved`.

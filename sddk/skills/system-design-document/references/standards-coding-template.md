@@ -2,7 +2,18 @@
 
 Use this template to generate `.specs/standards/coding-standards.md`. Fill in with the onboarding interview answers.
 
+> **OKF profile (mandatory).** The generated document begins with the YAML frontmatter below. It makes the `.specs/` bundle a portable, machine-readable knowledge graph. See the profile contract in `doc/design/okf-perfil-sddk.md`. This is a project-level standard: it carries `type`, `title`, `description`, `tags`, and `timestamp` with `status: approved` — no `work_item` or `work_type`.
+
 ```markdown
+---
+type: standard-coding
+title: "Coding Best Practices and Standards"
+description: "{one-line summary of the project's coding standards}"
+status: approved
+tags: [standards, coding]
+timestamp: {ISO 8601, e.g. 2026-08-05T14:30:00Z}
+---
+
 # Coding Best Practices and Standards
 
 **Project**: {project name}
@@ -112,3 +123,5 @@ class ConflictError extends AppError { }
 - {e.g.: Images must be optimized (WebP, lazy loading)}
 - {e.g.: Bundle splitting for frontend routes}
 ```
+
+> Note: the OKF frontmatter above is mandatory — always emit it at the top of the generated document, with `type: standard-coding` and `status: approved`.

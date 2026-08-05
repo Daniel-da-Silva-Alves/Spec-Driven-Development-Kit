@@ -2,11 +2,27 @@
 
 Use this template as a base to generate the SRS document. Adapt sections according to the feature's complexity. Never remove sections — if not applicable, mark as "N/A" with justification.
 
+> **OKF profile (mandatory).** Every generated document begins with the YAML frontmatter below. It makes the `.specs/` bundle a portable, machine-readable knowledge graph and is what the pipeline gates read (via `status`). See the profile contract in `doc/design/okf-perfil-sddk.md`. Fill the frontmatter FIRST, then the body. The document body follows IEEE 830 unchanged.
+
 ---
 
 ## Document Structure
 
 ```markdown
+---
+type: srs
+title: "SRS — {Feature Name}"
+description: "{one-line summary of what this feature specifies}"
+status: draft            # draft → approved (only 'approved' unlocks the SDD stage)
+work_item: "{module-acronym}-{number}-{kebab-description}"
+work_type: features
+tags: [{module-acronym}]
+timestamp: {ISO 8601, e.g. 2026-08-05T14:30:00Z}
+traces:
+  - rel: governed-by
+    target: ../../standards/api-conventions.md
+---
+
 # Software Requirements Specification (SRS)
 ## {Feature Name}
 
@@ -124,6 +140,8 @@ Devices, sensors, peripherals (if applicable).
 
 ## 7. Traceability Matrix
 
+Reference each requirement with a markdown anchor (e.g. `#fr-001`) so downstream artifacts (SDD, implementation plan) can link to it — these links become edges in the OKF knowledge graph and enable progressive disclosure.
+
 | Requirement ID | Business Rule | Acceptance Criteria | Priority |
 |:---|:---|:---|:---|
 | FR-001 | BR-001 | AC-001 | High |
@@ -149,3 +167,4 @@ Devices, sensors, peripherals (if applicable).
 3. **Use active voice** — "The system SHALL..." not "It would be nice if the system..."
 4. **Prioritize with MoSCoW** — Must/Should/Could/Won't or High/Medium/Low
 5. **Sequential IDs** — FR-001, FR-002... / BR-001, BR-002... for traceability
+6. **OKF frontmatter is mandatory** — always emit it, with `type: srs` and `status: draft` on creation. Set `status: approved` only after the user approves the document (Phase 5 transition). `work_item` MUST match the feature folder name exactly

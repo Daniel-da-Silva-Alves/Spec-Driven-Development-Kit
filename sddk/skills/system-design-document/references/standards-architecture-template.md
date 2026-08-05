@@ -2,7 +2,18 @@
 
 Use this template to generate `.specs/standards/architecture.md`. Fill in with the onboarding interview answers.
 
+> **OKF profile (mandatory).** The generated document begins with the YAML frontmatter below. It makes the `.specs/` bundle a portable, machine-readable knowledge graph. See the profile contract in `doc/design/okf-perfil-sddk.md`. This is a project-level standard: it carries `type`, `title`, `description`, `tags`, and `timestamp` with `status: approved` — no `work_item` or `work_type`.
+
 ```markdown
+---
+type: standard-architecture
+title: "Project Architectural Standards"
+description: "{one-line summary of the project's architectural standards}"
+status: approved
+tags: [standards, architecture]
+timestamp: {ISO 8601, e.g. 2026-08-05T14:30:00Z}
+---
+
 # Project Architectural Standards
 
 **Project**: {project name}
@@ -74,3 +85,5 @@ src/
 | {e.g.: Separation of Concerns} | {e.g.: Each module has a single responsibility} |
 | {e.g.: Fail Fast} | {e.g.: Validate inputs at the system boundary} |
 ```
+
+> Note: the OKF frontmatter above is mandatory — always emit it at the top of the generated document, with `type: standard-architecture` and `status: approved`.

@@ -1,7 +1,7 @@
 {
   "name": "sddk",
   "displayName": "Spec-Driven Development Kit",
-  "version": "2.5.0",
+  "version": "3.0.0",
   "description": "5-skill spec-driven pipeline (SRS -> SDD -> Planning -> Dev -> Code Review) that produces an OKF-formatted .specs/ knowledge graph and gates each stage on the artifact status lifecycle.",
   "author": {
     "name": "SDDK Contributors"

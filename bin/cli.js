@@ -356,6 +356,17 @@ function installForTarget(targetKey) {
 
     // Inject pipeline awareness into ~/.claude/CLAUDE.md
     injectClaudeMd();
+
+    // Claude Code also supports SDDK as a first-class native plugin (preferred).
+    logInfo(
+      `${color.dim}Tip: Claude Code can also install SDDK as a native plugin (versioned, no file copy):${color.reset}`
+    );
+    logInfo(
+      `${color.dim}  /plugin marketplace add Daniel-da-Silva-Alves/Spec-Driven-Development-Kit${color.reset}`
+    );
+    logInfo(
+      `${color.dim}  /plugin install sddk@spec-driven-development-kit${color.reset}`
+    );
   }
 
   const fileCount = countFilesForTarget(targetKey);

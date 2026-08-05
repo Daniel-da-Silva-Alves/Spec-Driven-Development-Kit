@@ -82,7 +82,7 @@ For Claude Code, install SDDK directly from this repo as a plugin marketplace â€
 
 The 5 skills are then available namespaced under `/sddk:` (e.g. `/sddk:software-requirements-specification`).
 
-### Option A: Install via npm (recommended)
+### Option A: Install via npm (Gemini, or Claude Code alternative)
 
 ```bash
 # Install the CLI

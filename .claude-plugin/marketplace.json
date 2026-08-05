@@ -1,0 +1,18 @@
+{
+  "name": "spec-driven-development-kit",
+  "owner": {
+    "name": "SDDK Contributors",
+    "url": "https://github.com/Daniel-da-Silva-Alves/Spec-Driven-Development-Kit"
+  },
+  "plugins": [
+    {
+      "name": "sddk",
+      "source": "./sddk",
+      "description": "Spec-Driven Development Kit — enforced 5-skill pipeline (SRS -> SDD -> Planning -> Dev -> Code Review) with an OKF-formatted .specs/ knowledge graph.",
+      "version": "2.5.0",
+      "author": {
+        "name": "SDDK Contributors"
+      }
+    }
+  ]
+}

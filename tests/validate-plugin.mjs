@@ -427,3 +427,43 @@ describe('Layer 4: BKL-12 Propositional Interview', () => {
   });
 
 });
+
+// ═══════════════════════════════════════════════════════════════════
+// Layer 5: Claude Code Plugin Packaging
+// ═══════════════════════════════════════════════════════════════════
+
+describe('Layer 5: Claude Code Plugin Packaging', () => {
+
+  it('sddk/.claude-plugin/plugin.json exists with a name and version matching package.json', () => {
+    const manifestPath = join(SDDK, '.claude-plugin', 'plugin.json');
+    assert.ok(existsSync(manifestPath), 'sddk/.claude-plugin/plugin.json must exist');
+    const manifest = JSON.parse(readFileSync(manifestPath, 'utf-8'));
+    assert.ok(manifest.name, 'plugin manifest must have a "name"');
+    const pkg = JSON.parse(readFileSync(PACKAGE_JSON, 'utf-8'));
+    assert.equal(
+      manifest.version,
+      pkg.version,
+      `plugin manifest version (${manifest.version}) !== package.json (${pkg.version})`
+    );
+  });
+
+  it('root .claude-plugin/marketplace.json lists the sddk plugin pointing at a valid plugin dir', () => {
+    const mktPath = join(ROOT, '.claude-plugin', 'marketplace.json');
+    assert.ok(existsSync(mktPath), '.claude-plugin/marketplace.json must exist at repo root');
+    const mkt = JSON.parse(readFileSync(mktPath, 'utf-8'));
+    assert.ok(mkt.name, 'marketplace must have a "name"');
+    assert.ok(mkt.owner && mkt.owner.name, 'marketplace must have an "owner.name"');
+    assert.ok(Array.isArray(mkt.plugins) && mkt.plugins.length >= 1, 'marketplace must list at least one plugin');
+
+    const entry = mkt.plugins.find((p) => p.name === 'sddk');
+    assert.ok(entry, 'marketplace must list a plugin named "sddk"');
+    assert.equal(typeof entry.source, 'string', 'sddk plugin source must be a relative path string');
+
+    const pluginManifest = join(resolve(ROOT, entry.source), '.claude-plugin', 'plugin.json');
+    assert.ok(
+      existsSync(pluginManifest),
+      `plugin source "${entry.source}" must contain .claude-plugin/plugin.json`
+    );
+  });
+
+});

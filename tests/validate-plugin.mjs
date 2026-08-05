@@ -1,8 +1,10 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync, readdirSync, existsSync } from 'node:fs';
+import { readFileSync, readdirSync, existsSync, mkdtempSync, mkdirSync, writeFileSync } from 'node:fs';
 import { join, resolve, basename, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { execFileSync } from 'node:child_process';
+import { tmpdir } from 'node:os';
 
 // ─── Config ────────────────────────────────────────────────────────
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -495,6 +497,67 @@ describe('Layer 6: Verifier Subagent', () => {
       review.includes('sddk:verifier'),
       'code-review SKILL.md must invoke the sddk:verifier subagent before marking a work item verified'
     );
+  });
+
+});
+
+// ═══════════════════════════════════════════════════════════════════
+// Layer 7: Pipeline-Gate Hooks
+// ═══════════════════════════════════════════════════════════════════
+
+describe('Layer 7: Pipeline-Gate Hooks', () => {
+
+  const GATE = join(SDDK, 'hooks', 'sddk-gate.mjs');
+
+  it('hooks.json exists and wires PreToolUse + Stop to the gate script', () => {
+    const hooksPath = join(SDDK, 'hooks', 'hooks.json');
+    assert.ok(existsSync(hooksPath), 'sddk/hooks/hooks.json must exist');
+    const cfg = JSON.parse(readFileSync(hooksPath, 'utf-8'));
+    assert.ok(cfg.hooks, 'hooks.json must have a top-level "hooks" object');
+    assert.ok(Array.isArray(cfg.hooks.PreToolUse), 'hooks.json must define PreToolUse');
+    assert.ok(Array.isArray(cfg.hooks.Stop), 'hooks.json must define Stop');
+    const commands = JSON.stringify(cfg);
+    assert.ok(commands.includes('sddk-gate.mjs'), 'hooks must invoke sddk-gate.mjs');
+    assert.ok(existsSync(GATE), 'sddk/hooks/sddk-gate.mjs must exist');
+  });
+
+  // Functional: run the gate against throwaway fixtures and assert exit codes.
+  function runGate(mode, projectDir) {
+    try {
+      execFileSync('node', [GATE, mode], {
+        cwd: projectDir,
+        env: { ...process.env, CLAUDE_PROJECT_DIR: projectDir },
+        input: '',
+        stdio: ['pipe', 'pipe', 'pipe'],
+      });
+      return 0;
+    } catch (err) {
+      return typeof err.status === 'number' ? err.status : 1;
+    }
+  }
+
+  function fixtureWithStatus(status) {
+    const dir = mkdtempSync(join(tmpdir(), 'sddk-gate-'));
+    const wi = join(dir, '.specs', 'features', 'demo');
+    mkdirSync(wi, { recursive: true });
+    writeFileSync(
+      join(wi, 'srs.md'),
+      `---\ntype: srs\nstatus: ${status}\nwork_item: demo\ntimestamp: 2026-08-05T10:00:00Z\n---\n\n# SRS\n`
+    );
+    return dir;
+  }
+
+  it('stop gate BLOCKS (exit 2) when a work item is implemented-but-not-verified', () => {
+    assert.equal(runGate('stop', fixtureWithStatus('implemented')), 2);
+  });
+
+  it('stop gate ALLOWS (exit 0) when the work item is verified', () => {
+    assert.equal(runGate('stop', fixtureWithStatus('verified')), 0);
+  });
+
+  it('stop gate fails open (exit 0) when there is no .specs/ bundle', () => {
+    const empty = mkdtempSync(join(tmpdir(), 'sddk-empty-'));
+    assert.equal(runGate('stop', empty), 0);
   });
 
 });

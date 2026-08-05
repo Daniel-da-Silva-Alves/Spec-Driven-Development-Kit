@@ -1,6 +1,9 @@
 # Dependencies
 node_modules/
 
+# Build output (orc TypeScript package — produced by tsc / built on publish)
+orc/dist/
+
 # NOTE: .specs/ is intentionally NOT ignored. As of v3.0.0 the bundle is an OKF
 # knowledge graph — durable, versioned project memory that lives with the code.
 

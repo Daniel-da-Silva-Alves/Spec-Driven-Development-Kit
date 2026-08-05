@@ -1,0 +1,17 @@
+{
+  "name": "@daniel-da-silva-alves/sddk-orc",
+  "version": "0.1.0",
+  "description": "Headless orchestrator for the SDDK pipeline (sddk run). A separate package so the core SDDK install stays zero-dependency; pulls the Agent SDK only when used.",
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "tsc && node --test"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.0"
+  }
+}

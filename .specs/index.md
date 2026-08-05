@@ -35,7 +35,7 @@ SDDK is a plugin for AI coding agents (Claude Code, Gemini) that enforces a disc
 
 | # | Feature | Status | Date |
 |:-:|:--------|:------:|:----:|
-| 1 | [orc-1-agent-sdk-runner](./features/orc-1-agent-sdk-runner/) | ✅ Specified | 2026-08-05 |
+| 1 | [orc-1-agent-sdk-runner](./features/orc-1-agent-sdk-runner/) | 🔧 In development | 2026-08-05 |
 
 **Possible statuses:**
 - `📝 In specification` — SRS in progress

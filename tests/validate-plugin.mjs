@@ -536,13 +536,14 @@ describe('Layer 7: Pipeline-Gate Hooks', () => {
     }
   }
 
-  function fixtureWithStatus(status) {
+  function fixtureWithStatus(status, comment = '') {
     const dir = mkdtempSync(join(tmpdir(), 'sddk-gate-'));
     const wi = join(dir, '.specs', 'features', 'demo');
     mkdirSync(wi, { recursive: true });
+    const statusLine = comment ? `status: ${status}            # ${comment}` : `status: ${status}`;
     writeFileSync(
       join(wi, 'srs.md'),
-      `---\ntype: srs\nstatus: ${status}\nwork_item: demo\ntimestamp: 2026-08-05T10:00:00Z\n---\n\n# SRS\n`
+      `---\ntype: srs\n${statusLine}\nwork_item: demo\ntimestamp: 2026-08-05T10:00:00Z\n---\n\n# SRS\n`
     );
     return dir;
   }
@@ -558,6 +559,12 @@ describe('Layer 7: Pipeline-Gate Hooks', () => {
   it('stop gate fails open (exit 0) when there is no .specs/ bundle', () => {
     const empty = mkdtempSync(join(tmpdir(), 'sddk-empty-'));
     assert.equal(runGate('stop', empty), 0);
+  });
+
+  // Regression: the templates ship an inline YAML comment on the status line
+  // (e.g. `status: draft  # ...`). The gate must parse the value, not fail open.
+  it('stop gate BLOCKS when status carries an inline YAML comment', () => {
+    assert.equal(runGate('stop', fixtureWithStatus('implemented', 'implemented -> verified')), 2);
   });
 
 });

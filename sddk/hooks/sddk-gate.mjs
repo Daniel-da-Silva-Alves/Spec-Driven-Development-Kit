@@ -49,12 +49,14 @@ function parseFrontmatter(text) {
   const fm = {};
   for (const line of m[1].split(/\r?\n/)) {
     const i = line.indexOf(":");
-    if (i > 0) {
-      fm[line.slice(0, i).trim()] = line
-        .slice(i + 1)
-        .trim()
-        .replace(/^["']|["']$/g, "");
+    if (i <= 0) continue;
+    let value = line.slice(i + 1).trim();
+    // Strip an inline YAML comment on unquoted scalars, e.g. `status: draft  # note`.
+    if (!value.startsWith('"') && !value.startsWith("'")) {
+      value = value.replace(/\s+#.*$/, "").trim();
     }
+    value = value.replace(/^["']|["']$/g, "");
+    fm[line.slice(0, i).trim()] = value;
   }
   return fm;
 }

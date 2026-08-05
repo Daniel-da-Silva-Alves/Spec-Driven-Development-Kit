@@ -35,3 +35,7 @@ jobs:
 
       - name: Run plugin consistency tests
         run: npm test
+
+      - name: Orchestrator (orc) build + test
+        run: npm ci && npm test
+        working-directory: orc

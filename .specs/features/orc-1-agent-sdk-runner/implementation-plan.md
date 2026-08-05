@@ -34,7 +34,7 @@ Microtasks are ordered so each depends only on earlier ones. References point to
   - 📎 SDD: [§6 Report Schema](sdd.md) · 📎 Spec: [FR-008](srs.md)
   - 📁 `orc/src/report.ts`
   - ✅ Done: builds the report object and writes `.specs/features/{item}/runs/<runid>.json`; never includes secrets
-- [ ] **2.3: `worktree.ts` — git worktree lifecycle**
+- [x] **2.3: `worktree.ts` — git worktree lifecycle**
   - 📎 SDD: [§5 Worktree Mechanics](sdd.md) · 📎 Spec: [FR-004](srs.md), [FR-006](srs.md)
   - 📁 `orc/src/worktree.ts`
   - ✅ Done: `add` / `merge` / `remove` against a temp git repo in tests; base tree untouched until merge
@@ -48,7 +48,7 @@ Microtasks are ordered so each depends only on earlier ones. References point to
 
 ## Phase 4: Orchestration
 
-- [ ] **4.1: `pipeline.ts` — sequential state machine + verification loop**
+- [x] **4.1: `pipeline.ts` — sequential state machine + verification loop**
   - 📎 SDD: [§3 Orchestration Design](sdd.md) · 📎 Spec: [FR-005](srs.md), [FR-006](srs.md), [FR-007](srs.md)
   - 📁 `orc/src/pipeline.ts`
   - ✅ Done: runs stages in order; loop cap 3; PASS→merge+advance `verified`; exhaustion→abort (no merge)

@@ -86,7 +86,7 @@ Before anything else, determine the type of work:
 > [!NOTE]
 > This phase is **SKIPPED for `fix/`, `refact/`, and `chore/`** — those work types use free-form naming and do not require a project overview registry.
 
-Before feature initialization, verify the project's overview registry. This phase ensures the project has a living overview document (`index.md`) that maps modules, tracks features, and maintains a changelog.
+Before feature initialization, verify the project's overview registry. This phase ensures the project has a living index document (`index.md`) that maps modules and tracks features. Its OKF-reserved companion `log.md` holds the changelog.
 
 1. **Check if `.specs/index.md` exists** in the user's project
 
@@ -108,8 +108,9 @@ Before feature initialization, verify the project's overview registry. This phas
    > Do NOT rush this interview. The module structure defined here will govern the naming convention for ALL future features. Take time to get it right — challenge the user if modules overlap or seem too broad/narrow.
 
    e. **Generate the `index.md`** using the template in `references/overview-template.md` with the information gathered
-   f. **Save to `.specs/index.md`**
-   g. Announce: "✅ Project overview created at `.specs/index.md`. Proceeding to feature specification."
+   f. **Generate the `log.md`** using the template in `references/log-template.md` (an empty changelog, ready for entries)
+   g. **Save both** to `.specs/index.md` and `.specs/log.md`
+   h. Announce: "✅ Project index and changelog created at `.specs/index.md` and `.specs/log.md`. Proceeding to feature specification."
 
 3. **If it exists** → read it and load the module list for use in Phase 1 folder naming. Briefly confirm to the user: "📋 Project overview loaded ({N} modules). Proceeding to feature specification."
 
@@ -239,10 +240,10 @@ Before generating the document:
    - `chore` → `references/chore-spec-template.md` → save as `chore-spec.md`
 2. Save to `.specs/{type}/{work-name}/{spec_document}`
 3. Present to the user for review
-4. **Update `.specs/index.md`** (type: `features` ONLY, if the file exists):
-   - Add the feature to the **Feature Map** of the corresponding module with status `📝 In specification` and today's date
-   - Add an entry to the **Changelog** under today's date with category `Added` and description of the new feature
-5. Announce the `index.md` update to the user (if applicable)
+4. **Update the project registry** (type: `features` ONLY, if the files exist):
+   - In `.specs/index.md`: add the feature to the **Feature Map** of the corresponding module with status `📝 In specification` and today's date
+   - In `.specs/log.md`: add an entry under today's date with category `Added` and description of the new feature
+5. Announce the `index.md` / `log.md` updates to the user (if applicable)
 
 ### Phase 5: Transition
 
@@ -274,3 +275,4 @@ After user approval of the specification document:
 #### Shared
 - If you need guidance on how to conduct the Socratic interview (all types), read `references/socratic-interview-guide.md`
 - If you need the `index.md` template for project onboarding (features only), read `references/overview-template.md`
+- If you need the `log.md` (project changelog) template for project onboarding (features only), read `references/log-template.md`

@@ -52,30 +52,4 @@ timestamp: {ISO 8601, e.g. 2026-08-05T14:30:00Z}
 
 ## Changelog
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
-
-<!-- Entries are grouped by date, most recent first. -->
-<!-- Categories: Added, Implemented, Changed, Removed -->
-
-### [{YYYY-MM-DD}]
-
-#### Added
-<!-- - `{acronym}-{n}-{description}` — {brief description of the new feature} -->
-
-#### Implemented
-<!-- - `{acronym}-{n}-{description}` — Full pipeline completed -->
-
-#### Changed
-<!-- - `{acronym}-{n}-{description}` — {description of the scope change} -->
-
-#### Removed
-<!-- - `{acronym}-{n}-{description}` — {reason for removal} -->
-
-> [!IMPORTANT]
-> **Changelog categories:**
-> - **Added** — New feature specified (created by SRS skill)
-> - **Implemented** — Feature completed the full pipeline: Dev + CodeReview approved (created by CodeReview skill)
-> - **Changed** — Feature had its scope significantly altered (pivot)
-> - **Removed** — Feature removed from the project scope
->
-> Only include categories that have entries for a given date. Empty categories should be omitted.
+The project changelog is NOT kept in this index. It lives in the OKF-reserved companion file `.specs/log.md` (`type: log`), generated from `references/log-template.md`. Append all `Added` / `Implemented` entries there, not here.

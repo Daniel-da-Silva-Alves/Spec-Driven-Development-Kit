@@ -169,9 +169,9 @@ Generate/update `.specs/{type}/{work-name}/refactoring-backlog.md` with 🟡 and
 
 ### Phase 6: Conclusion
 
-1. **Update `.specs/index.md`** (type: `features` ONLY, if the file exists):
-   - Update the feature's status in the **Feature Map** to `✅ Implemented`
-   - Add an entry to the **Changelog** under today's date with category `Implemented` and a brief description
+1. **Update the project registry** (type: `features` ONLY, if the files exist):
+   - In `.specs/index.md`: update the feature's status in the **Feature Map** to `✅ Implemented`
+   - In `.specs/log.md`: add an entry under today's date with category `Implemented` and a brief description
 2. Present a **review report** to the user:
    - Total issues found per severity
    - Critical issues fixed

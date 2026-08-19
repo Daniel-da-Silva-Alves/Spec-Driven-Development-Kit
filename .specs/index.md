@@ -20,7 +20,6 @@ SDDK is a plugin for AI coding agents (Claude Code, Gemini) that enforces a disc
 | `okf` | OKF Bundle | The OKF profile of `.specs/`: `type` vocabulary, frontmatter, status lifecycle, traceability graph |
 | `enf` | Enforcement | Deterministic gating: the read-only `sddk:verifier` subagent and the pipeline-gate hooks |
 | `plg` | Packaging & Distribution | Plugin manifests, the marketplace catalog, and the npm CLI installer |
-| `orc` | Orchestration | Headless execution of the pipeline (Anthropic Agent SDK) for CI / non-interactive runs |
 
 > [!NOTE]
 > Modules define the naming convention for feature folders: `{acronym}-{number}-{description}`. Every feature MUST belong to a registered module.
@@ -31,11 +30,7 @@ SDDK is a plugin for AI coding agents (Claude Code, Gemini) that enforces a disc
 
 <!-- For each module, a subsection with its feature table. Features are added by the SRS skill (Phase 4). -->
 
-### ORC — Orchestration
-
-| # | Feature | Status | Date |
-|:-:|:--------|:------:|:----:|
-| 1 | [orc-1-agent-sdk-runner](./features/orc-1-agent-sdk-runner/) | 🔧 In development | 2026-08-05 |
+_No features registered yet._
 
 **Possible statuses:**
 - `📝 In specification` — SRS in progress

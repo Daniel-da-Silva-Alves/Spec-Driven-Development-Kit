@@ -29,7 +29,7 @@ timestamp: 2026-08-05T00:00:00Z
 
 - Extract a function when a block repeats ≥ 2 times or has an independent, nameable responsibility.
 - Keep the CLI's ANSI/log helpers centralized (`color`, `log*`), never inline escape codes.
-- `orc` MUST call the shipped skills/agent, not duplicate their logic.
+- Tooling (hooks, subagents) MUST call the shipped skills/agent, not duplicate their logic.
 
 ---
 

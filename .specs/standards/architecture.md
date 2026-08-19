@@ -28,7 +28,6 @@ timestamp: 2026-08-05T00:00:00Z
 | `okf` OKF Bundle | The `.specs/` format: `type` vocabulary, frontmatter, status lifecycle, graph | templates + `doc/design/okf-perfil-sddk.md` |
 | `enf` Enforcement | Read-only `sddk:verifier` agent + fail-open gate hooks | `sddk/agents/`, `sddk/hooks/` |
 | `plg` Packaging | Plugin/marketplace manifests + npm CLI installer | `sddk/.claude-plugin/`, `.claude-plugin/`, `bin/` |
-| `orc` Orchestration | Headless pipeline runner (Agent SDK, TypeScript) | `orc/` (planned) |
 
 ---
 
@@ -50,9 +49,8 @@ timestamp: 2026-08-05T00:00:00Z
 > Violations are 🔴 Critical in Code Review.
 
 1. **Zero runtime dependencies** — Node tooling (CLI, hooks) uses only Node built-ins. New runtime deps require an ADR.
-2. **Skills are the single source of pipeline behavior** — tooling (`orc`, hooks) DRIVES the skills; it MUST NOT reimplement or fork stage logic.
+2. **Skills are the single source of pipeline behavior** — tooling (hooks, subagents) DRIVES the skills; it MUST NOT reimplement or fork stage logic.
 3. **Cross-platform** — all scripts must run on Windows and POSIX (no bash-only assumptions; prefer Node scripts over `.sh`).
-4. **`orc` reuses the shipped skills + `sddk:verifier`** via the Agent SDK; it never hardcodes a parallel pipeline.
 
 ---
 
@@ -61,7 +59,7 @@ timestamp: 2026-08-05T00:00:00Z
 | Principle | How we apply it |
 |:---|:---|
 | SSOT | The skill/template files are authoritative for pipeline behavior; docs and tooling derive from them |
-| Fail-safe defaults | Hooks fail open; the orchestrator aborts without merging on uncertainty |
+| Fail-safe defaults | Hooks fail open; enforcement never blocks legitimate work on uncertainty |
 | Portability | Behavior encoded as OKF/markdown so it survives across agents and tools |
 | Zero-dependency | Prefer Node built-ins; every dependency is a liability for a tool installed globally |
 

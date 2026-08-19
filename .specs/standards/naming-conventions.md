@@ -27,7 +27,7 @@ timestamp: 2026-08-05T00:00:00Z
 
 ## 2. `.specs/` Work Items (OKF bundle)
 
-- **Features**: `{module-acronym}-{number}-{kebab-description}` (e.g. `orc-1-agent-sdk-runner`). Acronym MUST match a module in `.specs/index.md`. Numbers are sequential per module and never reused.
+- **Features**: `{module-acronym}-{number}-{kebab-description}` (e.g. `plg-1-npm-installer`). Acronym MUST match a module in `.specs/index.md`. Numbers are sequential per module and never reused.
 - **fix / refact / chore**: free-form kebab-case.
 - **`type` values**: only the controlled vocabulary in `doc/design/okf-perfil-sddk.md` (`srs`, `sdd`, `standard-*`, `project-index`, `log`, ...).
 

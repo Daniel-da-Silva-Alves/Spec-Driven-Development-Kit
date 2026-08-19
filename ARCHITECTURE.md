@@ -1,31 +1,42 @@
 # SDDK Architecture
 
-## Why a Single Agent with Multiple Skills?
+## Why a Single Main Agent (Skills + Subagents)?
 
-SDDK deliberately uses a **single AI agent** that sequentially activates **5 specialized skills** — rather than multiple independent agents. This is not a technical limitation; it is an **architectural decision** grounded in the core principle that **critical technical decisions must never be fully delegated to AI**.
+SDDK deliberately uses **one main agent** that owns the pipeline, rather than a fleet of independent agents handing off to each other. This is not a technical limitation; it is an **architectural decision** grounded in the core principle that **critical technical decisions must never be fully delegated to AI**.
+
+The pipeline is **hybrid** by design:
+
+- **Stages 1–3 (SRS, SDD, Planning)** run **inline via skills** — they are interview-driven and need a live human dialogue, so they stay in the main conversation.
+- **Stages 4–5 (Dev, Code Review)** are **delegated to specialized subagents** (`developer`, `reviewer`) that run in an isolated context — they are autonomous, self-contained work that would otherwise bloat the main conversation.
+- An independent **`verifier`** subagent gates the transition to `verified`.
 
 ```mermaid
 graph TD
-    subgraph SDDK["Single Agent, 5 Skills"]
-        A["🤖 AI Agent"]
-        U["👤 Human"]
-        
-        A -->|"persona: Requirements Engineer"| S1["Skill 1: SRS"]
-        A -->|"persona: Software Architect"| S2["Skill 2: SDD"]
-        A -->|"persona: Tech Lead"| S3["Skill 3: Planning"]
-        A -->|"persona: Fullstack Developer"| S4["Skill 4: Dev"]
-        A -->|"persona: Security Auditor"| S5["Skill 5: Code Review"]
-        
-        S1 -->|"🗣️ interview"| U
-        S2 -->|"🗣️ interview"| U
-        S3 -->|"📋 validation"| U
-        S5 -->|"📋 report"| U
-        
-        U -->|"decisions"| A
+    U["👤 Human"]
+    A["🤖 Main agent"]
+    U -->|"decisions · approvals"| A
+
+    subgraph Inline["Inline skills — human in the loop"]
+        S1["persona: Requirements Engineer<br>Skill 1: SRS"]
+        S2["persona: Software Architect<br>Skill 2: SDD"]
+        S3["persona: Tech Lead<br>Skill 3: Planning"]
     end
+
+    subgraph Delegated["Subagents — isolated context"]
+        S4["persona: Fullstack Developer<br>developer · Dev"]
+        S5["persona: Security Auditor<br>reviewer · Code Review"]
+        VV["verifier · PASS/FAIL"]
+    end
+
+    A --> S1 & S2 & S3
+    A -->|"delegates"| S4 & S5 & VV
+    S1 -->|"🗣️ interview"| U
+    S2 -->|"🗣️ interview"| U
+    S3 -->|"📋 validation"| U
+    S5 -->|"📋 report"| U
 ```
 
-The human is **in the loop** at every decision point. The agent interviews, proposes, and executes — but the human **approves** before each stage advances.
+The human is **in the loop** at every decision point of stages 1–3 and **approves** before each stage advances. The autonomous stages run in isolation but report back, so the human still decides what to accept and when a work item becomes `verified`.
 
 ---
 
@@ -136,9 +147,11 @@ This means the agent reads **only** the relevant sections for each task, keeping
 
 ---
 
-## Single Agent vs Multi-Agent: Comparison
+## Hybrid: Skills for Decisions, Subagents for Execution
 
-### Multi-Agent Approach (Evaluated and Rejected)
+SDDK is neither one monolithic agent nor a fleet of fire-and-forget agents. It is a **hybrid**: the main agent keeps the decision-heavy, interview-driven stages inline (as skills), and delegates the autonomous stages to subagents.
+
+### What was rejected: a pure fire-and-forget orchestrator
 
 ```mermaid
 graph TD
@@ -150,22 +163,19 @@ graph TD
     O -->|"fire & forget"| A5["Agent 5: Review"]
 ```
 
-In a multi-agent architecture, each stage runs in its own isolated agent. This was **evaluated and rejected** for the following reasons:
+Running **every** stage as an isolated agent behind an orchestrator was evaluated and rejected — because it breaks the interview stages:
 
-| Criterion | Single Agent + Skills ✅ | Multi-Agent ❌ |
+| Criterion | Inline skill (stages 1–3) ✅ | Fire-and-forget agent ❌ |
 |:---|:---:|:---:|
 | **Human interactivity** | Continuous dialogue | Fire-and-forget |
 | **Socratic interview** | Question by question | Impractical |
 | **Technical decisions** | Human decides in real-time | Delegated to AI |
 | **Context continuity** | Shared session memory | Each agent starts from zero |
-| **Security decisions** | Human-gated | AI-autonomous |
-| **Compatibility** | Works in any IDE agent | Platform-specific |
-| **Complexity** | 5 SKILL.md files | Orchestrator + 5 agents + handoff |
-| **Debugging** | Single conversation log | 5+ logs to correlate |
+| **Mid-stage correction** | Interrupt any time | Restart the agent |
 
-### The Fundamental Problem with Multi-Agent for SDDK
+### Why interview stages stay as skills
 
-The first three stages of SDDK are **interview-driven**. The agent asks the human one question at a time, challenges vague answers, and detects ambiguities:
+The first three stages are **interview-driven**. The agent asks the human one question at a time, challenges vague answers, and detects ambiguities:
 
 ```
 Agent: "What should happen when a user enters an incorrect password 3 times?"
@@ -175,13 +185,26 @@ Agent: "What should happen when a user enters an incorrect password 3 times?"
   d) Other
 ```
 
-This **Socratic interview** pattern is impossible with isolated sub-agents because:
+This Socratic loop is impossible in an isolated subagent, because:
 
-1. **Sub-agents run in background** — they receive a prompt, execute, and return a result. They cannot maintain an iterative Q&A loop with the user.
-2. **Context is lost between agents** — Agent 2 (SDD) would not remember what the user said during Agent 1's (SRS) interview, unless everything is serialized to files. But the nuance of *why* a decision was made (the reasoning, the trade-offs discussed) is lost.
-3. **The human cannot intervene mid-execution** — if a sub-agent makes a wrong assumption during architecture design, the human only discovers it after the agent finishes — potentially too late.
+1. **Subagents don't converse** — they receive one prompt, execute, and return one result. They cannot maintain an iterative Q&A loop with the user.
+2. **Context and reasoning are lost** — a fresh subagent would not remember *why* a decision was made unless everything is serialized to files; the nuance of the trade-offs discussed lives only in the main conversation.
+3. **No mid-execution intervention** — the human could not steer a wrong assumption (*"wait — we need LGPD/GDPR compliance for that data model"*) until after the subagent finishes, potentially too late.
 
-With a single agent, the human can interrupt at any point: *"Actually, wait — we need to consider GDPR compliance for that data model."* The agent immediately adjusts. With multi-agent, that correction requires restarting the sub-agent entirely.
+Keeping these stages inline lets the human interrupt and steer at any point; the agent adjusts immediately.
+
+### Why autonomous stages ARE subagents
+
+Stages 4–5 are different. **Development** and **Code Review** are autonomous, self-contained runs that do not require a live dialogue — so delegating them to subagents (`developer`, `reviewer`, plus the independent `verifier`) is a net win:
+
+| Benefit | Effect |
+|:---|:---|
+| **Context isolation** | Heavy implementation and audit work stays out of the main conversation window |
+| **Independent review** | `reviewer` and `verifier` audit with fresh eyes, reducing self-confirmation bias |
+| **Single source of truth** | Each subagent has its stage skill **preloaded** — it drives the skill, never forks its logic |
+| **Human still decides** | Subagents report back; the human accepts changes and approves the move to `verified` |
+
+The principle holds throughout: **the human is the architect; the AI is the engineer.** Subagents are used only where no architectural decision is being made — the decision gates stay with the human, inline.
 
 ---
 

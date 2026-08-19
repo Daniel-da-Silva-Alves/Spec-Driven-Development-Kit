@@ -80,7 +80,7 @@ For Claude Code, install SDDK directly from this repo as a plugin marketplace �
 /plugin install sddk@spec-driven-development-kit
 ```
 
-The 5 skills are then available namespaced under `/sddk:` (e.g. `/sddk:software-requirements-specification`).
+The 5 skills are then available namespaced under `/sddk:` (e.g. `/sddk:software-requirements-specification`). SDDK also ships 3 specialized subagents — `developer` (Dev stage), `reviewer` (Code Review stage), and `verifier` (independent PASS/FAIL check) — so the autonomous stages run in an isolated context while the interactive stages (SRS, SDD, Planning) run inline via their skills.
 
 ### Option A: Install via npm (Gemini, or Claude Code alternative)
 

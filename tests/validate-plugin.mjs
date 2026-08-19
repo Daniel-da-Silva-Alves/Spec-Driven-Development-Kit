@@ -500,6 +500,46 @@ describe('Layer 6: Verifier Subagent', () => {
     );
   });
 
+  it('developer subagent exists, has valid frontmatter, and can write code', () => {
+    const agentPath = join(SDDK, 'agents', 'developer.md');
+    assert.ok(existsSync(agentPath), 'sddk/agents/developer.md must exist');
+    const fm = extractFrontmatter(readFileSync(agentPath, 'utf-8'));
+    assert.ok(fm.name, 'developer agent must have frontmatter "name"');
+    assert.ok(fm.description, 'developer agent must have frontmatter "description"');
+    assert.ok(fm.tools, 'developer agent must declare an explicit "tools" allowlist');
+    assert.ok(
+      /\b(Write|Edit)\b/.test(fm.tools),
+      `developer implements code, so its tools must include Write/Edit (got "${fm.tools}")`
+    );
+  });
+
+  it('reviewer subagent exists, has valid frontmatter, and is read-only', () => {
+    const agentPath = join(SDDK, 'agents', 'reviewer.md');
+    assert.ok(existsSync(agentPath), 'sddk/agents/reviewer.md must exist');
+    const fm = extractFrontmatter(readFileSync(agentPath, 'utf-8'));
+    assert.ok(fm.name, 'reviewer agent must have frontmatter "name"');
+    assert.ok(fm.description, 'reviewer agent must have frontmatter "description"');
+    assert.ok(fm.tools, 'reviewer agent must declare an explicit "tools" allowlist');
+    assert.ok(
+      !/\b(Write|Edit|NotebookEdit)\b/.test(fm.tools),
+      `reviewer must be read-only: tools must not include Write/Edit/NotebookEdit (got "${fm.tools}")`
+    );
+  });
+
+  it('CLI installs every shipped subagent into the Claude agents directory', () => {
+    const cli = readFileSync(join(ROOT, 'bin', 'cli.js'), 'utf-8');
+    const shipped = readdirSync(join(SDDK, 'agents'))
+      .filter((f) => f.endsWith('.md'))
+      .map((f) => basename(f, '.md'));
+    for (const agent of shipped) {
+      assert.ok(
+        cli.includes(`"${agent}"`),
+        `bin/cli.js AGENT_NAMES must list the shipped subagent "${agent}"`
+      );
+    }
+    assert.ok(cli.includes('agentsDir'), 'CLI must copy agents into an agentsDir for Claude Code');
+  });
+
 });
 
 // ═══════════════════════════════════════════════════════════════════

@@ -31,6 +31,7 @@ const PACKAGE = require(path.join(__dirname, "..", "package.json"));
 const VERSION = PACKAGE.version;
 const PLUGIN_SOURCE = path.join(__dirname, "..", "sddk");
 const SKILLS_SOURCE = path.join(PLUGIN_SOURCE, "skills");
+const AGENTS_SOURCE = path.join(PLUGIN_SOURCE, "agents");
 const CLAUDE_MD_SOURCE = path.join(PLUGIN_SOURCE, "CLAUDE.md");
 
 // CLAUDE.md injection markers (used to identify SDDK block)
@@ -55,7 +56,9 @@ const TARGETS = {
     shortName: "Claude",
     dir: path.join(os.homedir(), ".claude", "skills"),
     displayPath: "~/.claude/skills/",
-    // Claude: copy only sddk/skills/* directly into ~/.claude/skills/
+    // Claude: copy sddk/skills/* into ~/.claude/skills/ and sddk/agents/* into
+    // ~/.claude/agents/ (subagents are not nested under skills).
+    agentsDir: path.join(os.homedir(), ".claude", "agents"),
     copyStrategy: "skills-only",
   },
 };
@@ -68,6 +71,11 @@ const SKILL_NAMES = [
   "fullstack-development",
   "code-review",
 ];
+
+// Subagents that SDDK ships (file names, without .md, inside sddk/agents/).
+// Installed alongside the skills for the hybrid pipeline: interactive stages run
+// via skills; the autonomous Dev/Review stages and verification run as subagents.
+const AGENT_NAMES = ["verifier", "developer", "reviewer"];
 
 // ANSI color helpers (works on all modern terminals)
 const color = {
@@ -354,6 +362,18 @@ function installForTarget(targetKey) {
       copyDirRecursive(skillSrc, skillDest);
     }
 
+    // Copy the shipped subagents into ~/.claude/agents/ (native plugin installs
+    // pick these up automatically; the CLI copy must do it explicitly).
+    if (target.agentsDir) {
+      fs.mkdirSync(target.agentsDir, { recursive: true });
+      for (const agentName of AGENT_NAMES) {
+        const agentSrc = path.join(AGENTS_SOURCE, `${agentName}.md`);
+        if (fs.existsSync(agentSrc)) {
+          fs.copyFileSync(agentSrc, path.join(target.agentsDir, `${agentName}.md`));
+        }
+      }
+    }
+
     // Inject pipeline awareness into ~/.claude/CLAUDE.md
     injectClaudeMd();
 
@@ -385,10 +405,15 @@ function countFilesForTarget(targetKey) {
     return countFiles(target.dir);
   }
 
-  // Claude: count across all skill directories
+  // Claude: count across all skill directories plus installed subagents
   let total = 0;
   for (const skillName of SKILL_NAMES) {
     total += countFiles(path.join(target.dir, skillName));
+  }
+  if (target.agentsDir) {
+    for (const agentName of AGENT_NAMES) {
+      if (fs.existsSync(path.join(target.agentsDir, `${agentName}.md`))) total++;
+    }
   }
   return total;
 }
@@ -435,6 +460,14 @@ function uninstallForTarget(targetKey) {
     // Claude: remove only SDDK skill directories (leave other skills untouched)
     for (const skillName of SKILL_NAMES) {
       removeDirRecursive(path.join(target.dir, skillName));
+    }
+
+    // Remove only SDDK subagents (leave the user's other agents untouched)
+    if (target.agentsDir) {
+      for (const agentName of AGENT_NAMES) {
+        const agentFile = path.join(target.agentsDir, `${agentName}.md`);
+        if (fs.existsSync(agentFile)) fs.rmSync(agentFile, { force: true });
+      }
     }
 
     // Remove SDDK block from ~/.claude/CLAUDE.md

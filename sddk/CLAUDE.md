@@ -3,15 +3,20 @@
 
 # SDDK — Spec-Driven Development Kit
 
-You have 5 SDDK skills installed. These skills form a **sequential pipeline** for specification-driven development. You MUST follow this pipeline order — never skip stages.
+You have 5 SDDK skills and 3 specialized subagents installed. Together they form a **sequential pipeline** for specification-driven development. You MUST follow this pipeline order — never skip stages.
 
 ## Pipeline
 
 ```
 1. SRS → 2. SDD → 3. Planning → 4. Dev → 5. Code Review
+   └─ skills (interactive) ─┘   └─ subagents (isolated) ─┘
 ```
 
 Each stage must be completed and approved by the user before advancing to the next.
+
+**Execution mode (hybrid):**
+- **Stages 1–3 (SRS, SDD, Planning)** run **inline via their skills** — they are interactive and need your back-and-forth with the user.
+- **Stages 4–5 (Dev, Code Review)** are delegated to **subagents** that run in an isolated context (`developer`, then `reviewer`), keeping heavy work out of the main conversation. After Dev, run the `verifier` subagent before Code Review sets `status: verified`.
 
 ## Skill Activation Rules
 
@@ -28,9 +33,24 @@ When the user's intent matches a trigger below, you MUST read and follow the cor
 
 ### Skill 4: `/fullstack-development`
 **Triggers:** develop, implement, code, program, create the code, start development, execute microtasks, start coding, build the feature. Also activate when Skill 3 (Planning) is completed and the user confirms transition to Development.
+**Preferred execution:** delegate to the **`developer`** subagent (below), which follows this skill in an isolated context.
 
 ### Skill 5: `/code-review`
 **Triggers:** code review, review code, review, audit code, check quality, check security, review implementation. Also activate when Skill 4 (Development) is completed and the user confirms transition to Code Review.
+**Preferred execution:** delegate to the **`reviewer`** subagent (below), which follows this skill in an isolated context.
+
+## Specialized Subagents
+
+Dispatch these via the Task tool. They run in their own context and follow the same skills as their authoritative process — so the pipeline logic stays in one place.
+
+### `developer` — Dev stage (4)
+Implements the approved microtask plan following the `fullstack-development` skill. Dispatch once Planning is approved and both the anchor spec and `sdd.md` are `status: approved`. It writes code and advances the anchor to `status: implemented`; it never sets `verified`. Note: a subagent cannot converse with the user mid-task — if it hits a blocking ambiguity it stops and reports back.
+
+### `reviewer` — Code Review stage (5)
+Audits quality, security, componentization, and AI-code smells following the `code-review` skill. **Read-only** — returns findings and an APPROVE / CHANGES-REQUESTED recommendation; you (or `developer`) apply any fixes.
+
+### `verifier` — independent verification
+Read-only auditor that decides `PASS`/`FAIL` on whether the implementation satisfies the spec, SDD, and manual tests. Run it **after Dev and before Code Review sets `status: verified`**. A single unmet obligation is a FAIL.
 
 ## Critical Rules
 

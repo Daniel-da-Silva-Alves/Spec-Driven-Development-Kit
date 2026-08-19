@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.1.0] - 2026-08-19
+
+Hybrid pipeline: the autonomous stages move to specialized subagents, and the headless orchestrator is dropped.
+
+### Added
+- **`developer` subagent** — runs the Dev stage (stage 4) following the `fullstack-development` skill in an isolated context; writes code and advances `status: implemented`, never `verified`
+- **`reviewer` subagent** — runs Code Review (stage 5) following the `code-review` skill, read-only, returning findings + APPROVE/CHANGES-REQUESTED
+- Both subagents **preload their stage skill** via the `skills:` frontmatter, keeping the pipeline logic in one place
+- **Installer support for subagents** — `sddk install --claude` now copies `sddk/agents/*` into `~/.claude/agents/` (native plugin installs already auto-discover them); uninstall removes only SDDK agents
+
+### Changed
+- **Hybrid execution model** — interview stages (SRS, SDD, Planning) stay inline as skills; autonomous stages (Dev, Code Review) run as subagents, with `verifier` gating `verified`
+- **README** rewritten around the harness ecosystem (skills · subagents · hooks · OKF graph); **ARCHITECTURE** realigned from "single agent vs multi-agent" to the hybrid model
+
+### Removed
+- **Headless orchestrator** — the `orc` package and the `orc-1-agent-sdk-runner` spec were dropped. The pipeline runs interactively via skills + subagents; no headless runner or API key required
+
 ## [3.0.0] - 2026-08-05
 
 Major release: SDDK becomes an OKF-backed, enforced Claude Code plugin. See [ADR-0001](doc/adr/0001-sddk-memoria-okf-plugin-com-enforcement.md).
@@ -132,6 +149,8 @@ Major release: SDDK becomes an OKF-backed, enforced Claude Code plugin. See [ADR
 - Complete rewrite from v1.0.0
 - Restructured plugin to use `skills/` directory with `SKILL.md` + `references/` pattern
 
+[3.1.0]: https://github.com/Daniel-da-Silva-Alves/Spec-Driven-Development-Kit/releases/tag/v3.1.0
+[3.0.0]: https://github.com/Daniel-da-Silva-Alves/Spec-Driven-Development-Kit/releases/tag/v3.0.0
 [2.5.0]: https://github.com/Daniel-da-Silva-Alves/Spec-Driven-Development-Kit/releases/tag/v2.5.0
 [2.4.0]: https://github.com/Daniel-da-Silva-Alves/Spec-Driven-Development-Kit/releases/tag/v2.4.0
 [2.3.0]: https://github.com/Daniel-da-Silva-Alves/Spec-Driven-Development-Kit/releases/tag/v2.3.0

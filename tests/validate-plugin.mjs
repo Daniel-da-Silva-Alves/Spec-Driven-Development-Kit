@@ -526,6 +526,24 @@ describe('Layer 6: Verifier Subagent', () => {
     );
   });
 
+  it('developer/reviewer preload their stage skill so it loads without the Skill tool', () => {
+    // A subagent must PRELOAD its skill via the `skills:` frontmatter list;
+    // without it (and without the Skill tool) the skill cannot load at runtime.
+    const cases = [
+      { agent: 'developer', skill: 'fullstack-development' },
+      { agent: 'reviewer', skill: 'code-review' },
+    ];
+    for (const { agent, skill } of cases) {
+      const content = readFileSync(join(SDDK, 'agents', `${agent}.md`), 'utf-8');
+      const fmMatch = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+      assert.ok(fmMatch, `${agent}.md must have frontmatter`);
+      assert.ok(
+        new RegExp(`skills:\\s*\\r?\\n\\s*-\\s*${skill}\\b`).test(fmMatch[1]),
+        `${agent}.md must preload the "${skill}" skill via a skills: list`
+      );
+    }
+  });
+
   it('CLI installs every shipped subagent into the Claude agents directory', () => {
     const cli = readFileSync(join(ROOT, 'bin', 'cli.js'), 'utf-8');
     const shipped = readdirSync(join(SDDK, 'agents'))

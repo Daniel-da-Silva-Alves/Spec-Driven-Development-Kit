@@ -41,7 +41,7 @@ When the user's intent matches a trigger below, you MUST read and follow the cor
 
 ## Specialized Subagents
 
-Dispatch these via the Task tool. They run in their own context and follow the same skills as their authoritative process — so the pipeline logic stays in one place.
+Delegate to these explicitly (via the agent/task dispatch tool, or `@`-mention). They run in their own context and have the relevant skill **preloaded**, so the pipeline logic stays in one place.
 
 ### `developer` — Dev stage (4)
 Implements the approved microtask plan following the `fullstack-development` skill. Dispatch once Planning is approved and both the anchor spec and `sdd.md` are `status: approved`. It writes code and advances the anchor to `status: implemented`; it never sets `verified`. Note: a subagent cannot converse with the user mid-task — if it hits a blocking ambiguity it stops and reports back.
